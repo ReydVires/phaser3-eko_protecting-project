@@ -3,6 +3,7 @@ import { SCREEN_HEIGHT } from '../config';
 import { Player } from '../objects/Player';
 import { Tile } from '../objects/Tile';
 import { Helper } from '../utils/Helper';
+import * as LevelData from '../levels/tutorialLevel.json';
 
 type LevelTileData = {
 	x: number,
@@ -36,27 +37,14 @@ export class TestScene extends Phaser.Scene {
 		cam.startFollow(this._player);
 
 		// Tile generator
-		const levelTileData = [
-			{
-				x: 0,
-				y: 32 * 20,
-				w: 32 * 9,
-				h: 32 * 2
-			},
-			{
-				x: 32 * 12,
-				y: 32 * 17,
-				w: 32 * 8,
-				h: 32
-			},
-		];
-		const tileGroup = this.generateTileLevel(levelTileData);
+		const tileGroup = this.generateTileLevel(LevelData);
 		this.physics.add.collider(this._player, tileGroup);
 	}
 
 	generateTileLevel (levelData: Array<LevelTileData>): Phaser.Physics.Arcade.StaticGroup {
 		const levelGroup = this.physics.add.staticGroup();
-		const maxTile = levelData.length;
+		const maxTile = (levelData as any).default.length; // Get length from JSON
+		
 		for (let i = 0; i < maxTile; i++) {
 			const data = levelData[i];
 			const tile = new Tile(this, data.x, data.y, '');
