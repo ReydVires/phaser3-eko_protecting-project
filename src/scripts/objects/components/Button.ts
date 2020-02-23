@@ -4,6 +4,8 @@ export class Button extends Phaser.GameObjects.Sprite {
 	private _callback: Function;
 	private _argument: unknown;
 	private _pressedTexture: string;
+	private _justOnce: boolean = false;
+	private _noLongerActive: boolean = false;
 
 	constructor (scene: Phaser.Scene, x: number, y: number, texture: string, pressedTexture?: string) {
 		super(scene, x, y, texture);
@@ -49,7 +51,15 @@ export class Button extends Phaser.GameObjects.Sprite {
 			})
 			.on('pointerup', () => {
 				if (this._pressed) {
-					this.onClick();
+					if (!this._justOnce) {
+						this.onClick();
+					}
+					else {
+						if (!this._noLongerActive) {
+							this.onClick();
+							this._noLongerActive = true;
+						}
+					}
 				}
 				this.onUp();
 			})
@@ -68,6 +78,11 @@ export class Button extends Phaser.GameObjects.Sprite {
 
 	public setPressedTexture (texture: string): this {
 		this._pressedTexture = texture;
+		return this;
+	}
+
+	public setJustOnce (isJustOnce: boolean = true): this {
+		this._justOnce = isJustOnce;
 		return this;
 	}
 
