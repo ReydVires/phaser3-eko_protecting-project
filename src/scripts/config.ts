@@ -1,0 +1,46 @@
+import { BootScene } from './scenes/BootScene';
+import { PreloadScene } from './scenes/PreloadScene';
+import { MenuScene } from './scenes/MenuScene';
+import { GameScene } from './scenes/GameScene';
+import { TestScene } from './scenes/TestScene';
+
+export const SCREEN_WIDTH: number = 1280;
+export const SCREEN_HEIGHT: number = 720;
+export const centerX: number = SCREEN_WIDTH / 2;
+export const centerY: number = SCREEN_HEIGHT / 2;
+
+const scenes: Array<Function> = [
+	BootScene,
+	PreloadScene,
+	MenuScene,
+	GameScene,
+	TestScene
+];
+
+export const Config: Phaser.Types.Core.GameConfig = {
+	title: 'Phaser 3 Game',
+	type: Phaser.AUTO,
+	backgroundColor: '#0984e3',
+	scale: {
+		parent: 'phaser-game',
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_BOTH,
+		width: SCREEN_WIDTH,
+		height: SCREEN_HEIGHT
+	},
+	dom: {
+		createContainer: true
+	},
+	scene: scenes,
+	physics: {
+		default: 'arcade',
+		arcade: {
+			debug: true,
+			gravity: { y: 400 }
+		}
+	},
+	render: {
+		pixelArt: false,
+		antialias: false
+	}
+};

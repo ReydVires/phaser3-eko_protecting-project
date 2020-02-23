@@ -1,0 +1,98 @@
+{
+	"audioPack": {
+        "path": "assets/audio/",
+        "defaultType": "audio",
+        "files": [
+			{
+				"key": "bgm-test",
+				"url": ["bgm-test.mp3", "bgm-test.ogg"]
+			}
+		]
+    },
+    "imagePack": {
+        "path": "assets/img/",
+        "defaultType": "image",
+        "files": [
+            {
+                "key": "phaser-logo",
+                "url": "img_phaser-logo.png"
+            },
+            {
+                "key": "player",
+                "url": "spr_player.png"
+            },
+            {
+                "key": "AchievementButton",
+                "url": "UI/spr_AchievementButton.png"
+            },
+            {
+                "key": "AdventureButton_Tap",
+                "url": "UI/spr_AdventureButton_Tap.png"
+            },
+            {
+                "key": "AdventureButton_Untap",
+                "url": "UI/spr_AdventureButton_Untap.png"
+            },
+            {
+                "key": "MinigameButton_Tap",
+                "url": "UI/spr_MinigameButton_Tap.png"
+            },
+            {
+                "key": "MinigameButton_Untap",
+                "url": "UI/spr_MinigameButton_Untap.png"
+            },
+            {
+                "key": "SettingButton",
+                "url": "UI/spr_SettingButton.png"
+            },
+            {
+                "key": "WarungButton_Tap",
+                "url": "UI/spr_WarungButton_Tap.png"
+            },
+            {
+                "key": "WarungButton_Untap",
+                "url": "UI/spr_WarungButton_Untap.png"
+            },
+            {
+                "key": "ui_scorebar",
+                "url": "UI/spr_ui_scorebar.png"
+            },
+            {
+                "key": "level_tutorial1",
+                "url": "backgrounds/img_level_tutorial1.png"
+            }
+        ]
+    },
+    "spritesheetPack": {
+		"path": "assets/img/",
+		"defaultType": "spritesheet",
+        "files": [
+            {
+                "key": "AdventureButton",
+                "url": "UI/sheet_AdventureButton.png",
+                "frameConfig": { "frameWidth": 257, "frameHeight": 75 }
+            },
+            {
+                "key": "MinigameButton",
+                "url": "UI/sheet_MinigameButton.png",
+                "frameConfig": { "frameWidth": 256, "frameHeight": 64 }
+            },
+            {
+                "key": "WarungButton",
+                "url": "UI/sheet_WarungButton.png",
+                "frameConfig": { "frameWidth": 257, "frameHeight": 64 }
+            }
+        ]
+	},
+	"bitmapFontPack": {
+		"path": "assets/fonts/",
+		"defaultType": "bitmapFont",
+		"files": [
+			{
+				"key": "shortStack",
+                "textureURL": "bitmap/shortStack.png",
+                "fontDataURL": "bitmap/shortStack.xml"
+			}
+		]
+	}
+}
