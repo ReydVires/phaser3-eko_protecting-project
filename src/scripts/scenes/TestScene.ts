@@ -57,8 +57,8 @@ export class TestScene extends Phaser.Scene {
 
 	update (): void {
 		this._fpsText.update();
-		const enter = this.input.keyboard.addKey('ENTER');
-		if (Phaser.Input.Keyboard.JustDown(enter)) {
+		const space = this.input.keyboard.addKey('SPACE');
+		if (Phaser.Input.Keyboard.JustDown(space)) {
 			this.tweens.add({
 				targets: [this._player],
 				x: '+=500',
