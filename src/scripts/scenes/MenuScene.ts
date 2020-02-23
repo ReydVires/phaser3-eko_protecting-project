@@ -42,7 +42,7 @@ export class MenuScene extends Phaser.Scene {
 	}
 
 	createDisplayScore (): void {
-		this._scoreBar = this.add.sprite(window.innerWidth + window.innerWidth * 0.25, 64, 'ui_scorebar');
+		this._scoreBar = this.add.sprite(centerX + centerX * 0.3, 64, 'ui_scorebar');
 		this._scoreLabel = this.add.text(
 			this._scoreBar.x + (this._scoreBar.displayWidth * 0.5 - 8), this._scoreBar.y + 1,
 			this._score.toString(),
