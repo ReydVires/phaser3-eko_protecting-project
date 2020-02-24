@@ -22,6 +22,10 @@
                 "url": "spr_player.png"
             },
             {
+                "key": "coin",
+                "url": "spr_coin.png"
+            },
+            {
                 "key": "AchievementButton",
                 "url": "UI/spr_AchievementButton.png"
             },
@@ -81,6 +85,11 @@
                 "key": "WarungButton",
                 "url": "UI/sheet_WarungButton.png",
                 "frameConfig": { "frameWidth": 257, "frameHeight": 64 }
+            },
+            {
+                "key": "players",
+                "url": "sheet_players.png",
+                "frameConfig": { "frameWidth": 96, "frameHeight": 96 }
             }
         ]
 	},
