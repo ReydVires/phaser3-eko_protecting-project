@@ -1,4 +1,5 @@
 import { SCREEN_WIDTH, centerX, centerY } from "../config";
+import PlayerAnim from "../../assets/animations/player_anim.json";
 
 export class PreloadScene extends Phaser.Scene {
 
@@ -23,6 +24,9 @@ export class PreloadScene extends Phaser.Scene {
 	}
 
 	create (): void {
+		this.registerAnimate([
+			PlayerAnim
+		]);
 		/**
 		 * This is how you would dynamically import the mainScene class (with code splitting),
 		 * add the mainScene to the Scene Manager
@@ -40,9 +44,11 @@ export class PreloadScene extends Phaser.Scene {
 	}
 
 	registerAnimate (jsonAnimate: unknown): void {
-		if (Array.isArray(jsonAnimate)) { // Experiment
-			for (const anim of jsonAnimate) {
-				this.anims.create(anim as Phaser.Types.Animations.Animation);
+		if (Array.isArray(jsonAnimate)) {
+			for (const anims of jsonAnimate) {
+				for (const anim of anims) {
+					this.anims.create(anim as Phaser.Types.Animations.Animation);
+				}
 			}
 		}
 	}
