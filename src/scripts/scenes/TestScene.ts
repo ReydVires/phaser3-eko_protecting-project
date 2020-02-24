@@ -4,8 +4,9 @@ import { Player } from '../objects/Player';
 import { Tile } from '../objects/Tile';
 import { Helper } from '../utils/Helper';
 import * as LevelData from '../levels/tutorialLevel.json';
+import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 
-type LevelTileData = {
+type TileData = {
 	x: number,
 	y: number,
 	w: number,
@@ -16,6 +17,7 @@ export class TestScene extends Phaser.Scene {
 
 	private _fpsText: Phaser.GameObjects.Text;
 	private _player: Player;
+	private _keys: KeyboardMapping;
 
 	constructor () {
 		super('TestScene');
@@ -37,16 +39,19 @@ export class TestScene extends Phaser.Scene {
 		cam.startFollow(this._player);
 
 		// Tile generator
-		const tileGroup = this.generateTileLevel(LevelData);
+		const tileGroup = this.generateTileLevel(LevelData.tileData);
 		this.physics.add.collider(this._player, tileGroup);
+
+		// Define keyboard control
+		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE') as KeyboardMapping;
 	}
 
-	generateTileLevel (levelData: Array<LevelTileData>): Phaser.Physics.Arcade.StaticGroup {
+	generateTileLevel (tileData: Array<TileData>): Phaser.Physics.Arcade.StaticGroup {
 		const levelGroup = this.physics.add.staticGroup();
-		const maxTile = (levelData as any).default.length; // Get length from JSON
+		const maxTile = tileData.length;
 		
 		for (let i = 0; i < maxTile; i++) {
-			const data = levelData[i];
+			const data = tileData[i];
 			const tile = new Tile(this, data.x, data.y, '');
 			levelGroup.add(tile);
 			tile.setDisplaySize(data.w, data.h)
@@ -55,16 +60,25 @@ export class TestScene extends Phaser.Scene {
 		return levelGroup;
 	}
 
+	controller (): void {
+		if (this._keys.RIGHT.isDown) {
+			this._player.doRight();
+		}
+		else if (this._keys.LEFT.isDown) {
+			this._player.doLeft();
+		}
+		else {
+			this._player.doIdle();
+		}
+
+		if (Phaser.Input.Keyboard.JustDown(this._keys.SPACE)) {
+			this._player.doJump();
+		}
+	}
+
 	update (): void {
 		this._fpsText.update();
-		const space = this.input.keyboard.addKey('SPACE');
-		if (Phaser.Input.Keyboard.JustDown(space)) {
-			this.tweens.add({
-				targets: [this._player],
-				x: '+=500',
-				duration: 1000
-			});
-		}
+		this.controller();
 	}
 
 }
