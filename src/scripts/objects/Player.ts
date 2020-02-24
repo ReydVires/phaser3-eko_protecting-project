@@ -9,7 +9,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 	private _body: Phaser.Physics.Arcade.Body;
 	private _moveState: JumpState | LeftState | RightState | IdleState;
 	private _moveSpeed: number = 230;
-	private _jumpHeight: number = 385;
+	private _jumpHeight: number = 400;
 	private _allowJump: boolean = false;
 
 	constructor (scene: Phaser.Scene, x: number, y: number, texture: string) {
@@ -42,6 +42,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 		this.isAllowJump();
 		this.setFlipX(false);
 		this.setVelocityX(this._moveSpeed);
+		if (this.isOnGround()) {
+			this.play("anim_player_walk", true);
+		}
 		this._moveState.doRight();
 	}
 
@@ -49,12 +52,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 		this.isAllowJump();
 		this.setFlipX(true);
 		this.setVelocityX(-this._moveSpeed);
+		if (this.isOnGround()) {
+			this.play("anim_player_walk", true);
+		}
 		this._moveState.doLeft();
 	}
 
 	public doIdle (): void {
 		this.isAllowJump();
 		this.setVelocityX(0);
+		if (this.isOnGround()) {
+			this.play("anim_player_idle");
+		}
 		this._moveState.doIdle();
 	}
 
@@ -62,6 +71,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 		if (this._allowJump && this.isOnGround()) {
 			this._allowJump = false;
 			this.setVelocityY(-this._jumpHeight);
+			this.play("anim_player_jump", true);
 			this._moveState.doJump();
 		}
 	}
