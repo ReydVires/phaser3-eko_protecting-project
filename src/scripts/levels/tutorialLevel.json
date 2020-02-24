@@ -1,6 +1,23 @@
 {
     "id": "Tutorial_Level",
-    "collectable" : [],
+    "collectable" : [
+        {
+            "type": "COIN",
+            "x": 512,
+            "y": 514,
+            "originX": 0.5,
+            "originY": 1,
+            "texture": "coin"
+        },
+        {
+            "type": "COIN",
+            "x": 640,
+            "y": 516,
+            "originX": 0.5,
+            "originY": 1,
+            "texture": "coin"
+        }
+    ],
     "tileData": [
         {
             "x": 0,
@@ -19,6 +36,12 @@
             "y": 640,
             "w": 515,
             "h": 64
+        },
+        {
+            "x": 1130,
+            "y": 556,
+            "w": 128,
+            "h": 32
         },
         {
             "x": 1322,
