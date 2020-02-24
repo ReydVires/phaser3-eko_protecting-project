@@ -1,16 +1,9 @@
-export class KeyboardAction {
-
-    readonly isDown: boolean;
-    readonly isUp: boolean;
-
-}
-
 export class KeyboardMapping {
 
-    readonly RIGHT: KeyboardAction;
-    readonly LEFT: KeyboardAction;
-    readonly UP: KeyboardAction;
-    readonly DOWN: KeyboardAction;
-    readonly SPACE: KeyboardAction;
+	readonly RIGHT: Phaser.Input.Keyboard.Key;
+	readonly LEFT: Phaser.Input.Keyboard.Key;
+	readonly UP: Phaser.Input.Keyboard.Key;
+	readonly DOWN: Phaser.Input.Keyboard.Key;
+	readonly SPACE: Phaser.Input.Keyboard.Key;
 
 }
