@@ -1,5 +1,11 @@
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../config";
 
+type LineOption = {
+	dimension?: number,
+	height?: number,
+	width?: number
+};
+
 export class Helper {
 
 	static exitApp (): void {
@@ -16,18 +22,37 @@ export class Helper {
 		}
 	}
 
-	static drawDebugLine (graphics: Phaser.GameObjects.Graphics, dimension: number = 32): void {
-		Helper.log("Draw debug lines in " + dimension + "px");
-		const height = Math.ceil(SCREEN_HEIGHT / dimension);
-		const width = Math.ceil(SCREEN_WIDTH / dimension);
+	static printPointerPos (scene: Phaser.Scene, onWorld?: boolean): void {
+		scene.input.on('pointerdown', (event: Phaser.Input.Pointer) => {
+			let x, y: number;
+			const type = onWorld ? "world" : "screen";
+			if (!onWorld) {
+				x = Math.round(event.x);
+				y = Math.round(event.y);
+			}
+			else {
+				x = Math.round(event.worldX);
+				y = Math.round(event.worldY);
+			}
+			Helper.log(`Pointer ${type} pos: (${x}, ${y})`);
+		});
+	}
 
+	static drawDebugLine (graphics: Phaser.GameObjects.Graphics, option?: LineOption): void {
+		// Set default value
+		const dimension = option!.dimension ? option!.dimension : 32;
+		const WIN_HEIGHT = option!.height ? option!.height : SCREEN_HEIGHT;
+		const WIN_WIDTH = option!.width ? option!.width : SCREEN_WIDTH;
+
+		const height = Math.ceil(WIN_HEIGHT / dimension);
+		const width = Math.ceil(WIN_WIDTH / dimension);
 		graphics.lineStyle(1, 0xecf0f1, 0.85);
 		for (let row = 0; row < height; row++) {
 			graphics.moveTo(0, row * dimension);
-			graphics.lineTo(SCREEN_WIDTH, row * dimension);
+			graphics.lineTo(WIN_WIDTH, row * dimension);
 			for (let col = 0; col < width; col++) {
 				graphics.moveTo(col * dimension, 0);
-				graphics.lineTo(col * dimension, SCREEN_HEIGHT);
+				graphics.lineTo(col * dimension, WIN_HEIGHT);
 			}
 		}
 		graphics.strokePath();

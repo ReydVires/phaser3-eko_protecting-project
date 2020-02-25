@@ -28,7 +28,8 @@ export class MenuScene extends Phaser.Scene {
 	}
 
 	create (): void {
-		Helper.drawDebugLine(this.add.graphics(), 64);
+		this.scene.start("TestScene"); // Debug
+		Helper.drawDebugLine(this.add.graphics(), { dimension: 64 });
 
 		const portraitImage = this.add.image(centerX - centerX * 0.55, centerY + 32, 'phaser-logo');
 		this._baloonSpeech = new BaloonSpeech(
