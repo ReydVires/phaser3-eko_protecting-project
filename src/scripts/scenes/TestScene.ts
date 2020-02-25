@@ -23,6 +23,12 @@ type CoinData = {
 	texture: string
 };
 
+type PortalData = {
+	id: string,
+	info: TileData,
+	goto: string
+};
+
 export class TestScene extends Phaser.Scene {
 
 	private _fpsText: Phaser.GameObjects.Text;
@@ -40,7 +46,12 @@ export class TestScene extends Phaser.Scene {
 
 	create (): void {
 		this._fpsText = new FPSText(this);
-		Helper.drawDebugLine(this.add.graphics(), 64);
+		Helper.drawDebugLine(this.add.graphics(), {
+			dimension: 64,
+			width: 2102
+		});
+		Helper.printPointerPos(this, true);
+
 		const bg = this.add
 			.image(0, SCREEN_HEIGHT, 'level_tutorial1')
 			.setOrigin(0, 1);
@@ -48,7 +59,7 @@ export class TestScene extends Phaser.Scene {
 		cam.setBounds(0, 0, 2112, 276); // Set bound camera, based on background level
 		this._player = new Player(this, 64, 520, 'players');
 		cam.startFollow(this._player);
-		
+
 		this._deadZonePosY = cam.y + cam.height;
 
 		// Tile generator
@@ -59,9 +70,31 @@ export class TestScene extends Phaser.Scene {
 			c.destroy();
 		});
 
+		const portalGroup = this.generatePortal(LevelData.portalData);
+		this.physics.add.overlap(this._player, portalGroup, () => {
+			if (Phaser.Input.Keyboard.JustDown(this._keys!.SPACE)) {
+				console.log("Here we go!");
+			}
+		});
+
 		// Define keyboard control
 		// Alternate: this.input.keyboard.createCursorKeys();
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE') as KeyboardMapping;
+	}
+
+	generatePortal (portalData: Array<PortalData>): Phaser.Physics.Arcade.Group {
+		const groups = this.physics.add.group();
+		const maxPortal = portalData.length;
+		for (let i = 0; i < maxPortal; i++) {
+			const data = portalData[i];
+			const portal = this.physics.add.sprite(data.info.x, data.info.y, "")
+				.setDisplaySize(data.info.w, data.info.h)
+				.setOrigin(0)
+				.setVisible(false);
+			groups.add(portal);
+			(portal.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+		}
+		return groups;
 	}
 
 	generateCoin (coinData: Array<CoinData>): Phaser.Physics.Arcade.Group {
