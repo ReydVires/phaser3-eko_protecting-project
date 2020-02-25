@@ -4,21 +4,67 @@
         {
             "type": "COIN",
             "x": 512,
-            "y": 514,
+            "y": 512,
             "originX": 0.5,
             "originY": 1,
             "texture": "coin"
         },
         {
             "type": "COIN",
-            "x": 640,
-            "y": 516,
+            "x": 608,
+            "y": 512,
+            "originX": 0.5,
+            "originY": 1,
+            "texture": "coin"
+        },
+        {
+            "type": "COIN",
+            "x": 704,
+            "y": 416,
+            "originX": 0.5,
+            "originY": 1,
+            "texture": "coin"
+        },
+        {
+            "type": "COIN",
+            "x": 800,
+            "y": 464,
+            "originX": 0.5,
+            "originY": 1,
+            "texture": "coin"
+        },
+        {
+            "type": "COIN",
+            "x": 864,
+            "y": 544,
+            "originX": 0.5,
+            "originY": 1,
+            "texture": "coin"
+        },
+        {
+            "type": "COIN",
+            "x": 1216,
+            "y": 542,
+            "originX": 0.5,
+            "originY": 1,
+            "texture": "coin"
+        },
+        {
+            "type": "COIN",
+            "x": 1472,
+            "y": 468,
             "originX": 0.5,
             "originY": 1,
             "texture": "coin"
         }
     ],
     "tileData": [
+        {
+            "x": -16,
+            "y": 0,
+            "w": 16,
+            "h": 720
+        },
         {
             "x": 0,
             "y": 640,
@@ -54,6 +100,18 @@
             "y": 608,
             "w": 320,
             "h": 128
+        }
+    ],
+    "portalData": [
+        {
+            "id": "exit",
+            "info": {
+                "x": 2048,
+                "y": 512,
+                "w": 64,
+                "h": 128
+            },
+            "goto": "none"
         }
     ]
 }
