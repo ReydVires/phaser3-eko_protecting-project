@@ -2,6 +2,7 @@ export class FPSText extends Phaser.GameObjects.Text {
 
 	constructor (scene: Phaser.Scene) {
 		super(scene, 10, 10, '', <Phaser.Types.GameObjects.Text.TextStyle> {
+			fontFamily: 'Comfortaa',
 			color: 'black',
 			fontSize: '32px',
 			fontStyle: 'bold'
