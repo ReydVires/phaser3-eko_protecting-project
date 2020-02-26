@@ -98,9 +98,9 @@
 		"defaultType": "bitmapFont",
 		"files": [
 			{
-				"key": "shortStack",
-                "textureURL": "bitmap/shortStack.png",
-                "fontDataURL": "bitmap/shortStack.xml"
+				"key": "simply round",
+                "textureURL": "font_simplyr.png",
+                "fontDataURL": "bitmap_simplyr.fnt"
 			}
 		]
 	}
