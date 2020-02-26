@@ -18,7 +18,6 @@ export class LeftState implements IIdleState, ILeftState, IRightState, IJumpStat
 
 	doLeft(): void {
 		// console.log("currently in LeftState");
-		// TODO: For animation
 	}
 	
 	doRight(): void {

@@ -23,7 +23,6 @@ export class RightState implements IIdleState, ILeftState, IRightState, IJumpSta
 
 	doRight(): void {
 		// console.log("currently in RightState");
-		// TODO: For animation
 	}
 	
 	doJump(): void {

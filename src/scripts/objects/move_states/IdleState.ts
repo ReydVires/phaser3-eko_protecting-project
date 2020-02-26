@@ -13,7 +13,6 @@ export class IdleState implements IIdleState, ILeftState, IRightState, IJumpStat
 
 	doIdle(): void {
 		// console.log("currently in IdleState");
-		// TODO: For animation
 	}
 	
 	doLeft(): void {

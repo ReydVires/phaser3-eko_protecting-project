@@ -28,7 +28,6 @@ export class JumpState implements IIdleState, ILeftState, IRightState, IJumpStat
 
 	doJump(): void {
 		// console.log("currently in JumpState");
-		// TODO: For animation
 	}
 
 }
