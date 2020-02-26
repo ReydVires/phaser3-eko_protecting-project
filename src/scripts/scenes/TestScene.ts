@@ -80,6 +80,23 @@ export class TestScene extends Phaser.Scene {
 		// Define keyboard control
 		// Alternate: this.input.keyboard.createCursorKeys();
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE') as KeyboardMapping;
+
+		// Experiment Vector
+		const p1 = new Phaser.Math.Vector2();
+		this.input.on('pointerdown', (event: MouseEvent) => {
+			p1.x = event.x;
+			p1.y = event.y;
+		});
+		const p2 = new Phaser.Math.Vector2();
+		this.input.on('pointerup', (event: MouseEvent) => {
+			p2.x = event.x;
+			p2.y = event.y;
+			console.log("Data p2", p2);
+			console.log("Data p1", p1);
+			const p3 = p2.subtract(p1);
+			this._player.setPosition(this._player.x + p3.x, this._player.y + p3.y);
+			console.log("Dir", p3.normalize());
+		});
 	}
 
 	generatePortal (portalData: Array<PortalData>): Phaser.Physics.Arcade.Group {
