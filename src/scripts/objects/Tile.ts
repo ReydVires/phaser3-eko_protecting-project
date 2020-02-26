@@ -1,9 +1,9 @@
-export class Tile extends Phaser.Physics.Arcade.Sprite {
+import { PhysicSprite } from "./abstract/PhysicSprite";
+
+export class Tile extends PhysicSprite {
 
 	constructor (scene: Phaser.Scene, x: number, y: number, texture: string) {
-		super(scene, x, y, texture);
-		scene.add.existing(this);
-		scene.physics.add.existing(this, true);
+		super(scene, x, y, texture, true);
 		this.setOrigin(0)
 			.setVisible(false);
 	}
