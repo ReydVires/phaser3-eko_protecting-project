@@ -21,12 +21,12 @@ export const Config: Phaser.Types.Core.GameConfig = {
 	title: 'Phaser 3 Game',
 	type: Phaser.AUTO,
 	backgroundColor: '#0984e3',
-	width: SCREEN_WIDTH,
-	height: SCREEN_HEIGHT,
 	scale: {
 		parent: 'phaser-game',
 		mode: Phaser.Scale.FIT,
 		autoCenter: Phaser.Scale.CENTER_BOTH,
+		width: SCREEN_WIDTH,
+		height: SCREEN_HEIGHT,
 	},
 	dom: {
 		createContainer: true

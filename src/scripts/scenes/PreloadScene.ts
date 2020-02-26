@@ -21,6 +21,7 @@ export class PreloadScene extends Phaser.Scene {
 		this.createLoadingBar(centerX, centerY, 12, 32);
 		this.load.pack('imagePack', 'assets/assetpack.json', 'imagePack');
 		this.load.pack('spritesheetPack', 'assets/assetpack.json', 'spritesheetPack');
+		this.load.pack('bitmapFontPack', 'assets/assetpack.json', 'bitmapFontPack');
 	}
 
 	create (): void {
