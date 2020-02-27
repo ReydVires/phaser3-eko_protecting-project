@@ -36,6 +36,11 @@ export class TestScene extends Phaser.Scene {
 	private _player: Player;
 	private _keys: KeyboardMapping;
 	private _deadZonePosY: number;
+	private _pointer: Phaser.Input.InputPlugin;
+	private _onTouch: boolean;
+	private _justTap: boolean;
+
+	// private _actionArea: Phaser.GameObjects.Sprite;
 
 	constructor () {
 		super('TestScene');
@@ -43,9 +48,12 @@ export class TestScene extends Phaser.Scene {
 
 	init (): void {
 		console.log(`TestScene: For experimental only!`);
+		this._onTouch = false;
+		this._justTap = false;
 	}
 
 	create (): void {
+		this.input.addPointer(2);
 		this._fpsText = new FPSText(this);
 		Helper.drawDebugLine(this.add.graphics(), {
 			dimension: 64,
@@ -87,23 +95,43 @@ export class TestScene extends Phaser.Scene {
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE') as KeyboardMapping;
 
 		// TODO: Make player control (Read: REAL WIREFRAME.pdf)
+		this.input.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
+			this._onTouch = true;
+			this._justTap = true;
+			this._pointer = pointer;
+		});
+
+		this.input.on('pointerup', (pointer: Phaser.Input.InputPlugin) => {
+			this._pointer = pointer;
+			this._onTouch = false;
+		});
+
+		// this._actionArea = this.add.sprite(570, 0, "")
+		// 	.setDisplaySize(710, 720)
+		// 	.setAlpha(0.1)
+		// 	.setScrollFactor(0)
+		// 	.setOrigin(0);
+		// this._actionArea.setInteractive({ useHandCursor: true})
+		// 	.on('pointerdown', () => {
+		// 		this._player.doJump();
+		// 	});
 
 		// Experiment Vector
-		const p1 = new Phaser.Math.Vector2();
-		this.input.on('pointerdown', (event: MouseEvent) => {
-			p1.x = event.x;
-			p1.y = event.y;
-		});
-		const p2 = new Phaser.Math.Vector2();
-		this.input.on('pointerup', (event: MouseEvent) => {
-			p2.x = event.x;
-			p2.y = event.y;
-			console.log("Data p2", p2);
-			console.log("Data p1", p1);
-			const p3 = p2.subtract(p1);
-			this._player.setPosition(this._player.x + p3.x, this._player.y + p3.y);
-			console.log("Dir", p3.normalize());
-		});
+		// const p1 = new Phaser.Math.Vector2();
+		// this.input.on('pointerdown', (event: MouseEvent) => {
+		// 	p1.x = event.x;
+		// 	p1.y = event.y;
+		// });
+		// const p2 = new Phaser.Math.Vector2();
+		// this.input.on('pointerup', (event: MouseEvent) => {
+		// 	p2.x = event.x;
+		// 	p2.y = event.y;
+		// 	console.log("Data p2", p2);
+		// 	console.log("Data p1", p1);
+		// 	const p3 = p2.subtract(p1);
+		// 	this._player.setPosition(this._player.x + p3.x, this._player.y + p3.y);
+		// 	console.log("Dir", p3.normalize());
+		// });
 	}
 
 	generatePortal (portalData: Array<PortalData>): Phaser.Physics.Arcade.Group {
@@ -148,24 +176,58 @@ export class TestScene extends Phaser.Scene {
 	}
 
 	controller (): void {
-		if (this._keys.RIGHT.isDown) {
-			this._player.doRight();
-		}
-		else if (this._keys.LEFT.isDown) {
-			this._player.doLeft();
+		// Keyboard control
+		// if (this._keys.RIGHT.isDown) {
+		// 	this._player.doRight();
+		// }
+		// else if (this._keys.LEFT.isDown) {
+		// 	this._player.doLeft();
+		// }
+		// else {
+		// 	this._player.doIdle();
+		// }
+		// if (Phaser.Input.Keyboard.JustDown(this._keys.SPACE)) {
+		// 	this._player.doJump();
+		// }
+
+		// Touch control
+		if (this._onTouch) {
+			const tapLeftArea = this._pointer.x <= 275;
+			const tapRightArea = !tapLeftArea && this._pointer.x <= 570;
+			const tapJumpArea = !tapRightArea && this._pointer.x > 570;
+			if (tapLeftArea) {
+				this._player.doLeft();
+				this._justTap = true;
+			}
+			else if (tapRightArea) {
+				this._player.doRight();
+				this._justTap = true;
+			}
+
+			if (tapJumpArea) {
+				if (this._justTap) {
+					this._player.doJump();
+					this._justTap = false;
+				}
+				else {
+					// TODO: Solve this state machine
+					if (!tapLeftArea || !tapRightArea) {
+						this._player.doIdle();
+					}
+				}
+			}
 		}
 		else {
 			this._player.doIdle();
 		}
+		console.log("Check ID touch", this.input.activePointer.pointerId);
 
-		if (Phaser.Input.Keyboard.JustDown(this._keys.SPACE)) {
-			this._player.doJump();
-		}
 	}
 
 	update (): void {
 		this._fpsText.update();
 		this.controller();
+		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
 			this._player.setPosition(64, 480);
 			this.tweens.add({
