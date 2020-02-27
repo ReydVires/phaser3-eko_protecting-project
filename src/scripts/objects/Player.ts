@@ -7,7 +7,7 @@ import { IdleState } from "./move_states/IdleState";
 export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 
 	private _body: Phaser.Physics.Arcade.Body;
-	private _moveState: JumpState | LeftState | RightState | IdleState;
+	private _moveState: JumpState | LeftState | RightState | IdleState; // Experiment
 	private _moveSpeed: number = 230;
 	private _jumpHeight: number = 400;
 	private _allowJump: boolean = false;
@@ -60,8 +60,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 
 	public doIdle (): void {
 		this.isAllowJump();
-		this.setVelocityX(0);
 		if (this.isOnGround()) {
+			this.setVelocityX(0);
 			this.play("anim_player_idle");
 		}
 		this._moveState.doIdle();
