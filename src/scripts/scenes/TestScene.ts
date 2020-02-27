@@ -1,5 +1,5 @@
 import { FPSText } from '../objects/FPSText';
-import { SCREEN_HEIGHT } from '../config';
+import { SCREEN_HEIGHT, centerX, centerY } from '../config';
 import { Player } from '../objects/Player';
 import { Tile } from '../objects/Tile';
 import { Helper } from '../utils/Helper';
@@ -7,6 +7,7 @@ import * as LevelData from '../levels/tutorialLevel.json';
 import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Coin } from '../objects/collectable/Coin';
 
+// TODO: Make them interface
 type TileData = {
 	x: number,
 	y: number,
@@ -52,6 +53,10 @@ export class TestScene extends Phaser.Scene {
 		});
 		Helper.printPointerPos(this, true);
 
+		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
+			.setOrigin(0.5, 0)
+			.setFontSize(32);
+
 		const bg = this.add
 			.image(0, SCREEN_HEIGHT, 'level_tutorial1')
 			.setOrigin(0, 1);
@@ -80,6 +85,8 @@ export class TestScene extends Phaser.Scene {
 		// Define keyboard control
 		// Alternate: this.input.keyboard.createCursorKeys();
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE') as KeyboardMapping;
+
+		// TODO: Make player control (Read: REAL WIREFRAME.pdf)
 
 		// Experiment Vector
 		const p1 = new Phaser.Math.Vector2();
