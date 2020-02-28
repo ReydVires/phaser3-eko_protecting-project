@@ -39,6 +39,7 @@ export class TestScene extends Phaser.Scene {
 	private _pointer: Phaser.Input.InputPlugin;
 	private _onTouch: boolean;
 	private _actionArea: boolean;
+	private _talkArea: boolean;
 	
 	private readonly LEFT_AREA: number = 275;
 	private readonly RIGHT_AREA: number = 570;
@@ -51,6 +52,7 @@ export class TestScene extends Phaser.Scene {
 		console.log(`TestScene: For experimental only!`);
 		this._onTouch = false;
 		this._actionArea = false;
+		this._talkArea = false;
 	}
 
 	create (): void {
@@ -90,6 +92,7 @@ export class TestScene extends Phaser.Scene {
 			if (Phaser.Input.Keyboard.JustDown(this._keys!.SPACE)) {
 				console.log("Here we go!");
 			}
+			this._talkArea = true;
 		});
 
 		// Define keyboard control
@@ -109,9 +112,6 @@ export class TestScene extends Phaser.Scene {
 			// Check if no other touch input pressed
 			if (this.input.pointer1.noButtonDown()) {
 				this._onTouch = false;
-			}
-			if (this._actionArea) {
-				this._actionArea = false;
 			}
 		});
 
@@ -193,7 +193,13 @@ export class TestScene extends Phaser.Scene {
 			}
 
 			if (tapJumpArea) {
-				this._player.doJump();
+				if (!this._talkArea) {
+					this._player.doJump();
+				}
+				else {
+					console.log("Show bubble talk!");
+				}
+				this._actionArea = false;
 			}
 		}
 		else {
