@@ -3,19 +3,18 @@ import { JumpState } from "./move_states/JumpState";
 import { LeftState } from "./move_states/LeftState";
 import { RightState } from "./move_states/RightState";
 import { IdleState } from "./move_states/IdleState";
+import { PhysicSprite } from "./abstract/PhysicSprite";
 
-export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
+export class Player extends PhysicSprite implements IMoveable {
 
-	private _body: Phaser.Physics.Arcade.Body;
 	private _moveState: JumpState | LeftState | RightState | IdleState; // Experiment
 	private _moveSpeed: number = 230;
 	private _jumpHeight: number = 400;
 	private _allowJump: boolean = false;
+	private _allowDoubleJump: boolean = true;
 
 	constructor (scene: Phaser.Scene, x: number, y: number, texture: string) {
 		super(scene, x, y, texture);
-		scene.add.existing(this);
-		scene.physics.add.existing(this);
 		this.setOrigin(0.5, 1);
 		this._moveState = new IdleState(this);
 	}
@@ -27,11 +26,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 	private isAllowJump (): void {
 		if (this.isOnGround()) {
 			this._allowJump = true;
+			this._allowDoubleJump = true;
 		}
-	}
-
-	public getBody (): Phaser.Physics.Arcade.Body {
-		return this._body;
 	}
 
 	public setMoveState (state: JumpState | LeftState | RightState | IdleState): void {
@@ -47,10 +43,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 				if (this.body.velocity.x > 0 && this.body.velocity.y === 0) {
 					this._moveState.doRight();
 					this._allowJump = true;
+					this._allowDoubleJump = true;
 				}
 				else if (this.body.velocity.x < 0 && this.body.velocity.y === 0) {
 					this._moveState.doLeft();
 					this._allowJump = true;
+					this._allowDoubleJump = true;
 				}
 			}
 			if (this.body.velocity.y !== 0) {
@@ -91,6 +89,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 		if (this._allowJump && this.isOnGround()) {
 			this._allowJump = false;
 			this.setVelocityY(-this._jumpHeight);
+		}
+		else if (this._allowDoubleJump && !this.isOnGround()) {
+			this.setVelocityY(-this._jumpHeight * 0.80);
+			this._allowDoubleJump = false;
 		}
 	}
 
