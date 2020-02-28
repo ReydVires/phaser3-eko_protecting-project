@@ -25,8 +25,15 @@ export class BootScene extends Phaser.Scene {
 		// Retrieve font from google
 		WebFont.load({
 			google: { families: retrievedFont },
+			timeout: 2000,
 			active: () => {
 				console.log("Load WebFont success!", retrievedFont);
+			},
+			fontinactive: () => {
+				console.log("Load WebFont failed to render!", retrievedFont);
+			},
+			inactive: () => {
+				console.log("Can't load WebFont!", retrievedFont);
 			}
 		});
 	}
