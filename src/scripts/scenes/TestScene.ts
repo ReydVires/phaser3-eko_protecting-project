@@ -38,9 +38,10 @@ export class TestScene extends Phaser.Scene {
 	private _deadZonePosY: number;
 	private _pointer: Phaser.Input.InputPlugin;
 	private _onTouch: boolean;
-	private _justTap: boolean;
-
-	// private _actionArea: Phaser.GameObjects.Sprite;
+	private _actionArea: boolean;
+	
+	private readonly LEFT_AREA: number = 275;
+	private readonly RIGHT_AREA: number = 570;
 
 	constructor () {
 		super('TestScene');
@@ -49,7 +50,7 @@ export class TestScene extends Phaser.Scene {
 	init (): void {
 		console.log(`TestScene: For experimental only!`);
 		this._onTouch = false;
-		this._justTap = false;
+		this._actionArea = false;
 	}
 
 	create (): void {
@@ -59,10 +60,11 @@ export class TestScene extends Phaser.Scene {
 			dimension: 64,
 			width: 2102
 		});
-		Helper.printPointerPos(this, true);
+		// Helper.printPointerPos(this, true);
 
 		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
 			.setOrigin(0.5, 0)
+			.setScrollFactor(0)
 			.setFontSize(32);
 
 		const bg = this.add
@@ -97,24 +99,27 @@ export class TestScene extends Phaser.Scene {
 		// TODO: Make player control (Read: REAL WIREFRAME.pdf)
 		this.input.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
 			this._onTouch = true;
-			this._justTap = true;
 			this._pointer = pointer;
+			if (this.input.pointer1.isDown) {
+				this._actionArea = true;
+			}
 		});
 
 		this.input.on('pointerup', (pointer: Phaser.Input.InputPlugin) => {
-			this._pointer = pointer;
-			this._onTouch = false;
+			// Check if no other touch input pressed
+			if (this.input.pointer1.noButtonDown()) {
+				this._onTouch = false;
+			}
+			if (this._actionArea) {
+				this._actionArea = false;
+			}
 		});
 
-		// this._actionArea = this.add.sprite(570, 0, "")
-		// 	.setDisplaySize(710, 720)
-		// 	.setAlpha(0.1)
-		// 	.setScrollFactor(0)
-		// 	.setOrigin(0);
-		// this._actionArea.setInteractive({ useHandCursor: true})
-		// 	.on('pointerdown', () => {
-		// 		this._player.doJump();
-		// 	});
+		this.input.on('pointermove', (pointer: Phaser.Input.InputPlugin) => {
+			if (this._onTouch) {
+				this._pointer = pointer;
+			}
+		});
 
 		// Experiment Vector
 		// const p1 = new Phaser.Math.Vector2();
@@ -175,58 +180,31 @@ export class TestScene extends Phaser.Scene {
 		return groups;
 	}
 
-	controller (): void {
-		// Keyboard control
-		// if (this._keys.RIGHT.isDown) {
-		// 	this._player.doRight();
-		// }
-		// else if (this._keys.LEFT.isDown) {
-		// 	this._player.doLeft();
-		// }
-		// else {
-		// 	this._player.doIdle();
-		// }
-		// if (Phaser.Input.Keyboard.JustDown(this._keys.SPACE)) {
-		// 	this._player.doJump();
-		// }
-
-		// Touch control
+	touchController (): void {
 		if (this._onTouch) {
-			const tapLeftArea = this._pointer.x <= 275;
-			const tapRightArea = !tapLeftArea && this._pointer.x <= 570;
-			const tapJumpArea = !tapRightArea && this._pointer.x > 570;
+			const tapLeftArea = this._pointer.x <= this.LEFT_AREA;
+			const tapRightArea = !tapLeftArea && this._pointer.x <= this.RIGHT_AREA;
+			const tapJumpArea = !tapRightArea && this._pointer.x > this.RIGHT_AREA && this._actionArea;
 			if (tapLeftArea) {
 				this._player.doLeft();
-				this._justTap = true;
 			}
 			else if (tapRightArea) {
 				this._player.doRight();
-				this._justTap = true;
 			}
 
 			if (tapJumpArea) {
-				if (this._justTap) {
-					this._player.doJump();
-					this._justTap = false;
-				}
-				else {
-					// TODO: Solve this state machine
-					if (!tapLeftArea || !tapRightArea) {
-						this._player.doIdle();
-					}
-				}
+				this._player.doJump();
 			}
 		}
 		else {
 			this._player.doIdle();
 		}
-		console.log("Check ID touch", this.input.activePointer.pointerId);
-
+		this._player.movementSystem();
 	}
 
 	update (): void {
 		this._fpsText.update();
-		this.controller();
+		this.touchController();
 		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
 			this._player.setPosition(64, 480);
