@@ -38,41 +38,59 @@ export class Player extends Phaser.Physics.Arcade.Sprite implements IMoveable {
 		this._moveState = state;
 	}
 
+	public movementSystem (): void {
+		if (this.isOnGround()) {
+			if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
+				this._moveState.doIdle();
+			}
+			else {
+				if (this.body.velocity.x > 0 && this.body.velocity.y === 0) {
+					this._moveState.doRight();
+					this._allowJump = true;
+				}
+				else if (this.body.velocity.x < 0 && this.body.velocity.y === 0) {
+					this._moveState.doLeft();
+					this._allowJump = true;
+				}
+			}
+			if (this.body.velocity.y !== 0) {
+				this._moveState.doJump();
+			}
+		}
+
+		// Animation state
+		if (this._moveState instanceof IdleState) {
+			this.play("anim_player_idle");
+		}
+		if (this._moveState instanceof JumpState) {
+			this.play("anim_player_jump", true);
+		}
+		if (this._moveState instanceof LeftState || this._moveState instanceof RightState) {
+			this.play("anim_player_walk", true);
+		}
+	}
+
 	public doRight (): void {
 		this.isAllowJump();
 		this.setFlipX(false);
 		this.setVelocityX(this._moveSpeed);
-		if (this.isOnGround()) {
-			this.play("anim_player_walk", true);
-		}
-		this._moveState.doRight();
 	}
 
 	public doLeft (): void {
 		this.isAllowJump();
 		this.setFlipX(true);
 		this.setVelocityX(-this._moveSpeed);
-		if (this.isOnGround()) {
-			this.play("anim_player_walk", true);
-		}
-		this._moveState.doLeft();
 	}
 
 	public doIdle (): void {
 		this.isAllowJump();
-		if (this.isOnGround()) {
-			this.setVelocityX(0);
-			this.play("anim_player_idle");
-		}
-		this._moveState.doIdle();
+		this.setVelocityX(0);
 	}
 
 	public doJump (): void {
 		if (this._allowJump && this.isOnGround()) {
 			this._allowJump = false;
 			this.setVelocityY(-this._jumpHeight);
-			this.play("anim_player_jump", true);
-			this._moveState.doJump();
 		}
 	}
 
