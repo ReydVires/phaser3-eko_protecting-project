@@ -7,6 +7,7 @@ import * as LevelData from '../levels/tutorialLevel.json';
 import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Coin } from '../objects/collectable/Coin';
 import { BaloonSpeech } from '../objects/BaloonSpeech';
+import { Layer } from '../utils/Layer';
 
 // TODO: Make them interface
 type TileData = {
@@ -42,7 +43,11 @@ export class TestScene extends Phaser.Scene {
 	private _actionArea: boolean;
 	private _interactionArea: boolean;
 	private _portalGroup: Phaser.Physics.Arcade.Group;
+
 	private _bubbleChat: BaloonSpeech;
+
+	private _isPopUp: boolean;
+	private _dimBackground: Phaser.GameObjects.Graphics;
 	
 	private readonly LEFT_AREA: number = 275;
 	private readonly RIGHT_AREA: number = 570;
@@ -53,6 +58,7 @@ export class TestScene extends Phaser.Scene {
 
 	init (): void {
 		console.log(`TestScene: For experimental only!`);
+		this._isPopUp = false;
 		this._onTouch = false;
 		this._actionArea = false;
 		this._interactionArea = false;
@@ -60,12 +66,15 @@ export class TestScene extends Phaser.Scene {
 
 	create (): void {
 		this.input.addPointer(2);
+		this.scene.launch('UITestScene');
 		this._fpsText = new FPSText(this);
 		Helper.drawDebugLine(this.add.graphics(), {
 			dimension: 64,
 			width: 2102
 		});
 		// Helper.printPointerPos(this, true);
+		this._dimBackground = this.add.graphics()
+			.setDepth(Layer.UI.SECOND);
 
 		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
 			.setOrigin(0.5, 0)
@@ -92,17 +101,13 @@ export class TestScene extends Phaser.Scene {
 
 		this._portalGroup = this.generatePortal(LevelData.portalData);
 		this.physics.add.overlap(this._player, this._portalGroup, (player, portal) => {
-			if (Phaser.Input.Keyboard.JustDown(this._keys!.SPACE)) {
-				console.log("Here we go!", portal);
-			}
 			this._interactionArea = true;
 		});
 
 		// Define keyboard control
 		// Alternate: this.input.keyboard.createCursorKeys();
-		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE') as KeyboardMapping;
+		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE, ESC') as KeyboardMapping;
 
-		// TODO: Make player control (Read: REAL WIREFRAME.pdf)
 		this.input.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
 			this._onTouch = true;
 			this._pointer = pointer;
@@ -150,14 +155,8 @@ export class TestScene extends Phaser.Scene {
 			const zone = this.add.zone(data.x, data.y, data.w, data.h);
 			zone.setOrigin(0);
 			this.physics.world.enable(zone);
-			// const portal = this.physics.add.sprite(data.info.x, data.info.y, "")
-			// 	.setDisplaySize(data.info.w, data.info.h)
-			// 	.setOrigin(0)
-			// 	.setVisible(false);
-			// groups.add(portal);
 			groups.add(zone);
 			(zone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
-			// (portal.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 		}
 		return groups;
 	}
@@ -186,6 +185,22 @@ export class TestScene extends Phaser.Scene {
 			groups.add(tile);
 		}
 		return groups;
+	}
+
+	keyboardController (): void {
+		if (Phaser.Input.Keyboard.JustDown(this._keys.ESC)) {
+			if (!this._isPopUp) {
+				this._isPopUp = true;
+				this._dimBackground = Helper.createDimBackground(this._dimBackground);
+			}
+			else {
+				this._dimBackground.clear()
+					.disableInteractive();
+				this._isPopUp = false;
+			}
+			this.events.emit('do_pause');
+			this.input.setTopOnly(this._isPopUp);
+		}
 	}
 
 	touchController (): void {
@@ -224,7 +239,14 @@ export class TestScene extends Phaser.Scene {
 
 	update (): void {
 		this._fpsText.update();
-		this.touchController();
+
+		const isNotFound = -1;
+		if (navigator.userAgent.indexOf('Android') === isNotFound) {
+			this.keyboardController();
+		}
+		else {
+			this.touchController();
+		}
 		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
 			this._player.setPosition(64, 480);
