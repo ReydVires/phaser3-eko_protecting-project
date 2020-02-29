@@ -6,6 +6,7 @@ import { Helper } from '../utils/Helper';
 import * as LevelData from '../levels/tutorialLevel.json';
 import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Coin } from '../objects/collectable/Coin';
+import { BaloonSpeech } from '../objects/BaloonSpeech';
 
 // TODO: Make them interface
 type TileData = {
@@ -39,7 +40,9 @@ export class TestScene extends Phaser.Scene {
 	private _pointer: Phaser.Input.InputPlugin;
 	private _onTouch: boolean;
 	private _actionArea: boolean;
-	private _talkArea: boolean;
+	private _interactionArea: boolean;
+	private _portalGroup: Phaser.Physics.Arcade.Group;
+	private _bubbleChat: BaloonSpeech;
 	
 	private readonly LEFT_AREA: number = 275;
 	private readonly RIGHT_AREA: number = 570;
@@ -52,7 +55,7 @@ export class TestScene extends Phaser.Scene {
 		console.log(`TestScene: For experimental only!`);
 		this._onTouch = false;
 		this._actionArea = false;
-		this._talkArea = false;
+		this._interactionArea = false;
 	}
 
 	create (): void {
@@ -87,12 +90,12 @@ export class TestScene extends Phaser.Scene {
 			c.destroy();
 		});
 
-		const portalGroup = this.generatePortal(LevelData.portalData);
-		this.physics.add.overlap(this._player, portalGroup, () => {
+		this._portalGroup = this.generatePortal(LevelData.portalData);
+		this.physics.add.overlap(this._player, this._portalGroup, (player, portal) => {
 			if (Phaser.Input.Keyboard.JustDown(this._keys!.SPACE)) {
-				console.log("Here we go!");
+				console.log("Here we go!", portal);
 			}
-			this._talkArea = true;
+			this._interactionArea = true;
 		});
 
 		// Define keyboard control
@@ -143,13 +146,18 @@ export class TestScene extends Phaser.Scene {
 		const groups = this.physics.add.group();
 		const maxPortal = portalData.length;
 		for (let i = 0; i < maxPortal; i++) {
-			const data = portalData[i];
-			const portal = this.physics.add.sprite(data.info.x, data.info.y, "")
-				.setDisplaySize(data.info.w, data.info.h)
-				.setOrigin(0)
-				.setVisible(false);
-			groups.add(portal);
-			(portal.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+			const data = portalData[i].info;
+			const zone = this.add.zone(data.x, data.y, data.w, data.h);
+			zone.setOrigin(0);
+			this.physics.world.enable(zone);
+			// const portal = this.physics.add.sprite(data.info.x, data.info.y, "")
+			// 	.setDisplaySize(data.info.w, data.info.h)
+			// 	.setOrigin(0)
+			// 	.setVisible(false);
+			// groups.add(portal);
+			groups.add(zone);
+			(zone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+			// (portal.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 		}
 		return groups;
 	}
@@ -193,11 +201,17 @@ export class TestScene extends Phaser.Scene {
 			}
 
 			if (tapJumpArea) {
-				if (!this._talkArea) {
+				if (!this._interactionArea) {
 					this._player.doJump();
 				}
 				else {
-					console.log("Show bubble talk!");
+					console.log("Show bubble talk! or other interaction.");
+					this._bubbleChat = new BaloonSpeech(
+						this,
+						this._player.x - 280, this._player.y - (160 + 160 * 0.75),
+						280, 160,
+						"I'm gonna head out!", 2
+					);
 				}
 				this._actionArea = false;
 			}
@@ -227,6 +241,15 @@ export class TestScene extends Phaser.Scene {
 				repeat: 4,
 			});
 		}
+		// Test on exit collider
+		this._portalGroup.getChildren().forEach((object) => {
+			const child = (object.body as Phaser.Physics.Arcade.Body);
+			const colliderStatus = child.touching.none;
+			if (this._interactionArea && colliderStatus) {
+				this._interactionArea = false;
+				this._bubbleChat.destroy(); // Aftar out collision
+			}
+		});
 	}
 
 }
