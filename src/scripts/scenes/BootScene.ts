@@ -8,6 +8,7 @@ export class BootScene extends Phaser.Scene {
 
 	init (): void {
 		console.log(`BootScene`);
+		console.log("userAgent:", navigator.userAgent);
 	}
 
 	preload (): void {
