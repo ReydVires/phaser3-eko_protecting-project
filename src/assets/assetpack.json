@@ -38,6 +38,18 @@
                 "url": "UI/spr_ui_scorebar.png"
             },
             {
+                "key": "backtomainmenu_btn",
+                "url": "UI/spr_backtomainmenu_btn.png"
+            },
+            {
+                "key": "continue_btn",
+                "url": "UI/spr_continue_btn.png"
+            },
+            {
+                "key": "gamepaused_win",
+                "url": "UI/popup_gamepaused_win.png"
+            },
+            {
                 "key": "level_tutorial1",
                 "url": "backgrounds/img_level_tutorial1.png"
             }
