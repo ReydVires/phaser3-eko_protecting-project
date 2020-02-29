@@ -58,13 +58,23 @@ export class Helper {
 		graphics.strokePath();
 	}
 
-	static nextSceneFadeOut(currentScene: Phaser.Scene, sceneName: string): void {
+	static nextSceneFadeOut (currentScene: Phaser.Scene, sceneName: string): void {
 		Helper.log("Go to scene: " + sceneName);
 		const cam = currentScene.cameras.main;
 		cam.once('camerafadeoutcomplete', () => {
 			currentScene.scene.start(sceneName);
 		});
 		cam.fadeOut(300);
+	}
+
+	static createDimBackground (graphics: Phaser.GameObjects.Graphics, width?: number, height?: number): Phaser.GameObjects.Graphics {
+		const rectangle = new Phaser.Geom.Rectangle(0, 0, width || SCREEN_WIDTH, height || SCREEN_HEIGHT);
+		graphics
+			.fillStyle(0x000, 0.8)
+			.fillRectShape(rectangle);
+		graphics.setInteractive(rectangle, Phaser.Geom.Rectangle.Contains)
+			.on('pointerup', () => console.log("Testing!"));
+		return graphics;
 	}
 
 	static log (message: string, arg?: any): void {
