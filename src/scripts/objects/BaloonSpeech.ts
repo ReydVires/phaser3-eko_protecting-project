@@ -6,14 +6,16 @@ export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 	private _height: number;
 	private _padding: number;
 	private _arrowHeight: number;
+	private _arrowFacing: number; // 1: Left, 2: Right
 
-	constructor (scene: Phaser.Scene, x: number, y: number, width: number, height: number, quote: string) {
+	constructor (scene: Phaser.Scene, x: number, y: number, width: number, height: number, quote: string, arrowFacing: number = 1) {
 		super(scene, {x: x, y: y});
 		scene.add.existing(this);
 		this._width = width;
 		this._height = height;
 		this._arrowHeight = height / 4;
 		this._padding = 10;
+		this._arrowFacing = arrowFacing;
 		this.setText(quote);
 	}
 
@@ -53,14 +55,16 @@ export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 
 	private createArrowBaloonStyle (): void {
 		//  Calculate arrow coordinates
-		const point1X = Math.floor(this._width / 7);
+		const arrowFacing = this._arrowFacing === 1 ? 0 : 1;
+		const multiplier = arrowFacing * this._width / this._arrowFacing;
+		const point1X = Math.floor(multiplier + this._width / 7);
 		const point1Y = this._height;
-		const point2X = Math.floor((this._width / 7) * 2);
+		const point2X = Math.floor(multiplier + (this._width / 7) * 2);
 		const point2Y = this._height;
-		const point3X = Math.floor(this._width / 7);
+		const point3X = Math.floor(multiplier + (this._width / 7) * this._arrowFacing); // 1: arrow to Left, 2: arrow to Right
 		const point3Y = Math.floor(this._height + this._arrowHeight);
 		
-		//  Bubble arrow shadow
+		//  Bubble arrow shadow: in Diagonal
 		this.lineStyle(4, 0x222222, 0.5);
 		this.lineBetween(point2X - 1, point2Y + 6, point3X + 2, point3Y);
 
