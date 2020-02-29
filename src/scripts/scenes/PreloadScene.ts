@@ -77,12 +77,14 @@ export class PreloadScene extends Phaser.Scene {
 	}
 
 	createLoadingText (x: number, y: number, height: number, text: string): void {
+		const offsetY = 12;
 		const loadingText = {
 			x: x,
-			y: y - (height + 8),
-			text: "LOADING",
+			y: y - (height + offsetY),
+			text: text,
 			style: {
-				fill: 'black'
+				fill: 'black',
+				fontSize: '32px'
 			}
 		};
 		this.make

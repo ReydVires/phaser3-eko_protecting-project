@@ -34,26 +34,26 @@ export class MenuScene extends Phaser.Scene {
 
 	create (): void {
 		// this.scene.start("TestScene"); // Debug
-		Helper.drawDebugLine(this.add.graphics(), { dimension: 64 });
+		// Helper.drawDebugLine(this.add.graphics(), { dimension: 64 });
 
 		this._gameTitleLabels.push(
 			this.add.text(centerX, centerY, "EKO",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
-				color: 'black',
+				// color: 'black',
 				fontStyle: 'bold',
 				fontSize: '72px'
 			}).setOrigin(0.5, 1),
 			this.add.text(centerX, centerY, "PROTECTING THE ENVIRONTMENT",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
-				color: 'black',
+				// color: 'black',
 				fontSize: '48px'
 			}).setOrigin(0.5, 0),
 			this.add.text(centerX, centerY + 256, "TAP TO START",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
-				color: 'black',
+				// color: 'black',
 				fontStyle: 'bold',
 				fontSize: '22px'
 			}).setOrigin(0.5, 1)
