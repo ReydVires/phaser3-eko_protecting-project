@@ -1,9 +1,12 @@
+//#region Scenes import
 import { BootScene } from './scenes/BootScene';
 import { PreloadScene } from './scenes/PreloadScene';
 import { MenuScene } from './scenes/MenuScene';
 import { GameScene } from './scenes/GameScene';
 import { TestScene } from './scenes/TestScene';
-
+import { UITestScene } from './scenes/UITestScene';
+import { UIGameScene } from './scenes/UIGameScene';
+//#endregion
 export const SCREEN_WIDTH: number = 1280;
 export const SCREEN_HEIGHT: number = 720;
 export const centerX: number = SCREEN_WIDTH / 2;
@@ -14,7 +17,9 @@ const scenes: Array<Function> = [
 	PreloadScene,
 	MenuScene,
 	GameScene,
-	TestScene
+	UIGameScene,
+	TestScene,
+	UITestScene
 ];
 
 export const Config: Phaser.Types.Core.GameConfig = {
