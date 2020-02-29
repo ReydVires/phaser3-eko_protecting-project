@@ -5,5 +5,6 @@ export class KeyboardMapping {
 	readonly UP: Phaser.Input.Keyboard.Key;
 	readonly DOWN: Phaser.Input.Keyboard.Key;
 	readonly SPACE: Phaser.Input.Keyboard.Key;
+	readonly ESC: Phaser.Input.Keyboard.Key;
 
 }
