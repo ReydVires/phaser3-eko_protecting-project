@@ -1,5 +1,6 @@
+//#region Imports data
 import { FPSText } from '../objects/FPSText';
-import { SCREEN_HEIGHT, centerX, centerY } from '../config';
+import { SCREEN_HEIGHT, centerX } from '../config';
 import { Player } from '../objects/Player';
 import { Tile } from '../objects/Tile';
 import { Helper } from '../utils/Helper';
@@ -8,6 +9,9 @@ import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Coin } from '../objects/collectable/Coin';
 import { BaloonSpeech } from '../objects/BaloonSpeech';
 import { Layer } from '../utils/Layer';
+import { EventUIHandler } from '../objects/misc/EventUIHandler';
+import { IEventUIHandler } from '../objects/interface/IEventUIHandler';
+//#endregion
 
 // TODO: Make them interface
 type TileData = {
@@ -32,7 +36,10 @@ type PortalData = {
 	goto: string
 };
 
-export class TestScene extends Phaser.Scene {
+export class TestScene extends Phaser.Scene implements IEventUIHandler {
+
+	private readonly LEFT_AREA: number = 275;
+	private readonly RIGHT_AREA: number = 570;
 
 	private _fpsText: Phaser.GameObjects.Text;
 	private _player: Player;
@@ -48,9 +55,8 @@ export class TestScene extends Phaser.Scene {
 
 	private _isPopUp: boolean;
 	private _dimBackground: Phaser.GameObjects.Graphics;
-	
-	private readonly LEFT_AREA: number = 275;
-	private readonly RIGHT_AREA: number = 570;
+
+	private _eventUIHandler: EventUIHandler;
 
 	constructor () {
 		super('TestScene');
@@ -62,9 +68,21 @@ export class TestScene extends Phaser.Scene {
 		this._onTouch = false;
 		this._actionArea = false;
 		this._interactionArea = false;
+		this._eventUIHandler = new EventUIHandler(this.events);
 	}
 
 	create (): void {
+		//#region Testing event
+		this._eventUIHandler.registerEvent('event:test', () => {
+			console.log("Called from EventUIHandler!");
+		});
+		this._eventUIHandler.registerEvent('event:test1', () => {
+			console.log("Called in 1 from EventUIHandler!");
+		}, true);
+		this._eventUIHandler.registerEvent('event:test2', () => {
+			console.log("Called in 2 from EventUIHandler!");
+		});
+		//#endregion
 		this.input.addPointer(2);
 		this.scene.launch('UITestScene');
 		this._fpsText = new FPSText(this);
@@ -75,6 +93,9 @@ export class TestScene extends Phaser.Scene {
 		// Helper.printPointerPos(this, true);
 		this._dimBackground = this.add.graphics()
 			.setDepth(Layer.UI.SECOND);
+
+		this._dimBackground = Helper.createDimBackground(this._dimBackground)
+			.setVisible(false);
 
 		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
 			.setOrigin(0.5, 0)
@@ -129,6 +150,8 @@ export class TestScene extends Phaser.Scene {
 			}
 		});
 
+		this.events.on('do_dim_background', this.doDimBackground.bind(this));
+
 		// Experiment Vector
 		// const p1 = new Phaser.Math.Vector2();
 		// this.input.on('pointerdown', (event: MouseEvent) => {
@@ -145,6 +168,10 @@ export class TestScene extends Phaser.Scene {
 		// 	this._player.setPosition(this._player.x + p3.x, this._player.y + p3.y);
 		// 	console.log("Dir", p3.normalize());
 		// });
+	}
+
+	eventUI (): EventUIHandler {
+		return this._eventUIHandler;
 	}
 
 	generatePortal (portalData: Array<PortalData>): Phaser.Physics.Arcade.Group {
@@ -189,18 +216,23 @@ export class TestScene extends Phaser.Scene {
 
 	keyboardController (): void {
 		if (Phaser.Input.Keyboard.JustDown(this._keys.ESC)) {
-			if (!this._isPopUp) {
-				this._isPopUp = true;
-				this._dimBackground = Helper.createDimBackground(this._dimBackground);
-			}
-			else {
-				this._dimBackground.clear()
-					.disableInteractive();
-				this._isPopUp = false;
-			}
-			this.events.emit('do_pause');
-			this.input.setTopOnly(this._isPopUp);
+			this.doDimBackground();
+			this._eventUIHandler.emit('event:test3');
 		}
+	}
+
+	doDimBackground (): void {
+		if (!this._isPopUp) {
+			this._isPopUp = true;
+			this._dimBackground.setVisible(true)
+				.setInteractive();
+		}
+		else {
+			this._dimBackground.setVisible(false)
+				.disableInteractive();
+			this._isPopUp = false;
+		}
+		this.input.setTopOnly(this._isPopUp);
 	}
 
 	touchController (): void {
