@@ -74,16 +74,20 @@ export class Helper {
 			.fillStyle(0x000, 0.8)
 			.fillRectShape(rectangle);
 		graphics.setInteractive(rectangle, Phaser.Geom.Rectangle.Contains)
-			.on('pointerup', () => console.log("Testing!"));
+			.on('pointerup', () => Helper.log("All further inputs is blocked!"));
 		return graphics;
+	}
+
+	static checkPlatform (platformName: string): boolean {
+		return navigator.userAgent.indexOf(platformName) !== -1;
 	}
 
 	static log (message: string, arg?: any): void {
 		if (arg) {
-			console.log("[HELPER] " + message, arg);
+			console.log("[Helper] " + message, arg);
 		}
 		else {
-			console.log("[HELPER] " + message);
+			console.log("[Helper] " + message);
 		}
 	}
 
