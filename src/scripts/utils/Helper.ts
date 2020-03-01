@@ -70,6 +70,7 @@ export class Helper {
 	static createDimBackground (graphics: Phaser.GameObjects.Graphics, width?: number, height?: number): Phaser.GameObjects.Graphics {
 		const rectangle = new Phaser.Geom.Rectangle(0, 0, width || SCREEN_WIDTH, height || SCREEN_HEIGHT);
 		graphics
+			.setScrollFactor(0)
 			.fillStyle(0x000, 0.8)
 			.fillRectShape(rectangle);
 		graphics.setInteractive(rectangle, Phaser.Geom.Rectangle.Contains)
