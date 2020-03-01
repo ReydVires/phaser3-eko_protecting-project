@@ -34,7 +34,8 @@ export class UITestScene extends Phaser.Scene {
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => {
-					this._targetEmitter.emit('do_dim_background'); // TODO: Fix this!
+					// TODO: Concrete implementation of event: & UI:
+					this._targetEmitter.emit('do_dim_background');
 					this._windowPause.setVisible(!this._windowPause.visible);
 					// if (!this._testScene.scene.isPaused()) {
 					// 	this._testScene.scene.pause();
