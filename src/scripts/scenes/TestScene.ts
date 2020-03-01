@@ -11,6 +11,7 @@ import { BaloonSpeech } from '../objects/BaloonSpeech';
 import { Layer } from '../utils/Layer';
 import { EventUIHandler } from '../objects/misc/EventUIHandler';
 import { IEventUIHandler } from '../objects/interface/IEventUIHandler';
+
 //#endregion
 
 // TODO: Make them interface
@@ -130,7 +131,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE, ESC') as KeyboardMapping;
 
 		this.input.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
-			this._onTouch = true;
+			this._onTouch = true && !this._isPopUp;
 			this._pointer = pointer;
 			if (this.input.pointer1.isDown) {
 				this._actionArea = true;
@@ -233,6 +234,13 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 			this._isPopUp = false;
 		}
 		this.input.setTopOnly(this._isPopUp);
+
+		if (!this.scene.isPaused()) {
+			this.scene.pause();
+		}
+		else {
+			this.scene.resume();
+		}
 	}
 
 	touchController (): void {
@@ -272,9 +280,10 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 	update (): void {
 		this._fpsText.update();
 
-		const isNotFound = -1;
-		if (navigator.userAgent.indexOf('Android') === isNotFound) {
+		const isNotAndroid = navigator.userAgent.indexOf('Android') === -1;
+		if (isNotAndroid) {
 			this.keyboardController();
+			this.touchController(); // Debug
 		}
 		else {
 			this.touchController();
