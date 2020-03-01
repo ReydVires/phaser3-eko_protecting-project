@@ -7,7 +7,7 @@ import { PhysicSprite } from "./abstract/PhysicSprite";
 
 export class Player extends PhysicSprite implements IMoveable {
 
-	private _moveState: JumpState | LeftState | RightState | IdleState; // Experiment
+	private _moveState: JumpState | LeftState | RightState | IdleState;
 	private _moveSpeed: number = 230;
 	private _jumpHeight: number = 400;
 	private _allowJump: boolean = false;
