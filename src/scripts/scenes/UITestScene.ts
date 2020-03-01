@@ -6,7 +6,8 @@ import { EventUIHandler } from "../objects/misc/EventUIHandler";
 
 export class UITestScene extends Phaser.Scene {
 
-	private _testSceneHandler: EventUIHandler;
+	private _testScene: TestScene;
+	private _targetEmitter: EventUIHandler;
 	private _windowPause: PopUpWindow;
 
 	constructor () {
@@ -15,25 +16,32 @@ export class UITestScene extends Phaser.Scene {
 
 	init (): void {
 		console.log('UITestScene');
-		this._testSceneHandler = (this.scene.get('TestScene') as TestScene).eventUI();
-		this._testSceneHandler.registerEvent('event:test3', () => {
-			console.log("This event installed in UITestScene");
-		}, true);
+		this._testScene = this.scene.get('TestScene') as TestScene;
+		this._targetEmitter = this._testScene.eventUI();
+		this._targetEmitter.registerEvent('event:test3', () => {
+			console.log("Call the event that installed in UITestScene");
+		});
 	}
 
 	create (): void {
-		this._testSceneHandler.emit('event:test2');
-		this._testSceneHandler.emit('event:test1');
-		this._testSceneHandler.emit('event:test');
-		this._testSceneHandler.emit('event:test2');
-		this._testSceneHandler.emit('event:test1');
-		this._testSceneHandler.inspectEvents();
+		this._targetEmitter.emit('event:test2');
+		this._targetEmitter.emit('event:test1');
+		this._targetEmitter.emit('event:test');
+		this._targetEmitter.emit('event:test2');
+		this._targetEmitter.emit('event:test1');
+		this._targetEmitter.inspectEvents();
 
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => {
-					this._testSceneHandler.emit('do_dim_background'); // TODO: Fix this!
+					this._targetEmitter.emit('do_dim_background'); // TODO: Fix this!
 					this._windowPause.setVisible(!this._windowPause.visible);
+					// if (!this._testScene.scene.isPaused()) {
+					// 	this._testScene.scene.pause();
+					// }
+					// else {
+					// 	this._testScene.scene.resume();
+					// }
 				}),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
 		])
@@ -43,6 +51,15 @@ export class UITestScene extends Phaser.Scene {
 		// 	'do_pause',
 		// 	() => { this._windowPause.setVisible(!this._windowPause.visible); }
 		// );
+	}
+
+	update (): void {
+		const spaceKey = this.input.keyboard.addKey('SPACE');
+		if (Phaser.Input.Keyboard.JustUp(spaceKey)) {
+			if (this._testScene.scene.isPaused()) {
+				this._testScene.scene.resume();
+			}
+		}
 	}
 
 }
