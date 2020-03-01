@@ -60,10 +60,10 @@ export class Player extends PhysicSprite implements IMoveable {
 		if (this._moveState instanceof IdleState) {
 			this.play("anim_player_idle");
 		}
-		if (this._moveState instanceof JumpState) {
+		else if (this._moveState instanceof JumpState) {
 			this.play("anim_player_jump", true);
 		}
-		if (this._moveState instanceof LeftState || this._moveState instanceof RightState) {
+		else if (this._moveState instanceof LeftState || this._moveState instanceof RightState) {
 			this.play("anim_player_walk", true);
 		}
 	}
