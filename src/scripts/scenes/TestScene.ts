@@ -54,7 +54,6 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 
 	private _bubbleChat: BaloonSpeech;
 
-	private _isPopUp: boolean;
 	private _dimBackground: Phaser.GameObjects.Graphics;
 
 	private _eventUIHandler: EventUIHandler;
@@ -65,7 +64,6 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 
 	init (): void {
 		console.log(`TestScene: For experimental only!`);
-		this._isPopUp = false;
 		this._onTouch = false;
 		this._actionArea = false;
 		this._interactionArea = false;
@@ -73,17 +71,6 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 	}
 
 	create (): void {
-		//#region Testing event
-		this._eventUIHandler.registerEvent('event:test', () => {
-			console.log("Called from EventUIHandler!");
-		});
-		this._eventUIHandler.registerEvent('event:test1', () => {
-			console.log("Called in 1 from EventUIHandler!");
-		}, true);
-		this._eventUIHandler.registerEvent('event:test2', () => {
-			console.log("Called in 2 from EventUIHandler!");
-		});
-		//#endregion
 		this.input.addPointer(2);
 		this.scene.launch('UITestScene');
 		this._fpsText = new FPSText(this);
@@ -131,7 +118,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE, ESC') as KeyboardMapping;
 
 		this.input.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
-			this._onTouch = true && !this._isPopUp;
+			this._onTouch = true;
 			this._pointer = pointer;
 			if (this.input.pointer1.isDown) {
 				this._actionArea = true;
@@ -151,9 +138,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 			}
 		});
 
-		this.events.on('do_dim_background', this.doDimBackground.bind(this));
-
-		// Experiment Vector
+		//#region Experiment Vector
 		// const p1 = new Phaser.Math.Vector2();
 		// this.input.on('pointerdown', (event: MouseEvent) => {
 		// 	p1.x = event.x;
@@ -169,6 +154,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 		// 	this._player.setPosition(this._player.x + p3.x, this._player.y + p3.y);
 		// 	console.log("Dir", p3.normalize());
 		// });
+		//#endregion
 	}
 
 	eventUI (): EventUIHandler {
@@ -217,31 +203,30 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 
 	keyboardController (): void {
 		if (Phaser.Input.Keyboard.JustDown(this._keys.ESC)) {
-			this.doDimBackground();
-			this._eventUIHandler.emit('event:test3');
+			console.log('Button ESC is pressed!');
 		}
 	}
 
-	doDimBackground (): void {
-		if (!this._isPopUp) {
-			this._isPopUp = true;
-			this._dimBackground.setVisible(true)
-				.setInteractive();
-		}
-		else {
-			this._dimBackground.setVisible(false)
-				.disableInteractive();
-			this._isPopUp = false;
-		}
-		this.input.setTopOnly(this._isPopUp);
+	// doDimBackground (): void {
+	// 	if (!this._isPopUp) {
+	// 		this._isPopUp = true;
+	// 		this._dimBackground.setVisible(true)
+	// 			.setInteractive();
+	// 	}
+	// 	else {
+	// 		this._dimBackground.setVisible(false)
+	// 			.disableInteractive();
+	// 		this._isPopUp = false;
+	// 	}
 
-		if (!this.scene.isPaused()) {
-			this.scene.pause();
-		}
-		else {
-			this.scene.resume();
-		}
-	}
+	// 	if (!this.scene.isPaused()) {
+	// 		this.scene.pause();
+	// 	}
+	// 	else {
+	// 		this.scene.resume();
+	// 	}
+	// 	this._eventUIHandler.inspectEvents();
+	// }
 
 	touchController (): void {
 		if (this._onTouch) {
@@ -261,6 +246,9 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 				}
 				else {
 					console.log("Show bubble talk! or other interaction.");
+					if (this._bubbleChat) { // Destroy the previous baloon rendered!
+						this._bubbleChat.destroy();
+					}
 					this._bubbleChat = new BaloonSpeech(
 						this,
 						this._player.x - 280, this._player.y - (160 + 160 * 0.75),
@@ -279,14 +267,12 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 
 	update (): void {
 		this._fpsText.update();
-
-		const isNotAndroid = navigator.userAgent.indexOf('Android') === -1;
-		if (isNotAndroid) {
-			this.keyboardController();
-			this.touchController(); // Debug
+		
+		if (Helper.checkPlatform('Android')) {
+			this.touchController();
 		}
 		else {
-			this.touchController();
+			this.keyboardController();
 		}
 		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
