@@ -9,7 +9,7 @@ import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Coin } from '../objects/collectable/Coin';
 import { BaloonSpeech } from '../objects/BaloonSpeech';
 import { Layer } from '../utils/Layer';
-import { EventUIHandler } from '../objects/misc/EventUIHandler';
+import { EventUIHandler } from '../utils/EventUIHandler';
 import { IEventUIHandler } from '../objects/interface/IEventUIHandler';
 
 //#endregion

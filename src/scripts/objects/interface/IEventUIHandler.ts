@@ -1,4 +1,4 @@
-import { EventUIHandler } from "../misc/EventUIHandler";
+import { EventUIHandler } from "../../utils/EventUIHandler";
 
 export interface IEventUIHandler {
 

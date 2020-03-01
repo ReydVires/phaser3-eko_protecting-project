@@ -2,7 +2,7 @@ import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { centerX, centerY } from "../config";
 import { FlatButton } from "../objects/components/FlatButton";
 import { TestScene } from "./TestScene";
-import { EventUIHandler } from "../objects/misc/EventUIHandler";
+import { EventUIHandler } from "../utils/EventUIHandler";
 
 export class UITestScene extends Phaser.Scene {
 
