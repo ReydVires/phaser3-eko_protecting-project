@@ -10,7 +10,7 @@ export class PopUpWindow extends Phaser.GameObjects.Container {
 		if (windowTexture) {
 			this._windowTexture = scene.add.sprite(x, y, windowTexture);
 		}
-		this.setDepth(Layer.UI.FIRST);
+		this.setDepth(Layer.UI.SECOND);
 	}
 
 	public get windowTexture (): Phaser.GameObjects.Sprite {
@@ -35,6 +35,9 @@ export class PopUpWindow extends Phaser.GameObjects.Container {
 		return new Phaser.Geom.Point(0.5);
 	}
 
+	/**
+	 * @override
+	 */
 	public setVisible (value: boolean): this {
 		this._windowTexture!.setVisible(value);
 		super.setVisible(value);

@@ -1,4 +1,4 @@
-//#region Scenes import
+//#region Import scene modules
 import { BootScene } from './scenes/BootScene';
 import { PreloadScene } from './scenes/PreloadScene';
 import { MenuScene } from './scenes/MenuScene';
@@ -6,6 +6,7 @@ import { GameScene } from './scenes/GameScene';
 import { TestScene } from './scenes/TestScene';
 import { UITestScene } from './scenes/UITestScene';
 import { UIGameScene } from './scenes/UIGameScene';
+
 //#endregion
 export const SCREEN_WIDTH: number = 1280;
 export const SCREEN_HEIGHT: number = 720;
