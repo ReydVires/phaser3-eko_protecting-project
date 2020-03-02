@@ -25,9 +25,9 @@ export class MenuScene extends Phaser.Scene {
 		super('MenuScene');
 	}
 
-	init (): void {
+	init (data: any): void {
 		console.log(`MenuScene`);
-		this._isGameStart = false;
+		this._isGameStart = data!.isGameStarted || false;
 		this._score = 0;
 		this._gameTitleLabels = [];
 	}
@@ -40,58 +40,45 @@ export class MenuScene extends Phaser.Scene {
 			this.add.text(centerX, centerY, "EKO",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
-				// color: 'black',
 				fontStyle: 'bold',
 				fontSize: '72px'
 			}).setOrigin(0.5, 1),
 			this.add.text(centerX, centerY, "PROTECTING THE ENVIRONTMENT",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
-				// color: 'black',
 				fontSize: '48px'
 			}).setOrigin(0.5, 0),
 			this.add.text(centerX, centerY + 256, "TAP TO START",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
-				// color: 'black',
 				fontStyle: 'bold',
 				fontSize: '22px'
 			}).setOrigin(0.5, 1)
 		);
 
+		if (this._isGameStart) {
+			this.createGameTitle();
+		}
+
 		this.input.on("pointerdown", () => {
-			// TODO: Migrate this to method, affected when want to restart the scene
 			if (!this._isGameStart) {
 				this._isGameStart = true;
-				this._gameTitleLabels.forEach(label => label.setVisible(false));
-
-				const portraitImage = this.add.image(centerX - centerX * 0.55, centerY + 32, 'phaser-logo');
-				this._baloonSpeech = new BaloonSpeech(
-					this,
-					395, 228 - 64,
-					300, 150,
-					"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?"
-				);
-
-				this.createMenuButton();
-				// this.createDisplayScore();
+				this.createGameTitle();
 			}
 		});
 	}
 
-	// createDisplayScore (): void {
-	// 	this._scoreBar = this.add.sprite(centerX + centerX * 0.3, 64, 'ui_scorebar');
-	// 	this._scoreLabel = this.add.text(
-	// 		this._scoreBar.x + (this._scoreBar.displayWidth * 0.5 - 8), this._scoreBar.y + 1,
-	// 		this._score.toString(),
-	// 		<Phaser.Types.GameObjects.Text.TextStyle> {
-	// 			color: 'black',
-	// 			fontSize: '32px',
-	// 			align: 'left',
-	// 			fontStyle: 'bold',
-	// 		})
-	// 		.setOrigin(1, 0.5);
-	// }
+	createGameTitle (): void {
+		this._gameTitleLabels.forEach(label => label.setVisible(false));
+		const portraitImage = this.add.image(centerX - centerX * 0.55, centerY + 32, 'phaser-logo');
+		this._baloonSpeech = new BaloonSpeech(
+			this,
+			395, 228 - 64,
+			300, 150,
+			"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?"
+		);
+		this.createMenuButton();
+	}
 
 	createMenuButton (): void {
 		this._playBtn = new Button(this, 1048, 334, 'AdventureButton')
