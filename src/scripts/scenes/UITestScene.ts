@@ -70,6 +70,10 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
 			this._targetEmitter.emit('UI:do_pause');
 		}
+		const RKey = this.input.keyboard.addKey('R');
+		if (Phaser.Input.Keyboard.JustDown(RKey)) {
+			this.restartScene();
+		}
 	}
 
 	startToScene (key: string, data?: object): void {
