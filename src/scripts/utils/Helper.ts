@@ -78,8 +78,25 @@ export class Helper {
 		return graphics;
 	}
 
-	static checkPlatform (platformName: string): boolean {
-		return navigator.userAgent.indexOf(platformName) !== -1;
+	static checkPlatform (platformName: string | string[]): boolean {
+		let isCompatible = false;
+		let platformMap = new Map<string, boolean>();
+		if (Array.isArray(platformName)) {
+			for (const name of platformName) {
+				const isPlatformExist = navigator.userAgent.indexOf(name) !== -1;
+				platformMap.set(name, isPlatformExist);
+			}
+			platformMap.forEach((value, key) => {
+				this.log(`Result platform ${key}:${value}`);
+				if (value) {
+					isCompatible = true;
+				}
+			});
+		}
+		else {
+			isCompatible = navigator.userAgent.indexOf(platformName) !== -1;
+		}
+		return isCompatible;
 	}
 
 	static log (message: string, arg?: any): void {
