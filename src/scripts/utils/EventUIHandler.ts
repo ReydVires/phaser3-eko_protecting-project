@@ -21,10 +21,10 @@ export class EventUIHandler {
 		console.assert(this._eventStores.has(key), `Event: ${key} is already registered!`);
 	}
 
-	public emit (key: string): void {
+	public emit (key: string, ...args: any[]): void {
 		console.assert(this._eventStores.has(key), "Nothing to emit:", key);
 		if (this._eventStores.has(key)) {
-			this._currentEvent.emit(key);
+			this._currentEvent.emit(key, args);
 			if (!this._currentEvent.eventNames().includes(key)) {
 				console.log("Just printed when the event is 'once' only!", key);
 				this.removeEvent(key);
