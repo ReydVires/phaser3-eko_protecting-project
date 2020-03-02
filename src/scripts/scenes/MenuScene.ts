@@ -60,6 +60,7 @@ export class MenuScene extends Phaser.Scene {
 		);
 
 		this.input.on("pointerdown", () => {
+			// TODO: Migrate this to method, affected when want to restart the scene
 			if (!this._isGameStart) {
 				this._isGameStart = true;
 				this._gameTitleLabels.forEach(label => label.setVisible(false));
@@ -117,6 +118,12 @@ export class MenuScene extends Phaser.Scene {
 			.setJustOnce();
 	}
 
-	update (): void {}
+	update (): void {
+		const ESCKey = this.input.keyboard.addKey('ESC');
+		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
+			console.log("Pop up quit window!");
+			Helper.exitApp();
+		}
+	}
 
 }
