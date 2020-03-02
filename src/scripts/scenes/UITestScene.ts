@@ -5,10 +5,12 @@ import { FlatButton } from "../objects/components/FlatButton";
 import { TestScene } from "./TestScene";
 import { EventUIHandler } from "../utils/EventUIHandler";
 import { Helper } from "../utils/Helper";
+import { Layer } from "../utils/Layer";
+import { ISceneControl } from "../objects/interface/ISceneControl";
 
 //#endregion
 
-export class UITestScene extends Phaser.Scene {
+export class UITestScene extends Phaser.Scene implements ISceneControl {
 
 	private _testScene: TestScene;
 	private _targetEmitter: EventUIHandler;
@@ -26,19 +28,22 @@ export class UITestScene extends Phaser.Scene {
 	}
 
 	create (): void {
-		// TODO: Concrete implementation of "event: & UI:"
 		// TODO: Create DimBackground class implementation
 		// Setup dim background
 		this._dimBackground = this.add.graphics();
 		this._dimBackground = Helper.createDimBackground(this._dimBackground)
+			.setDepth(Layer.UI.FIRST)
 			.setVisible(false);
+
+		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn')
+			.setScrollFactor(0)
+			.setCallback(() => this._targetEmitter.emit('UI:do_pause'));
 
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
-				.setCallback(() => {
-					this._targetEmitter.emit('UI:do_pause');
-				}),
+				.setCallback(() => this._targetEmitter.emit('UI:do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
+				.setCallback(() => this.startToScene('MenuScene'))
 		])
 		.setVisible(false);
 
@@ -65,6 +70,17 @@ export class UITestScene extends Phaser.Scene {
 		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
 			this._targetEmitter.emit('UI:do_pause');
 		}
+	}
+
+	startToScene (key: string, data?: object): void {
+		this.scene.stop();
+		this._testScene.startToScene(key, data);
+	}
+
+	restartScene (data?: object): void {
+		console.clear();
+		this.scene.stop();
+		this._testScene.restartScene(data);
 	}
 
 }

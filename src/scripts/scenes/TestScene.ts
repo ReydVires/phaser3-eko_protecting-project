@@ -10,6 +10,7 @@ import { Coin } from '../objects/collectable/Coin';
 import { BaloonSpeech } from '../objects/BaloonSpeech';
 import { EventUIHandler } from '../utils/EventUIHandler';
 import { IEventUIHandler } from '../objects/interface/IEventUIHandler';
+import { ISceneControl } from '../objects/interface/ISceneControl';
 
 //#endregion
 
@@ -36,7 +37,7 @@ type PortalData = {
 	goto: string
 };
 
-export class TestScene extends Phaser.Scene implements IEventUIHandler {
+export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneControl {
 
 	private readonly LEFT_AREA: number = 275;
 	private readonly RIGHT_AREA: number = 570;
@@ -98,12 +99,12 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 		const tileGroup = this.generateTileLevel(LevelData.tileData);
 		const coinGroup = this.generateCoin(LevelData.collectable);
 		this.physics.add.collider(this._player, tileGroup);
-		this.physics.add.overlap(this._player, coinGroup, (p, c) => {
-			c.destroy();
+		this.physics.add.overlap(this._player, coinGroup, (player, coin) => {
+			coin.destroy();
 		});
 
 		this._portalGroup = this.generatePortal(LevelData.portalData);
-		this.physics.add.overlap(this._player, this._portalGroup, (player, portal) => {
+		this.physics.add.overlap(this._player, this._portalGroup, () => {
 			this._interactionArea = true;
 		});
 
@@ -266,13 +267,23 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 			const colliderStatus = child.touching.none;
 			if (this._interactionArea && colliderStatus) {
 				this._interactionArea = false;
-				this._bubbleChat.destroy(); // Aftar out collision
+				this._bubbleChat.destroy(); // After out the collision
 			}
 		});
 	}
 
 	eventUI (): EventUIHandler {
 		return this._eventUIHandler;
+	}
+
+	startToScene (key: string, data?: object): void {
+		this._eventUIHandler.removeAllEvents();
+		this.scene.start(key, data);
+	}
+
+	restartScene (data?: object): void {
+		this._eventUIHandler.removeAllEvents();
+		this.scene.restart(data);
 	}
 
 }
