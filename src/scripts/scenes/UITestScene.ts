@@ -4,9 +4,8 @@ import { centerX, centerY } from "../config";
 import { FlatButton } from "../objects/components/FlatButton";
 import { TestScene } from "./TestScene";
 import { EventUIHandler } from "../utils/EventUIHandler";
-import { Helper } from "../utils/Helper";
-import { Layer } from "../utils/Layer";
 import { ISceneControl } from "../objects/interface/ISceneControl";
+import { DimBackground } from "../objects/components/DimBackground";
 
 //#endregion
 
@@ -15,7 +14,7 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 	private _testScene: TestScene;
 	private _targetEmitter: EventUIHandler;
 	private _windowPause: PopUpWindow;
-	private _dimBackground: Phaser.GameObjects.Graphics;
+	private _dimBackground: DimBackground;
 
 	constructor () {
 		super('UITestScene');
@@ -28,12 +27,7 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 	}
 
 	create (): void {
-		// TODO: Create DimBackground class implementation
-		// Setup dim background
-		this._dimBackground = this.add.graphics();
-		this._dimBackground = Helper.createDimBackground(this._dimBackground)
-			.setDepth(Layer.UI.FIRST)
-			.setVisible(false);
+		this._dimBackground = new DimBackground(this);
 
 		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
@@ -43,7 +37,7 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => this._targetEmitter.emit('UI:do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
-				.setCallback(() => this.startToScene('MenuScene'))
+				.setCallback(() => this.startToScene('MenuScene', { isGameStarted: true }))
 		])
 		.setVisible(false);
 
@@ -53,15 +47,13 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 	doPause (): boolean {
 		const isVisible = this._windowPause.visible;
 		if (isVisible) {
-			this._dimBackground.disableInteractive();
 			this._testScene.scene.resume();
 		}
 		else {
 			this._testScene.scene.pause();
-			this._dimBackground.setInteractive();
 		}
 		this._windowPause.setVisible(!isVisible);
-		this._dimBackground.setVisible(!isVisible);
+		this._dimBackground.show();
 		return this._windowPause.visible;
 	}
 
