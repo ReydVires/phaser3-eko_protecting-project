@@ -18,10 +18,6 @@
                 "url": "img_phaser-logo.png"
             },
             {
-                "key": "player",
-                "url": "spr_player.png"
-            },
-            {
                 "key": "coin",
                 "url": "spr_coin.png"
             },
@@ -46,8 +42,24 @@
                 "url": "UI/spr_continue_btn.png"
             },
             {
+                "key": "pause_btn",
+                "url": "UI/spr_pause_btn.png"
+            },
+            {
+                "key": "yes_btn",
+                "url": "UI/spr_yes_btn.png"
+            },
+            {
+                "key": "no_btn",
+                "url": "UI/spr_no_btn.png"
+            },
+            {
                 "key": "gamepaused_win",
                 "url": "UI/popup_gamepaused_win.png"
+            },
+            {
+                "key": "quit_win",
+                "url": "UI/popup_quit_win.png"
             },
             {
                 "key": "level_tutorial1",
