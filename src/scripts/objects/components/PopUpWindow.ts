@@ -8,9 +8,10 @@ export class PopUpWindow extends Phaser.GameObjects.Container {
 		super(scene, x, y, children);
 		scene.add.existing(this);
 		if (windowTexture) {
-			this._windowTexture = scene.add.sprite(x, y, windowTexture);
+			this._windowTexture = scene.add.sprite(x, y, windowTexture)
+				.setDepth(Layer.UI.SECOND);
 		}
-		this.setDepth(Layer.UI.SECOND);
+		this.setDepth(Layer.UI.THIRD);
 	}
 
 	public get windowTexture (): Phaser.GameObjects.Sprite {

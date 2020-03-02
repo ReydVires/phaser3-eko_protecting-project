@@ -1,3 +1,5 @@
+import { Layer } from "../../utils/Layer";
+
 export class FlatButton extends Phaser.GameObjects.Sprite {
 
 	private _pressed: boolean = false;
@@ -10,6 +12,7 @@ export class FlatButton extends Phaser.GameObjects.Sprite {
 		super(scene, x, y, texture);
 		scene.add.existing(this);
 		this.interactiveEvent();
+		this.setDepth(Layer.UI.DEFAULT);
 	}
 
 	private onDown (): void {

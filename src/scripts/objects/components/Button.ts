@@ -1,3 +1,5 @@
+import { Layer } from "../../utils/Layer";
+
 export class Button extends Phaser.GameObjects.Sprite {
 
 	private _pressed: boolean = false;
@@ -14,6 +16,7 @@ export class Button extends Phaser.GameObjects.Sprite {
 			this.setPressedTexture(pressedTexture);
 		}
 		this.interactiveEvent();
+		this.setDepth(Layer.UI.DEFAULT);
 	}
 
 	private onDown (): void {
