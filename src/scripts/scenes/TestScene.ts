@@ -1,4 +1,4 @@
-//#region Imports data
+//#region Import modules
 import { FPSText } from '../objects/FPSText';
 import { SCREEN_HEIGHT, centerX } from '../config';
 import { Player } from '../objects/Player';
@@ -8,7 +8,6 @@ import * as LevelData from '../levels/tutorialLevel.json';
 import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Coin } from '../objects/collectable/Coin';
 import { BaloonSpeech } from '../objects/BaloonSpeech';
-import { Layer } from '../utils/Layer';
 import { EventUIHandler } from '../utils/EventUIHandler';
 import { IEventUIHandler } from '../objects/interface/IEventUIHandler';
 
@@ -51,10 +50,9 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 	private _actionArea: boolean;
 	private _interactionArea: boolean;
 	private _portalGroup: Phaser.Physics.Arcade.Group;
+	private _platformCompatible: boolean;
 
 	private _bubbleChat: BaloonSpeech;
-
-	private _dimBackground: Phaser.GameObjects.Graphics;
 
 	private _eventUIHandler: EventUIHandler;
 
@@ -64,6 +62,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 
 	init (): void {
 		console.log(`TestScene: For experimental only!`);
+		this._platformCompatible = Helper.checkPlatform(['Android', 'iPhone']);
 		this._onTouch = false;
 		this._actionArea = false;
 		this._interactionArea = false;
@@ -79,11 +78,6 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 			width: 2102
 		});
 		// Helper.printPointerPos(this, true);
-		this._dimBackground = this.add.graphics()
-			.setDepth(Layer.UI.SECOND);
-
-		this._dimBackground = Helper.createDimBackground(this._dimBackground)
-			.setVisible(false);
 
 		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
 			.setOrigin(0.5, 0)
@@ -157,10 +151,6 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 		//#endregion
 	}
 
-	eventUI (): EventUIHandler {
-		return this._eventUIHandler;
-	}
-
 	generatePortal (portalData: Array<PortalData>): Phaser.Physics.Arcade.Group {
 		const groups = this.physics.add.group();
 		const maxPortal = portalData.length;
@@ -203,30 +193,9 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 
 	keyboardController (): void {
 		if (Phaser.Input.Keyboard.JustDown(this._keys.ESC)) {
-			console.log('Button ESC is pressed!');
+			console.log('ESC key is pressed from keyboardController()');
 		}
 	}
-
-	// doDimBackground (): void {
-	// 	if (!this._isPopUp) {
-	// 		this._isPopUp = true;
-	// 		this._dimBackground.setVisible(true)
-	// 			.setInteractive();
-	// 	}
-	// 	else {
-	// 		this._dimBackground.setVisible(false)
-	// 			.disableInteractive();
-	// 		this._isPopUp = false;
-	// 	}
-
-	// 	if (!this.scene.isPaused()) {
-	// 		this.scene.pause();
-	// 	}
-	// 	else {
-	// 		this.scene.resume();
-	// 	}
-	// 	this._eventUIHandler.inspectEvents();
-	// }
 
 	touchController (): void {
 		if (this._onTouch) {
@@ -268,12 +237,13 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 	update (): void {
 		this._fpsText.update();
 		
-		if (Helper.checkPlatform('Android')) {
+		if (this._platformCompatible) {
 			this.touchController();
 		}
 		else {
 			this.keyboardController();
 		}
+
 		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
 			this._player.setPosition(64, 480);
@@ -299,6 +269,10 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler {
 				this._bubbleChat.destroy(); // Aftar out collision
 			}
 		});
+	}
+
+	eventUI (): EventUIHandler {
+		return this._eventUIHandler;
 	}
 
 }

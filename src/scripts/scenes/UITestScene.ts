@@ -1,14 +1,19 @@
+//#region Import modules
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { centerX, centerY } from "../config";
 import { FlatButton } from "../objects/components/FlatButton";
 import { TestScene } from "./TestScene";
 import { EventUIHandler } from "../utils/EventUIHandler";
+import { Helper } from "../utils/Helper";
+
+//#endregion
 
 export class UITestScene extends Phaser.Scene {
 
 	private _testScene: TestScene;
 	private _targetEmitter: EventUIHandler;
 	private _windowPause: PopUpWindow;
+	private _dimBackground: Phaser.GameObjects.Graphics;
 
 	constructor () {
 		super('UITestScene');
@@ -21,29 +26,44 @@ export class UITestScene extends Phaser.Scene {
 	}
 
 	create (): void {
+		// TODO: Concrete implementation of "event: & UI:"
+		// TODO: Create DimBackground class implementation
+		// Setup dim background
+		this._dimBackground = this.add.graphics();
+		this._dimBackground = Helper.createDimBackground(this._dimBackground)
+			.setVisible(false);
+
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => {
-					// TODO: Concrete implementation of event: & UI:
-					this._testScene.events.emit('do_dim_background');
-					this._targetEmitter.emit('do_pause');
+					this._targetEmitter.emit('UI:do_pause');
 				}),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
 		])
 		.setVisible(false);
 
-		this._targetEmitter.registerEvent(
-			'do_pause',
-			() => { this._windowPause.setVisible(!this._windowPause.visible); }
-		);
+		this._targetEmitter.registerEvent('UI:do_pause', this.doPause.bind(this));
+	}
+
+	doPause (): boolean {
+		const isVisible = this._windowPause.visible;
+		if (isVisible) {
+			this._dimBackground.disableInteractive();
+			this._testScene.scene.resume();
+		}
+		else {
+			this._testScene.scene.pause();
+			this._dimBackground.setInteractive();
+		}
+		this._windowPause.setVisible(!isVisible);
+		this._dimBackground.setVisible(!isVisible);
+		return this._windowPause.visible;
 	}
 
 	update (): void {
-		const spaceKey = this.input.keyboard.addKey('SPACE');
-		if (Phaser.Input.Keyboard.JustUp(spaceKey)) {
-			if (this._testScene.scene.isPaused()) {
-				this._testScene.scene.resume();
-			}
+		const ESCKey = this.input.keyboard.addKey('ESC');
+		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
+			this._targetEmitter.emit('UI:do_pause');
 		}
 	}
 
