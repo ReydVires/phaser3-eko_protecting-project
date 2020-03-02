@@ -3,8 +3,9 @@ export const Layer = {
 	PLAYER: 10,
 	ENTITY: 20,
 	UI: {
-		FIRST: 50,
-		SECOND: 51,
-		THIRD: 52
+		DEFAULT: 50,
+		FIRST: 51,
+		SECOND: 52,
+		THIRD: 53
 	}
 };

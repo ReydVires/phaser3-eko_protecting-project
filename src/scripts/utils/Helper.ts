@@ -1,4 +1,4 @@
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../config";
+import { SCREEN_HEIGHT, SCREEN_WIDTH, Config } from "../config";
 
 type LineOption = {
 	dimension?: number,
@@ -24,17 +24,19 @@ export class Helper {
 
 	static printPointerPos (scene: Phaser.Scene, onWorld?: boolean): void {
 		scene.input.on('pointerdown', (event: Phaser.Input.Pointer) => {
-			let x, y: number;
-			const type = onWorld ? "world" : "screen";
-			if (!onWorld) {
-				x = Math.round(event.x);
-				y = Math.round(event.y);
+			if (Helper.isInDevelopment()) {
+				let x, y: number;
+				const type = onWorld ? 'world' : 'screen';
+				if (!onWorld) {
+					x = Math.round(event.x);
+					y = Math.round(event.y);
+				}
+				else {
+					x = Math.round(event.worldX);
+					y = Math.round(event.worldY);
+				}
+				Helper.log(`Pointer ${type} pos: (${x}, ${y})`);
 			}
-			else {
-				x = Math.round(event.worldX);
-				y = Math.round(event.worldY);
-			}
-			Helper.log(`Pointer ${type} pos: (${x}, ${y})`);
 		});
 	}
 
@@ -97,6 +99,10 @@ export class Helper {
 			isCompatible = navigator.userAgent.indexOf(platformName) !== -1;
 		}
 		return isCompatible;
+	}
+
+	static isInDevelopment (): boolean | undefined {
+		return Config.physics!.arcade!.debug;
 	}
 
 	static log (message: string, arg?: any): void {
