@@ -54,6 +54,30 @@
                 "url": "UI/spr_no_btn.png"
             },
             {
+                "key": "gamecredits_btn",
+                "url": "UI/spr_gamecredits_btn.png"
+            },
+            {
+                "key": "resetdata_btn",
+                "url": "UI/spr_resetdata_btn.png"
+            },
+            {
+                "key": "mute_btn",
+                "url": "UI/spr_mute_btn.png"
+            },
+            {
+                "key": "unmute_btn",
+                "url": "UI/spr_unmute_btn.png"
+            },
+            {
+                "key": "exit_btn",
+                "url": "UI/spr_exit_btn.png"
+            },
+            {
+                "key": "setting_win",
+                "url": "UI/popup_setting_win.png"
+            },
+            {
                 "key": "gamepaused_win",
                 "url": "UI/popup_gamepaused_win.png"
             },

@@ -3,6 +3,8 @@ import { Helper } from "../utils/Helper";
 import { BaloonSpeech } from "../objects/BaloonSpeech";
 import { Button } from "../objects/components/Button";
 import { FlatButton } from "../objects/components/FlatButton";
+import { PopUpWindow } from "../objects/components/PopUpWindow";
+import { DimBackground } from "../objects/components/DimBackground";
 
 export class MenuScene extends Phaser.Scene {
 
@@ -14,12 +16,12 @@ export class MenuScene extends Phaser.Scene {
 
 	private _baloonSpeech: BaloonSpeech;
 
-	private _scoreBar: Phaser.GameObjects.Sprite;
-	private _scoreLabel: Phaser.GameObjects.Text;
-	private _score: number;
-
 	private _isGameStart: boolean;
 	private _gameTitleLabels: Array<Phaser.GameObjects.Text>;
+	
+	private _windowExit: PopUpWindow;
+	private _windowSetting: PopUpWindow;
+	private _dimBackground: DimBackground;
 
 	constructor () {
 		super('MenuScene');
@@ -28,7 +30,6 @@ export class MenuScene extends Phaser.Scene {
 	init (data: any): void {
 		console.log(`MenuScene`);
 		this._isGameStart = data!.isGameStarted || false;
-		this._score = 0;
 		this._gameTitleLabels = [];
 	}
 
@@ -66,6 +67,40 @@ export class MenuScene extends Phaser.Scene {
 				this.createGameTitle();
 			}
 		});
+
+		this._dimBackground = new DimBackground(this);
+
+		this._windowSetting = new PopUpWindow(this, centerX, centerY * 0.7, 'setting_win', [
+			new FlatButton(this, 320, -170, 'exit_btn')
+				.setCallback(() => {
+					// TODO: Change to method!
+					this._dimBackground.show();
+					this._windowSetting.setVisible(!this._windowSetting.visible);
+				}),
+			new FlatButton(this, 305 * 0.7, -16, 'resetdata_btn'),
+			new FlatButton(this, 305 * 0.7, 82, 'gamecredits_btn'),
+			this.add.bitmapText(-305 * 0.6, -48, 'simply round', "BGM SETTING", 34)
+				.setOrigin(0.5),
+			new FlatButton(this, -305 * 0.8, 4, 'unmute_btn'),
+			new FlatButton(this, -305 * 0.4, 4, 'mute_btn'),
+			this.add.bitmapText(-305 * 0.6, 64, 'simply round', "SFX SETTING", 34)
+				.setOrigin(0.5),
+			new FlatButton(this, -305 * 0.8, 116, 'unmute_btn'),
+			new FlatButton(this, -305 * 0.4, 116, 'mute_btn')
+		])
+		.setVisible(false);
+
+		this.createExitWindow();
+	}
+
+	createExitWindow (): void {
+		this._windowExit = new PopUpWindow(this, centerX, centerY, 'quit_win', [
+			new FlatButton(this, 0, 0, 'yes_btn')
+				.setCallback(() => { Helper.exitApp(); }),
+			new FlatButton(this, 0, 80, 'no_btn')
+				.setCallback(() => this.showExitWindow())
+		])
+		.setVisible(false);
 	}
 
 	createGameTitle (): void {
@@ -100,16 +135,23 @@ export class MenuScene extends Phaser.Scene {
 
 		this._settingBtn = new FlatButton(this, 1189, 64, 'SettingButton')
 			.setCallback(() => {
-				this._baloonSpeech.setText("It's never been easy, right?");
-			})
-			.setJustOnce();
+				this._dimBackground.show();
+				this._windowSetting.setVisible(!this._windowSetting.visible);
+			});
+	}
+
+	showExitWindow (): void {
+		if (this._isGameStart && !this._windowSetting.visible) {
+			const isVisible = this._windowExit.visible;
+			this._dimBackground.show();
+			this._windowExit.setVisible(!isVisible);
+		}
 	}
 
 	update (): void {
 		const ESCKey = this.input.keyboard.addKey('ESC');
 		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
-			console.log("Pop up quit window!");
-			Helper.exitApp();
+			this.showExitWindow();
 		}
 	}
 
