@@ -14,6 +14,7 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 	private _testScene: TestScene;
 	private _targetEmitter: EventUIHandler;
 	private _windowPause: PopUpWindow;
+	private _gameOverWindow: PopUpWindow;
 	private _dimBackground: DimBackground;
 
 	constructor () {
@@ -32,6 +33,8 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
 			.setCallback(() => this._targetEmitter.emit('UI:do_pause'));
+		const inventoryBtn = new FlatButton(this, 95, 600, 'InventorySmall_btn')
+			.setScrollFactor(0);
 
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
@@ -41,10 +44,18 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 		])
 		.setVisible(false);
 
+		this._gameOverWindow = new PopUpWindow(this, centerX, centerY, 'gameoverAdventure_win', [
+			new FlatButton(this, 0, 0, 'tryagain_btn')
+				.setCallback(() => this.restartScene({ isTryAgain: true })),
+			new FlatButton(this, 0, 72, 'worldmap_btn')
+		])
+		.setVisible(false);
+
 		this._targetEmitter.registerEvent('UI:do_pause', this.doPause.bind(this));
+		this._targetEmitter.registerEvent('UI:do_gameover', this.doGameOver.bind(this));
 	}
 
-	doPause (): boolean {
+	doPause (): void {
 		const isVisible = this._windowPause.visible;
 		if (isVisible) {
 			this._testScene.scene.resume();
@@ -54,7 +65,12 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 		}
 		this._windowPause.setVisible(!isVisible);
 		this._dimBackground.show();
-		return this._windowPause.visible;
+	}
+
+	doGameOver (): void {
+		this._testScene.scene.pause();
+		this._gameOverWindow.setVisible(true);
+		this._dimBackground.show();
 	}
 
 	update (): void {

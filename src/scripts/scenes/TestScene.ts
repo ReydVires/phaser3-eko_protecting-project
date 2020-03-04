@@ -15,6 +15,7 @@ import { ISceneControl } from '../objects/interface/ISceneControl';
 //#endregion
 
 // TODO: Make them interface
+//#region Types
 type TileData = {
 	x: number,
 	y: number,
@@ -36,6 +37,11 @@ type PortalData = {
 	info: TileData,
 	goto: string
 };
+
+type SceneData = {
+	isTryAgain: boolean
+};
+//#endregion
 
 export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneControl {
 
@@ -70,7 +76,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 		this._eventUIHandler = new EventUIHandler(this.events);
 	}
 
-	create (): void {
+	create (sceneData: SceneData): void {
 		this.input.addPointer(2);
 		this.scene.launch('UITestScene');
 		this._fpsText = new FPSText(this);
@@ -89,7 +95,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 			.image(0, SCREEN_HEIGHT, 'level_tutorial1')
 			.setOrigin(0, 1);
 		const cam = this.cameras.main;
-		cam.setBounds(0, 0, 2112, 276); // Set bound camera, based on background level
+		cam.setBounds(0, 136, 2112, 276); // Set bound camera, based on background level
 		this._player = new Player(this, 64, 520, 'players');
 		cam.startFollow(this._player);
 
@@ -122,6 +128,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 
 		this.input.on('pointerup', (pointer: Phaser.Input.InputPlugin) => {
 			// Check if no other touch input pressed
+			// TODO: Set onTouch false when paused
 			if (this.input.pointer1.noButtonDown()) {
 				this._onTouch = false;
 			}
@@ -132,6 +139,21 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 				this._pointer = pointer;
 			}
 		});
+
+		if (sceneData!.isTryAgain) {
+			this.tweens.add({
+				targets: this._player,
+				props: {
+					alpha: {
+						getStart: () => 0,
+						getEnd: () => 1
+					}
+				},
+				duration: 120,
+				ease: 'Linear',
+				repeat: 4
+			});
+		}
 
 		//#region Experiment Vector
 		// const p1 = new Phaser.Math.Vector2();
@@ -245,21 +267,15 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 			this.keyboardController();
 		}
 
+		if (this.scene.isPaused()) {
+			// this._onTouch = false;
+			console.log('TestScene is on Pause state');
+		}
+
 		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
-			this._player.setPosition(64, 480);
-			this.tweens.add({
-				targets: this._player,
-				props: {
-					alpha: {
-						getStart: () => 0,
-						getEnd: () => 1
-					}
-				},
-				duration: 120,
-				ease: 'Linear',
-				repeat: 4,
-			});
+			console.log('Dead flag!');
+			this._eventUIHandler.emit('UI:do_gameover');
 		}
 		// Test on exit collider
 		this._portalGroup.getChildren().forEach((object) => {
