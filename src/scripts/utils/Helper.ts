@@ -60,11 +60,11 @@ export class Helper {
 		graphics.strokePath();
 	}
 
-	static nextSceneFadeOut (currentScene: Phaser.Scene, sceneName: string): void {
+	static nextSceneFadeOut (currentScene: Phaser.Scene, sceneName: string, data?: any): void {
 		Helper.log("Go to scene: " + sceneName);
 		const cam = currentScene.cameras.main;
 		cam.once('camerafadeoutcomplete', () => {
-			currentScene.scene.start(sceneName);
+			currentScene.scene.start(sceneName, data);
 		});
 		cam.fadeOut(300);
 	}
