@@ -40,7 +40,10 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => this._targetEmitter.emit('UI:do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
-				.setCallback(() => this.startToScene('MenuScene', { isGameStarted: true }))
+				.setCallback(() => this.startToScene('MenuScene', {
+					isGameStarted: true,
+					isTryAgain: false
+				}))
 		])
 		.setVisible(false);
 
@@ -61,14 +64,14 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 			this._testScene.scene.resume();
 		}
 		else {
-			this._testScene.scene.pause();
+			this.pauseScene();
 		}
 		this._windowPause.setVisible(!isVisible);
 		this._dimBackground.show();
 	}
 
 	doGameOver (): void {
-		this._testScene.scene.pause();
+		this.pauseScene();
 		this._gameOverWindow.setVisible(true);
 		this._dimBackground.show();
 	}
@@ -93,6 +96,10 @@ export class UITestScene extends Phaser.Scene implements ISceneControl {
 		console.clear();
 		this.scene.stop();
 		this._testScene.restartScene(data);
+	}
+
+	pauseScene(): void {
+		this._testScene.pauseScene();
 	}
 
 }
