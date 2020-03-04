@@ -69,7 +69,11 @@ export class MenuScene extends Phaser.Scene {
 		});
 
 		this._dimBackground = new DimBackground(this);
+		this.createSettingWindow();
+		this.createExitWindow();
+	}
 
+	createSettingWindow (): void {
 		this._windowSetting = new PopUpWindow(this, centerX, centerY * 0.7, 'setting_win', [
 			new FlatButton(this, 320, -170, 'exit_btn')
 				.setCallback(() => {
@@ -89,8 +93,6 @@ export class MenuScene extends Phaser.Scene {
 			new FlatButton(this, -305 * 0.4, 116, 'mute_btn')
 		])
 		.setVisible(false);
-
-		this.createExitWindow();
 	}
 
 	createExitWindow (): void {
@@ -121,6 +123,7 @@ export class MenuScene extends Phaser.Scene {
 			.setJustOnce();
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
+			.setCallback(() => { Helper.nextSceneFadeOut(this, 'MiniGameScene'); })
 			.setJustOnce();
 
 		this._warungGameBtn = new Button(this, 1048, 574, 'WarungButton')
