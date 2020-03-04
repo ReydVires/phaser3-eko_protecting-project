@@ -55,6 +55,16 @@ export class Player extends PhysicSprite implements IMoveable {
 				this._moveState.doJump();
 			}
 		}
+		else {
+			const lastVelocityY = this.body.velocity.y;
+			const isFalling = this.body.velocity.y - lastVelocityY < lastVelocityY;
+			if (isFalling) {
+				this._moveState.doIdle();
+			}
+			else {
+				this._moveState.doJump();
+			}
+		}
 
 		// Animation state
 		if (this._moveState instanceof IdleState) {
