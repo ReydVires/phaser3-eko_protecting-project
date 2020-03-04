@@ -119,7 +119,7 @@ export class MenuScene extends Phaser.Scene {
 
 	createMenuButton (): void {
 		this._playBtn = new Button(this, 1048, 334, 'AdventureButton')
-			.setCallback(() => { Helper.nextSceneFadeOut(this, 'TestScene'); })
+			.setCallback(() => { Helper.nextSceneFadeOut(this, 'TestScene', {}); })
 			.setJustOnce();
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
