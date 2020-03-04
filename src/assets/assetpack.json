@@ -22,6 +22,26 @@
                 "url": "spr_coin.png"
             },
             {
+                "key": "nextstage_btn",
+                "url": "UI/spr_nextstage_btn.png"
+            },
+            {
+                "key": "worldmap_btn",
+                "url": "UI/spr_worldmap_btn.png"
+            },
+            {
+                "key": "tryagain_btn",
+                "url": "UI/spr_tryagain_btn.png"
+            },
+            {
+                "key": "gameoverAdventure_win",
+                "url": "UI/popup_gameoverAdventure_win.png"
+            },
+            {
+                "key": "InventorySmall_btn",
+                "url": "UI/spr_InventorySmall_btn.png"
+            },
+            {
                 "key": "AchievementButton",
                 "url": "UI/spr_AchievementButton.png"
             },
@@ -32,6 +52,18 @@
             {
                 "key": "ui_scorebar",
                 "url": "UI/spr_ui_scorebar.png"
+            },
+            {
+                "key": "start_btn",
+                "url": "UI/spr_start_btn.png"
+            },
+            {
+                "key": "leaderboard_btn",
+                "url": "UI/spr_leaderboard_btn.png"
+            },
+            {
+                "key": "inventoryBig_btn",
+                "url": "UI/spr_inventoryBig_btn.png"
             },
             {
                 "key": "backtomainmenu_btn",
@@ -86,6 +118,10 @@
                 "url": "UI/popup_quit_win.png"
             },
             {
+                "key": "stageclear_win",
+                "url": "UI/popup_stageclear_win.png"
+            },
+            {
                 "key": "level_tutorial1",
                 "url": "backgrounds/img_level_tutorial1.png"
             }
@@ -125,6 +161,11 @@
 				"key": "simply round",
                 "textureURL": "font_simplyr.png",
                 "fontDataURL": "bitmap_simplyr.fnt"
+            },
+            {
+				"key": "simply roundw",
+                "textureURL": "font_simplyr_w.png",
+                "fontDataURL": "bitmap_simplyr_w.fnt"
 			}
 		]
 	}
