@@ -39,7 +39,8 @@ type PortalData = {
 };
 
 type SceneData = {
-	isTryAgain: boolean
+	isTryAgain: boolean,
+	isGameStarted: boolean
 };
 //#endregion
 
@@ -267,16 +268,12 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 			this.keyboardController();
 		}
 
-		if (this.scene.isPaused()) {
-			// this._onTouch = false;
-			console.log('TestScene is on Pause state');
-		}
-
 		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
 			console.log('Dead flag!');
 			this._eventUIHandler.emit('UI:do_gameover');
 		}
+
 		// Test on exit collider
 		this._portalGroup.getChildren().forEach((object) => {
 			const child = (object.body as Phaser.Physics.Arcade.Body);
@@ -300,6 +297,11 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 	restartScene (data?: object): void {
 		this._eventUIHandler.removeAllEvents();
 		this.scene.restart(data);
+	}
+
+	pauseScene (): void {
+		this._onTouch = false;
+		this.scene.pause();
 	}
 
 }
