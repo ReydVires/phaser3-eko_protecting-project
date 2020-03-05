@@ -81,10 +81,10 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 		this.input.addPointer(2);
 		this.scene.launch('UITestScene');
 		this._fpsText = new FPSText(this);
-		Helper.drawDebugLine(this.add.graphics(), {
-			dimension: 64,
-			width: 2102
-		});
+		// Helper.drawDebugLine(this.add.graphics(), {
+		// 	dimension: 64,
+		// 	width: 2102
+		// }, this);
 		// Helper.printPointerPos(this, true);
 
 		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
@@ -92,28 +92,32 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 			.setScrollFactor(0)
 			.setFontSize(32);
 
-		const bg = this.add
-			.image(0, SCREEN_HEIGHT, 'level_tutorial1')
-			.setOrigin(0, 1);
+		// const bg = this.add
+		// 	.image(0, SCREEN_HEIGHT, 'level_tutorial1')
+		// 	.setOrigin(0, 1);
 		const cam = this.cameras.main;
-		cam.setBounds(0, 136, 2112, 276); // Set bound camera, based on background level
-		this._player = new Player(this, 64, 520, 'players');
+		cam.setBounds(0, 0, 64 * 38, 276); // Set bound camera, based on background level
+		// cam.setBounds(0, 136, 2112, 276); // Set bound camera, based on background level
+		this._player = new Player(this, 64, 450, 'players');
 		cam.startFollow(this._player);
 
 		this._deadZonePosY = cam.y + cam.height;
 
 		// Tile generator
-		const tileGroup = this.generateTileLevel(LevelData.tileData);
-		const coinGroup = this.generateCoin(LevelData.collectable);
-		this.physics.add.collider(this._player, tileGroup);
-		this.physics.add.overlap(this._player, coinGroup, (player, coin) => {
-			coin.destroy();
-		});
+		// const tileGroup = this.generateTileLevel(LevelData.tileData);
+		// this.physics.add.collider(this._player, tileGroup);
 
-		this._portalGroup = this.generatePortal(LevelData.portalData);
-		this.physics.add.overlap(this._player, this._portalGroup, () => {
-			this._interactionArea = true;
-		});
+		// const coinGroup = this.generateCoin(LevelData.collectable);
+		// this.physics.add.overlap(this._player, coinGroup, (player, coin) => {
+		// 	coin.destroy();
+		// });
+
+		// this._portalGroup = this.generatePortal(LevelData.portalData);
+		// this.physics.add.overlap(this._player, this._portalGroup, () => {
+		// 	this._interactionArea = true;
+		// });
+
+		this.generateMapping(LevelData.mappingData);
 
 		// Define keyboard control
 		// Alternate: this.input.keyboard.createCursorKeys();
@@ -173,6 +177,49 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 		// 	console.log("Dir", p3.normalize());
 		// });
 		//#endregion
+	}
+
+	generateMapping (mappingData: Array<string>): void {
+		const maxLength = mappingData.length;
+		const tileGroup = this.physics.add.staticGroup();
+		const coinGroup = this.physics.add.group();
+		this._portalGroup = this.physics.add.group();
+		for (let i = 0; i < maxLength; i++) {
+			const row = mappingData[i].length;
+			for (let j = 0; j < row; j++) {
+				switch (mappingData[i][j]) {
+					case 'o':
+						const platform = new Tile(this, 64 * j, 64 * i, '')
+							.setDisplaySize(64, 64)
+							.refreshBody();
+						tileGroup.add(platform);
+						break;
+					case 'c':
+						const coin = new Coin(this, 64 * j, 64 * i, 'coin')
+							.setOrigin(0, 0.3);
+						coinGroup.add(coin);
+						coin.getBody().setAllowGravity(false);
+						break;
+					case 'p':
+						const zone = this.add.zone(j *64, i * 64, 70, 64)
+							.setOrigin(0);
+						this.physics.world.enable(zone);
+						this._portalGroup.add(zone);
+						(zone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		this.physics.add.overlap(this._player, coinGroup, (player, coin) => {
+			coin.destroy();
+		});
+		this.physics.add.collider(this._player, tileGroup);
+		this.physics.add.overlap(this._player, this._portalGroup, () => {
+			this._interactionArea = true;
+		});
 	}
 
 	generatePortal (portalData: Array<PortalData>): Phaser.Physics.Arcade.Group {
@@ -280,7 +327,9 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 			const colliderStatus = child.touching.none;
 			if (this._interactionArea && colliderStatus) {
 				this._interactionArea = false;
-				this._bubbleChat.destroy(); // After out the collision
+				if (this._bubbleChat) {
+					this._bubbleChat.destroy(); // After out the collision
+				}
 			}
 		});
 	}
