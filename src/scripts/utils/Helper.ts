@@ -40,7 +40,7 @@ export class Helper {
 		});
 	}
 
-	static drawDebugLine (graphics: Phaser.GameObjects.Graphics, option?: LineOption): void {
+	static drawDebugLine (graphics: Phaser.GameObjects.Graphics, option?: LineOption, scene?: Phaser.Scene): void {
 		// Set default value
 		const dimension = option!.dimension ? option!.dimension : 32;
 		const WIN_HEIGHT = option!.height ? option!.height : SCREEN_HEIGHT;
@@ -55,6 +55,10 @@ export class Helper {
 			for (let col = 0; col < width; col++) {
 				graphics.moveTo(col * dimension, 0);
 				graphics.lineTo(col * dimension, WIN_HEIGHT);
+				if (scene) { // Experiment
+					const t = scene.add
+						.text(col * dimension, row * dimension, `(${col}, ${row})`);
+				}
 			}
 		}
 		graphics.strokePath();
