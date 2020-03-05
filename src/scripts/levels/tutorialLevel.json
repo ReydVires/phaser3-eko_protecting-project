@@ -119,5 +119,19 @@
             },
             "goto": "none"
         }
+    ],
+    "mappingData": [
+        "                                      ",
+        "                                      ",
+        "                                      ",
+        "                                      ",
+        "          c                 c         ",
+        "        cc   c        c   ooo         ",
+        "      ooooo    c     ooo            p ",
+        "oooo          ooooo                 p ",
+        "                               ooooooo",
+        "                                      ",
+        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "                                      "
     ]
 }
