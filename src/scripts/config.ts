@@ -36,9 +36,8 @@ export const Config: Phaser.Types.Core.GameConfig = {
 		width: SCREEN_WIDTH,
 		height: SCREEN_HEIGHT,
 	},
-	dom: {
-		createContainer: true
-	},
+	input: { activePointers: 2 },
+	dom: { createContainer: true },
 	scene: scenes,
 	physics: {
 		default: 'arcade',
