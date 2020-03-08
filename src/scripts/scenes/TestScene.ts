@@ -1,6 +1,6 @@
 //#region Import modules
 import { FPSText } from '../objects/FPSText';
-import { SCREEN_HEIGHT, centerX } from '../config';
+import { centerX } from '../config';
 import { Player } from '../objects/Player';
 import { Tile } from '../objects/Tile';
 import { Helper } from '../utils/Helper';
@@ -78,7 +78,6 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 	}
 
 	create (sceneData: SceneData): void {
-		this.input.addPointer(2);
 		this.scene.launch('UITestScene');
 		this._fpsText = new FPSText(this);
 		// Helper.drawDebugLine(this.add.graphics(), {
@@ -133,7 +132,6 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 
 		this.input.on('pointerup', (pointer: Phaser.Input.InputPlugin) => {
 			// Check if no other touch input pressed
-			// TODO: Set onTouch false when paused
 			if (this.input.pointer1.noButtonDown()) {
 				this._onTouch = false;
 			}
@@ -310,6 +308,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 		
 		if (this._platformCompatible) {
 			this.touchController();
+			this.keyboardController(); // FIXME: Debug only
 		}
 		else {
 			this.keyboardController();
