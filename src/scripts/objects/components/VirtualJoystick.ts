@@ -23,6 +23,7 @@ export class VirtualJoystick extends Phaser.GameObjects.Sprite {
 			this._touchStart = false;
 			this.initTouchListener();
 		}
+		// Depth can be optional API
 		this._originalDepth = this.depth;
 		console.assert(this.texture.frameTotal > 1, "Invalid VirtualJoystick texture: must non-single frame!");
 	}
