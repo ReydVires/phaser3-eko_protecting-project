@@ -76,11 +76,7 @@ export class MenuScene extends Phaser.Scene {
 	createSettingWindow (): void {
 		this._windowSetting = new PopUpWindow(this, centerX, centerY * 0.7, 'setting_win', [
 			new FlatButton(this, 320, -170, 'exit_btn')
-				.setCallback(() => {
-					// TODO: Change to method!
-					this._dimBackground.show();
-					this._windowSetting.setVisible(!this._windowSetting.visible);
-				}),
+				.setCallback(this.showSettingWindow.bind(this)),
 			new FlatButton(this, 305 * 0.7, -16, 'resetdata_btn'),
 			new FlatButton(this, 305 * 0.7, 82, 'gamecredits_btn'),
 			this.add.bitmapText(-305 * 0.6, -48, 'simply round', "BGM SETTING", 34)
@@ -137,10 +133,12 @@ export class MenuScene extends Phaser.Scene {
 			.setOrigin(0.5, 0.35);
 
 		this._settingBtn = new FlatButton(this, 1189, 64, 'SettingButton')
-			.setCallback(() => {
-				this._dimBackground.show();
-				this._windowSetting.setVisible(!this._windowSetting.visible);
-			});
+			.setCallback(this.showSettingWindow.bind(this));
+	}
+
+	showSettingWindow (): void {
+		this._dimBackground.show();
+		this._windowSetting.setVisible(!this._windowSetting.visible);
 	}
 
 	showExitWindow (): void {
