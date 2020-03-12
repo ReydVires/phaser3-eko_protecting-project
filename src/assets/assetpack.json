@@ -150,6 +150,11 @@
                 "key": "players",
                 "url": "sheet_players.png",
                 "frameConfig": { "frameWidth": 96, "frameHeight": 96 }
+            },
+            {
+                "key": "virtualjoystick",
+                "url": "UI/sheet_virtualjoystick.png",
+                "frameConfig": { "frameWidth": 128, "frameHeight": 128 }
             }
         ]
 	},
