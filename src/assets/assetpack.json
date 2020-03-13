@@ -122,6 +122,22 @@
                 "url": "UI/popup_stageclear_win.png"
             },
             {
+                "key": "down_arrow",
+                "url": "UI/spr_down_arrow.png"
+            },
+            {
+                "key": "up_arrow",
+                "url": "UI/spr_up_arrow.png"
+            },
+            {
+                "key": "left_arrow",
+                "url": "UI/spr_left_arrow.png"
+            },
+            {
+                "key": "right_arrow",
+                "url": "UI/spr_right_arrow.png"
+            },
+            {
                 "key": "level_tutorial1",
                 "url": "backgrounds/img_level_tutorial1.png"
             }

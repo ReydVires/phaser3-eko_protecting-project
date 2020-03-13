@@ -34,7 +34,6 @@ export class MenuScene extends Phaser.Scene {
 	}
 
 	create (): void {
-		// this.scene.start("TestScene"); // Debug
 		// Helper.drawDebugLine(this.add.graphics(), { dimension: 64 });
 
 		this._gameTitleLabels.push(

@@ -308,7 +308,7 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 		
 		if (this._platformCompatible) {
 			this.touchController();
-			this.keyboardController(); // FIXME: Debug only
+			this.keyboardController(); // FIXME: Development only
 		}
 		else {
 			this.keyboardController();

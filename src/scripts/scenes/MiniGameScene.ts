@@ -1,9 +1,11 @@
+//#region Import modules
+import { centerX, centerY } from "../config";
 import { Helper } from "../utils/Helper";
 import { FlatButton } from "../objects/components/FlatButton";
-import { centerX, centerY } from "../config";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { DimBackground } from "../objects/components/DimBackground";
 
+//#endregion
 export class MiniGameScene extends Phaser.Scene {
 
 	private _goToMenuScene: boolean;
@@ -18,19 +20,19 @@ export class MiniGameScene extends Phaser.Scene {
 	}
 
 	create (): void {
-		//#region MiniGame Menu
-		// this.add.bitmapText(centerX, centerY - 128, 'simply roundw', 'MINIGAME TIME!')
-		// 	.setOrigin(0.5, 1);
-		// new FlatButton(this, centerX, centerY, 'start_btn');
-		// new FlatButton(this, centerX, centerY + 120, 'leaderboard_btn');
-		// new FlatButton(this, centerX, centerY + 120 * 2, 'inventoryBig_btn');
-		//#endregion
-
-		new DimBackground(this).setVisible(true);
-		new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
-			new FlatButton(this, 0, 0, 'nextstage_btn'),
-			new FlatButton(this, 0, 72, 'worldmap_btn'),
-		]);
+		this.add.bitmapText(centerX, centerY - 128, 'simply roundw', 'MINIGAME TIME!')
+			.setOrigin(0.5, 1);
+		new FlatButton(this, centerX, centerY, 'start_btn')
+			.setCallback(() => {
+				// new DimBackground(this).setVisible(true);
+				// new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
+				// 	new FlatButton(this, 0, 0, 'nextstage_btn'),
+				// 	new FlatButton(this, 0, 72, 'worldmap_btn'),
+				// ]);
+				Helper.nextSceneFadeOut(this, 'TutorialGameScene');
+			});
+		new FlatButton(this, centerX, centerY + 120, 'leaderboard_btn');
+		new FlatButton(this, centerX, centerY + 120 * 2, 'inventoryBig_btn');
 	}
 
 	update (): void {
