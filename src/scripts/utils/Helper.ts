@@ -23,19 +23,23 @@ export class Helper {
 	}
 
 	static printPointerPos (scene: Phaser.Scene, onWorld?: boolean): void {
-		scene.input.on('pointerdown', (event: Phaser.Input.Pointer) => {
+		const posLabel = scene.add.text(0, 0, '(x, y)')
+			.setDepth(100)
+			.setOrigin(1);
+		scene.input
+		.on('pointermove', (event: Phaser.Input.Pointer) => {
 			if (Helper.isInDevelopment()) {
-				let x, y: number;
-				const type = onWorld ? 'world' : 'screen';
+				let localX, localY;
 				if (!onWorld) {
-					x = Math.round(event.x);
-					y = Math.round(event.y);
+					localX = Math.round(event.x);
+					localY = Math.round(event.y);
 				}
 				else {
-					x = Math.round(event.worldX);
-					y = Math.round(event.worldY);
+					localX = Math.round(event.worldX);
+					localY = Math.round(event.worldY);
 				}
-				Helper.log(`Pointer ${type} pos: (${x}, ${y})`);
+				posLabel.setPosition(localX, localY)
+					.setText(`(${localX}, ${localY})`);
 			}
 		});
 	}
@@ -71,7 +75,8 @@ export class Helper {
 		Helper.log("Go to scene: " + sceneName);
 		const cam = currentScene.cameras.main;
 		cam.once('camerafadeoutcomplete', () => {
-			currentScene.scene.start(sceneName, data);
+			// Passing zero `{}` object to clear based-scene variable
+			currentScene.scene.start(sceneName, data ? data : {});
 		});
 		cam.fadeOut(300);
 	}
