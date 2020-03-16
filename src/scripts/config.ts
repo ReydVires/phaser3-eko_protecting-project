@@ -36,7 +36,7 @@ export const Config: Phaser.Types.Core.GameConfig = {
 		width: SCREEN_WIDTH,
 		height: SCREEN_HEIGHT,
 	},
-	input: { activePointers: 2 },
+	input: { activePointers: 3 },
 	dom: { createContainer: true },
 	scene: scenes,
 	physics: {
