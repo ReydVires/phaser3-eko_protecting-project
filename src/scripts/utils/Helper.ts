@@ -57,7 +57,10 @@ export class Helper {
 				graphics.lineTo(col * dimension, WIN_HEIGHT);
 				if (scene) { // Experiment
 					const t = scene.add
-						.text(col * dimension, row * dimension, `(${col}, ${row})`);
+						.text(col * dimension, row * dimension, `(${col},${row})`,
+						<Phaser.Types.GameObjects.Text.TextStyle> {
+							fontSize: '8px'
+						});
 				}
 			}
 		}
@@ -92,6 +95,16 @@ export class Helper {
 			isCompatible = navigator.userAgent.indexOf(platformName) !== -1;
 		}
 		return isCompatible;
+	}
+
+	static fullscreenMode (): void {
+		if (!document.fullscreenElement) {
+			document.documentElement.requestFullscreen();
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen(); 
+			}
+		}
 	}
 
 	static isInDevelopment (): boolean | undefined {
