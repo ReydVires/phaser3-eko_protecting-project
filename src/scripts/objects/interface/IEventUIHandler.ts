@@ -1,7 +1,5 @@
-import { EventUIHandler } from "../../utils/EventUIHandler";
-
 export interface IEventUIHandler {
 
-	eventUI (): EventUIHandler;
+	registerEvent (key: string, value: Function, once?: boolean): void;
 
 }

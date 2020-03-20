@@ -1,4 +1,6 @@
-export class EventUIHandler {
+import { IEventUIHandler } from "../objects/interface/IEventUIHandler";
+
+export class EventUIHandler implements IEventUIHandler {
 
 	private _eventStores: Map<string, Function>;
 	private _currentEvent: Phaser.Events.EventEmitter;
@@ -46,11 +48,16 @@ export class EventUIHandler {
 		}
 	}
 
-	public inspectEvents (): void {
-		console.log("Print all registered event keys:");
-		this._eventStores.forEach((value, key) => {
-			console.log(">>", key);
-		});
+	public inspectEvents (value?: boolean | string): boolean {
+		if (typeof value === 'boolean' && value) {
+			console.log("Print all registered event keys:");
+			this._eventStores.forEach((val, key) => {
+				console.log(">>", key);
+			});
+		} else if (typeof value === 'string') {
+			return this._eventStores.has(value);
+		}
+		return false;
 	}
 
 }
