@@ -7,6 +7,8 @@ import { TestScene } from './scenes/TestScene';
 import { UITestScene } from './scenes/UITestScene';
 import { UIGameScene } from './scenes/UIGameScene';
 import { MiniGameScene } from './scenes/MiniGameScene';
+import { TutorialGameScene } from './scenes/MiniGames/TutoarialGameScene';
+import { UITutorialGameScene } from './scenes/MiniGames/UITutorialGameScene';
 
 //#endregion
 export const SCREEN_WIDTH: number = 1280;
@@ -21,6 +23,8 @@ const scenes: Array<Function> = [
 	GameScene,
 	UIGameScene,
 	MiniGameScene,
+	TutorialGameScene,
+	UITutorialGameScene,
 	TestScene,
 	UITestScene
 ];
