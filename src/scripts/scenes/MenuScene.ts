@@ -5,8 +5,9 @@ import { Button } from "../objects/components/Button";
 import { FlatButton } from "../objects/components/FlatButton";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { DimBackground } from "../objects/components/DimBackground";
+import { BaseScene } from "../objects/abstract/BaseScene";
 
-export class MenuScene extends Phaser.Scene {
+export class MenuScene extends BaseScene {
 
 	private _playBtn: Button;
 	private _miniGameBtn: Button;
@@ -28,6 +29,7 @@ export class MenuScene extends Phaser.Scene {
 	}
 
 	init (data: any): void {
+		super.init(data);
 		console.log(`MenuScene`);
 		this._isGameStart = data!.isGameStarted || false;
 		this._gameTitleLabels = [];
@@ -114,7 +116,9 @@ export class MenuScene extends Phaser.Scene {
 
 	createMenuButton (): void {
 		this._playBtn = new Button(this, 1048, 334, 'AdventureButton')
-			.setCallback(() => { Helper.nextSceneFadeOut(this, 'TestScene', {}); })
+			.setCallback(() => {
+				Helper.nextSceneFadeOut(this, 'TestScene');
+			})
 			.setJustOnce();
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
