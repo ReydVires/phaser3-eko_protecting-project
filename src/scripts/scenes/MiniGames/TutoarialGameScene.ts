@@ -2,6 +2,10 @@ import { centerX, centerY } from "../../config";
 import { KeyboardMapping } from "../../../../typings/KeyboardMapping";
 import { BaseScene } from "../../objects/abstract/BaseScene";
 import { ITouchControl } from "../../objects/interface/ITouchControl";
+import { Helper } from "../../utils/Helper";
+
+export const LEFT_AREA: number = 275;
+export const RIGHT_AREA: number = 570;
 
 type ArrowStruct = {
 	gameObject: Phaser.GameObjects.Sprite,
@@ -16,6 +20,8 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	private _directions: Array<string> = new Array<string>(
 		'right_arrow', 'left_arrow', 'up_arrow'
 	);
+	private _onTouch: boolean;
+	private _platformCompatible: boolean;
 
 	private _testRestart: boolean;
 
@@ -27,6 +33,8 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		super.init();
 		console.log("Welcome in TutorialGameScene");
 		this._arrowQueue = new Array<ArrowStruct>();
+		this._platformCompatible = Helper.checkPlatform(['Android', 'iPhone']);
+		this._onTouch = false;
 		this._testRestart = false;
 	}
 
@@ -34,6 +42,27 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		this._player = this.add.sprite(centerX * 0.3, centerY * 1.3, 'phaser-logo');
 		this._arrowQueue = this.createArrows(5);
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, UP, ESC') as KeyboardMapping;
+
+		this.input
+		.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
+			this._onTouch = true;
+		})
+		.on('pointerup', (pointer: Phaser.Input.InputPlugin) => {
+			this._onTouch = false;
+			if (!this.eventUI.inspectEvents('event#touch_right')) {
+				this.registerEvent('touch_right', this.touchRightArea.bind(this), true);
+			}
+			if (!this.eventUI.inspectEvents('event#touch_left')) {
+				this.registerEvent('touch_left', this.touchLeftArea.bind(this), true);
+			}
+			if (!this.eventUI.inspectEvents('event#touch_action')) {
+				this.registerEvent('touch_action', this.touchAction.bind(this), true);
+			}
+		});
+		
+		this.registerEvent('touch_right', this.touchRightArea.bind(this), true);
+		this.registerEvent('touch_left', this.touchLeftArea.bind(this), true);
+		this.registerEvent('touch_action', this.touchAction.bind(this), true);
 	}
 
 	private createArrows (max: number): Array<ArrowStruct> {
@@ -96,25 +125,40 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	}
 
 	touchController (): void {
-		// TOD: Make this method interface!
-
+		const pointer = this.input.activePointer;
+		if (this._onTouch) {
+			if (pointer.x <= LEFT_AREA) {
+				this.eventUI.emit('event#touch_left');
+			}
+			else if (pointer.x > LEFT_AREA && pointer.x <= RIGHT_AREA) {
+				this.eventUI.emit('event#touch_right');
+			}
+			else {
+				this.eventUI.emit('event#touch_action');
+			}
+			this.testEventRestart();
+		}
 	}
 
 	touchRightArea(): void {
-		throw new Error("Method not implemented.");
+		this.checkTap("right");
 	}
 	
 	touchLeftArea(): void {
-		throw new Error("Method not implemented.");
+		this.checkTap("left");
 	}
 	
 	touchAction(): void {
-		throw new Error("Method not implemented.");
+		this.checkTap("up");
 	}
 
 	update (): void {
 		// TODO: Move inventory button to mini game!
 		// TODO: Timer for this
+		if (this._platformCompatible) {
+			this.touchController();
+		}
+
 		if (this.justDownKeyboard(this._keys.RIGHT)) {
 			const keyId = "right";
 			this.checkTap(keyId);

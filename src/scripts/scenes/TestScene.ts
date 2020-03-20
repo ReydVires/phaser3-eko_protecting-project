@@ -118,22 +118,21 @@ export class TestScene extends BaseScene implements ITouchControl {
 		// Alternate: this.input.keyboard.createCursorKeys();
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE, ESC') as KeyboardMapping;
 
-		this.input.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
+		this.input
+		.on('pointerdown', (pointer: Phaser.Input.InputPlugin) => {
 			this._onTouch = true;
 			this._pointer = pointer;
 			if (this.input.pointer1.isDown) {
 				this._actionArea = true;
 			}
-		});
-
-		this.input.on('pointerup', (pointer: Phaser.Input.InputPlugin) => {
+		})
+		.on('pointerup', (pointer: Phaser.Input.InputPlugin) => {
 			// Check if no other touch input pressed
 			if (this.input.pointer1.noButtonDown()) {
 				this._onTouch = false;
 			}
-		});
-
-		this.input.on('pointermove', (pointer: Phaser.Input.InputPlugin) => {
+		})
+		.on('pointermove', (pointer: Phaser.Input.InputPlugin) => {
 			if (this._onTouch) {
 				this._pointer = pointer;
 			}
