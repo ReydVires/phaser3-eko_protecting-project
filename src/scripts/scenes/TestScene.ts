@@ -8,9 +8,8 @@ import * as LevelData from '../levels/tutorialLevel.json';
 import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Coin } from '../objects/collectable/Coin';
 import { BaloonSpeech } from '../objects/BaloonSpeech';
-import { EventUIHandler } from '../utils/EventUIHandler';
-import { IEventUIHandler } from '../objects/interface/IEventUIHandler';
-import { ISceneControl } from '../objects/interface/ISceneControl';
+import { BaseScene } from '../objects/abstract/BaseScene';
+import { ITouchControl } from '../objects/interface/ITouchControl';
 
 //#endregion
 
@@ -44,7 +43,7 @@ type SceneData = {
 };
 //#endregion
 
-export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneControl {
+export class TestScene extends BaseScene implements ITouchControl {
 
 	private readonly LEFT_AREA: number = 275;
 	private readonly RIGHT_AREA: number = 570;
@@ -62,29 +61,26 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 
 	private _bubbleChat: BaloonSpeech;
 
-	private _eventUIHandler: EventUIHandler;
-
 	constructor () {
 		super('TestScene');
 	}
 
 	init (): void {
+		super.init();
 		console.log(`TestScene: For experimental only!`);
 		this._platformCompatible = Helper.checkPlatform(['Android', 'iPhone']);
 		this._onTouch = false;
 		this._actionArea = false;
 		this._interactionArea = false;
-		this._eventUIHandler = new EventUIHandler(this.events);
 	}
 
 	create (sceneData: SceneData): void {
-		this.scene.launch('UITestScene');
 		this._fpsText = new FPSText(this);
 		// Helper.drawDebugLine(this.add.graphics(), {
 		// 	dimension: 64,
 		// 	width: 2102
 		// }, this);
-		// Helper.printPointerPos(this, true);
+		Helper.printPointerPos(this, true);
 
 		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
 			.setOrigin(0.5, 0)
@@ -270,37 +266,49 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 		if (this._onTouch) {
 			const tapLeftArea = this._pointer.x <= this.LEFT_AREA;
 			const tapRightArea = !tapLeftArea && this._pointer.x <= this.RIGHT_AREA;
-			const tapJumpArea = !tapRightArea && this._pointer.x > this.RIGHT_AREA && this._actionArea;
 			if (tapLeftArea) {
-				this._player.doLeft();
+				this.touchLeftArea();
 			}
 			else if (tapRightArea) {
-				this._player.doRight();
+				this.touchRightArea();
 			}
-
+			
+			const tapJumpArea = !tapRightArea && this._pointer.x > this.RIGHT_AREA && this._actionArea;
 			if (tapJumpArea) {
-				if (!this._interactionArea) {
-					this._player.doJump();
-				}
-				else {
-					console.log("Show bubble talk! or other interaction.");
-					if (this._bubbleChat) { // Destroy the previous baloon rendered!
-						this._bubbleChat.destroy();
-					}
-					this._bubbleChat = new BaloonSpeech(
-						this,
-						this._player.x - 280, this._player.y - (160 + 160 * 0.75),
-						280, 160,
-						"I'm gonna head out!", 2
-					);
-				}
-				this._actionArea = false;
+				this.touchAction();
 			}
 		}
 		else {
 			this._player.doIdle();
 		}
 		this._player.movementSystem();
+	}
+
+	touchRightArea(): void {
+		this._player.doRight();
+	}
+	
+	touchLeftArea(): void {
+		this._player.doLeft();
+	}
+	
+	touchAction(): void {
+		if (!this._interactionArea) {
+			this._player.doJump();
+		}
+		else {
+			console.log("Show bubble talk! or other interaction.");
+			if (this._bubbleChat) { // Destroy the previous baloon rendered!
+				this._bubbleChat.destroy();
+			}
+			this._bubbleChat = new BaloonSpeech(
+				this,
+				this._player.x - 280, this._player.y - (160 + 160 * 0.75),
+				280, 160,
+				"I'm gonna head out!", 2
+			);
+		}
+		this._actionArea = false;
 	}
 
 	update (): void {
@@ -311,13 +319,14 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 			this.keyboardController(); // FIXME: Development only
 		}
 		else {
+			this.touchController(); // FIXME: Development only
 			this.keyboardController();
 		}
 
 		// Fall condition
 		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
 			console.log('Dead flag!');
-			this._eventUIHandler.emit('UI:do_gameover');
+			this.eventUI.emit('UI#do_gameover');
 		}
 
 		// Test on exit collider
@@ -333,23 +342,12 @@ export class TestScene extends Phaser.Scene implements IEventUIHandler, ISceneCo
 		});
 	}
 
-	eventUI (): EventUIHandler {
-		return this._eventUIHandler;
-	}
-
-	startToScene (key: string, data?: object): void {
-		this._eventUIHandler.removeAllEvents();
-		this.scene.start(key, data);
-	}
-
-	restartScene (data?: object): void {
-		this._eventUIHandler.removeAllEvents();
-		this.scene.restart(data);
-	}
-
+	/**
+	 * @override
+	 */
 	pauseScene (): void {
 		this._onTouch = false;
-		this.scene.pause();
+		super.pauseScene(!this.scene.isPaused());
 	}
 
 }
