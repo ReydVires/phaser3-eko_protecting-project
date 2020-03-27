@@ -37,7 +37,7 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 		bgBar.fillStyle(0xdfe6e9, 0.95);
 		bgBar.fillRect(
 			this._xStart - 1,
-			this._yStart - 1,
+			this._yStart - 2,
 			width + borderOffset,
 			height + borderOffset
 		);
@@ -53,7 +53,7 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 	public updateProgressbar (second: number): number {
 		this.percent -= 0.0165 / second;
 		this.clear();
-		this.fillStyle(0x00cec9, 1);
+		this.fillStyle(0x34495e, 1);
 		this.fillRect(this._xStart, this._yStart, this.percent * this._width, this._height);
 		if (this._callback instanceof Function && !this._isCall && this.percent === 0) {
 			this._callback();

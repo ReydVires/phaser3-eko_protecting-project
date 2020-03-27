@@ -1,4 +1,4 @@
-import { centerX, SCREEN_HEIGHT } from "../../config";
+import { centerX, SCREEN_HEIGHT, SCREEN_WIDTH } from "../../config";
 import { UIScene } from "../../objects/abstract/UIScene";
 import { FillProgress } from "../../objects/FillProgress";
 
@@ -33,14 +33,13 @@ export class UITutorialGameScene extends UIScene {
 		const execute = this.add.sprite(centerX * 1.75, rightArrow.y, 'up_arrow')
 			.setOrigin(0, 1);
 
-		this._gameTime = new FillProgress(this, centerX, 128, 640, 32);
-
-		this.registerEvent('restart', this.restartScene.bind(this));
-		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
-
+		this._gameTime = new FillProgress(this, centerX, 32, SCREEN_WIDTH, 32);
 		this._gameTime.setCallback(() => {
 			console.log("End call");
 		});
+
+		this.registerEvent('restart', this.restartScene.bind(this));
+		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
 	}
 
 	update (time: number, dt: number): void {
