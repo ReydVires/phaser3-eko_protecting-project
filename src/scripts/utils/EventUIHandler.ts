@@ -24,11 +24,11 @@ export class EventUIHandler implements IEventUIHandler {
 	}
 
 	public emit (key: string, ...args: any[]): void {
-		console.assert(this._eventStores.has(key), "Nothing to emit:", key);
+		// console.assert(this._eventStores.has(key), "Nothing to emit:", key);
 		if (this._eventStores.has(key)) {
 			this._currentEvent.emit(key, args);
 			if (!this._currentEvent.eventNames().includes(key)) {
-				console.log("Just printed when the event is 'once' only!", key);
+				// console.log("Just printed when the event is 'once' only!", key);
 				this.removeEvent(key);
 			}
 		}

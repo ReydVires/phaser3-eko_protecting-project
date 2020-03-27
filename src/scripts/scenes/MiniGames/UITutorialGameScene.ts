@@ -1,8 +1,10 @@
 import { centerX, SCREEN_HEIGHT } from "../../config";
 import { UIScene } from "../../objects/abstract/UIScene";
-import { Helper } from "../../utils/Helper";
+import { FillProgress } from "../../objects/FillProgress";
 
 export class UITutorialGameScene extends UIScene {
+
+	private _gameTime: FillProgress;
 
 	constructor () {
 		super('UITutorialGameScene');
@@ -30,8 +32,19 @@ export class UITutorialGameScene extends UIScene {
 			.setOrigin(0, 1);
 		const execute = this.add.sprite(centerX * 1.75, rightArrow.y, 'up_arrow')
 			.setOrigin(0, 1);
+
+		this._gameTime = new FillProgress(this, centerX, 128, 640, 32);
+
 		this.registerEvent('restart', this.restartScene.bind(this));
 		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
+
+		this._gameTime.setCallback(() => {
+			console.log("End call");
+		});
+	}
+
+	update (time: number, dt: number): void {
+		const isEnd = this._gameTime?.updateProgressbar(5) <= 0;
 	}
 
 }
