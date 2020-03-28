@@ -37,7 +37,7 @@ export class UITutorialGameScene extends UIScene {
 		const execute = this.add.sprite(centerX * 1.75, rightArrow.y, 'up_arrow')
 			.setOrigin(0, 1);
 
-		this._gameTime = new FillProgress(this, centerX, 32, SCREEN_WIDTH, 32);
+		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
 		this._gameTime.setCallback(() => {
 			console.log("End call");
 		});
