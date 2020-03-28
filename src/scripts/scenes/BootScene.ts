@@ -1,4 +1,7 @@
+import { Helper } from "../utils/Helper";
+
 declare const WebFont: any;
+declare const AndroidFullScreen: any;
 
 export class BootScene extends Phaser.Scene {
 
@@ -9,6 +12,11 @@ export class BootScene extends Phaser.Scene {
 	init (): void {
 		console.log(`BootScene`);
 		console.log("platform:", navigator.userAgent);
+		if (Helper.checkPlatform('Android')) {
+			AndroidFullScreen?.immersiveMode();
+			const insomniaPlugin = (window as any)?.plugins.insomnia;
+			insomniaPlugin.keepAwake();
+		}
 	}
 
 	preload (): void {

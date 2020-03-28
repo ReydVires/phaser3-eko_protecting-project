@@ -22,6 +22,14 @@
                 "url": "spr_coin.png"
             },
             {
+                "key": "timer_base",
+                "url": "UI/spr_timer_base.png"
+            },
+            {
+                "key": "timer",
+                "url": "UI/spr_timer.png"
+            },
+            {
                 "key": "nextstage_btn",
                 "url": "UI/spr_nextstage_btn.png"
             },

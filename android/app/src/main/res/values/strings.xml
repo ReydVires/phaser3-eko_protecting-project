@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Eko Protecting</string>
+    <string name="title_activity_main">Eko Protecting</string>
+    <string name="package_name">com.airsigns.eko</string>
+    <string name="custom_url_scheme">com.airsigns.eko</string>
+</resources>

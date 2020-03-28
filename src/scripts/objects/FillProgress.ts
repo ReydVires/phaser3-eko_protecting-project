@@ -37,7 +37,7 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 		bgBar.fillStyle(0xdfe6e9, 0.95);
 		bgBar.fillRect(
 			this._xStart - 1,
-			this._yStart - 2,
+			this._yStart - 1,
 			width + borderOffset,
 			height + borderOffset
 		);

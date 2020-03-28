@@ -1,6 +1,9 @@
+import { Plugins } from '@capacitor/core';
 import { centerX, SCREEN_HEIGHT, SCREEN_WIDTH } from "../../config";
 import { UIScene } from "../../objects/abstract/UIScene";
 import { FillProgress } from "../../objects/FillProgress";
+
+const { App } = Plugins;
 
 export class UITutorialGameScene extends UIScene {
 
@@ -26,6 +29,7 @@ export class UITutorialGameScene extends UIScene {
 		// 		}
 		// 	} while (!called);
 		// });
+
 		const leftArrow = this.add.sprite(centerX * 0.25, SCREEN_HEIGHT - 64, 'left_arrow')
 			.setOrigin(0, 1);
 		const rightArrow = this.add.sprite(centerX * 0.8, leftArrow.y, 'right_arrow')
@@ -40,10 +44,12 @@ export class UITutorialGameScene extends UIScene {
 
 		this.registerEvent('restart', this.restartScene.bind(this));
 		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
+
+		App?.addListener("backButton", this.startToScene.bind(this, 'MenuScene'));
 	}
 
 	update (time: number, dt: number): void {
-		const isEnd = this._gameTime?.updateProgressbar(5) <= 0;
+		this._gameTime?.updateProgressbar(5);
 	}
 
 }
