@@ -1,4 +1,19 @@
 {
+    "bootingPack": {
+        "path": "assets/img/",
+        "files": [
+            {
+                "key": "phaser-logo",
+                "type": "image",
+                "url": "img_phaser-logo.png"
+            },
+            {
+                "key": "telu_logo",
+                "type": "image",
+                "url": "img_telu_logo.png"
+            }
+        ]
+    },
 	"audioPack": {
         "path": "assets/audio/",
         "defaultType": "audio",
@@ -13,10 +28,6 @@
         "path": "assets/img/",
         "defaultType": "image",
         "files": [
-            {
-                "key": "phaser-logo",
-                "url": "img_phaser-logo.png"
-            },
             {
                 "key": "coin",
                 "url": "spr_coin.png"
