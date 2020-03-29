@@ -6,6 +6,8 @@ import { FlatButton } from "../objects/components/FlatButton";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { DimBackground } from "../objects/components/DimBackground";
 import { BaseScene } from "../objects/abstract/BaseScene";
+import { Plugins } from '@capacitor/core';
+const { App } = Plugins;
 
 export class MenuScene extends BaseScene {
 
@@ -33,6 +35,7 @@ export class MenuScene extends BaseScene {
 		console.log(`MenuScene`);
 		this._isGameStart = data!.isGameStarted || false;
 		this._gameTitleLabels = [];
+		App?.addListener('backButton', () => { App?.exitApp(); });
 	}
 
 	create (): void {
