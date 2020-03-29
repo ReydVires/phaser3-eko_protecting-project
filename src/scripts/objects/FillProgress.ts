@@ -7,6 +7,7 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 	private _percent: number;
 	private _callback: Function;
 	private _isCall: boolean;
+	private _isStop: boolean;
 
 	constructor (scene: Phaser.Scene, x: number, y: number, width: number, height: number) {
 		super(scene);
@@ -17,6 +18,7 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 		this._yStart = y - height * 0.5;
 		this._percent = 1;
 		this._isCall = false;
+		this._isStop = false;
 		// Border size
 		const borderOffset = 2;
 		const borderRect = new Phaser.Geom.Rectangle(
@@ -50,8 +52,15 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 		return this;
 	}
 
+	public stop (value?: boolean): boolean {
+		this._isStop = value ? value : !this._isStop;
+		return this._isStop;
+	}
+
 	public updateProgressbar (second: number): number {
-		this.percent -= 0.0165 / second;
+		if (!this._isStop) {
+			this.percent -= 0.0165 / second;
+		}
 		this.clear();
 		this.fillStyle(0x34495e, 1);
 		this.fillRect(this._xStart, this._yStart, this.percent * this._width, this._height);
