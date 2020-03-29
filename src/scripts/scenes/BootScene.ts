@@ -29,7 +29,12 @@ export class BootScene extends Phaser.Scene {
 
 	create (): void {
 		this.loadWebFont(['Comfortaa']);
-		this.createSplashscreen();
+		if (Helper.isInDevelopment()) {
+			this.scene.start('PreloadScene');
+		}
+		else {
+			this.createSplashscreen();
+		}
 	}
 
 	createSplashscreen (): void {
