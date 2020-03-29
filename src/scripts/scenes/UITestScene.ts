@@ -28,8 +28,6 @@ export class UITestScene extends UIScene {
 		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
 			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));
-		const inventoryBtn = new FlatButton(this, 95, 600, 'InventorySmall_btn')
-			.setScrollFactor(0);
 
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
