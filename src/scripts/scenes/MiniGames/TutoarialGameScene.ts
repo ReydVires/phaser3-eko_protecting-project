@@ -4,7 +4,7 @@ import { BaseScene } from "../../objects/abstract/BaseScene";
 import { ITouchControl } from "../../objects/interface/ITouchControl";
 import { Helper } from "../../utils/Helper";
 
-export const LEFT_AREA: number = 275;
+export const LEFT_AREA: number = 325;
 export const RIGHT_AREA: number = 570;
 
 type ArrowStruct = {
@@ -17,6 +17,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	private _keys: KeyboardMapping;
 	private _arrowQueue: Array<ArrowStruct>;
 	private _player: Phaser.GameObjects.Sprite;
+	private _enemy: Phaser.GameObjects.Sprite;
 	private _directions: Array<string> = new Array<string>(
 		'right_arrow', 'left_arrow', 'up_arrow'
 	);
@@ -40,6 +41,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 
 	create (): void {
 		this._player = this.add.sprite(centerX * 0.3, centerY * 1.3, 'phaser-logo');
+		this._enemy = this.add.sprite(centerX * 1.3, centerY * 0.9, 'phaser-logo');
 		this._arrowQueue = this.createArrows(5);
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, UP, ESC') as KeyboardMapping;
 
@@ -63,6 +65,56 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		this.registerEvent('touch_right', this.touchRightArea.bind(this), true);
 		this.registerEvent('touch_left', this.touchLeftArea.bind(this), true);
 		this.registerEvent('touch_action', this.touchAction.bind(this), true);
+		this.registerEvent('enemy_attack', this.enemyAttack.bind(this));
+	}
+
+	private enemyAttack (data: any): void {
+		const isSuccess = Array.isArray(data) ? data[0] : false;
+		this.tweens.add({
+			targets: this._enemy,
+			x: '-=64',
+			duration: 400,
+			ease: 'Back.easeIn'
+		});
+
+		const xStartPlayer = this._player.x;
+		if (isSuccess) {
+			const delayTime = 250;
+			const backTweenPosition = this.tweens.create({
+				targets: this._player,
+				delay: delayTime,
+				x: xStartPlayer,
+				duration: 255
+			});
+			this.tweens.add({
+				targets: this._player,
+				delay: delayTime - 50,
+				x: '-=48',
+				ease: 'Expo.easeOut',
+				onComplete: () => {
+					backTweenPosition.play();
+				}
+			});
+		}
+		else {
+			const delayTime = 400;
+			this.tweens.add({
+				targets: this._player,
+				delay: delayTime,
+				props: {
+					alpha: {
+						getStart: () => 0,
+						getEnd: () => 1
+					}
+				},
+				duration: 120,
+				ease: 'Linear',
+				repeat: 3
+			});
+			this.time.delayedCall(delayTime, () => {
+				this.cameras.main.shake(160, 0.018);
+			});
+		}
 	}
 
 	private createArrows (max: number): Array<ArrowStruct> {
@@ -116,10 +168,8 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 
 	private testEventRestart (): void {
 		if (this._arrowQueue.length === 0 && !this._testRestart) {
-			console.log("Restart Activate!");
-			this.time.delayedCall(500, () => {
-				this.eventUI.emit('UI#restart');
-			});
+			this.eventUI.emit('UI#stop_timer');
+			this.eventUI.emit('event#enemy_attack', true);
 			this._testRestart = true;
 		}
 	}
@@ -143,18 +193,16 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	touchRightArea(): void {
 		this.checkTap("right");
 	}
-	
+
 	touchLeftArea(): void {
 		this.checkTap("left");
 	}
-	
+
 	touchAction(): void {
 		this.checkTap("up");
 	}
 
 	update (): void {
-		// TODO: Move inventory button to mini game!
-		// TODO: Timer for this
 		if (this._platformCompatible) {
 			this.touchController();
 		}
@@ -170,10 +218,6 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		else if (this.justDownKeyboard(this._keys.UP)) {
 			const keyId = "up";
 			this.checkTap(keyId);
-		}
-
-		if (this.justDownKeyboard(this._keys.ESC)) {
-			this.eventUI.emit('UI#to_menu');
 		}
 	}
 
