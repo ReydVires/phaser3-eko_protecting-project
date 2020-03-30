@@ -1,8 +1,8 @@
 {
-  "appId": "com.airsigns.eko",
-  "appName": "Eko Protecting",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "dist",
-  "cordova": {}
+	"appId": "com.airsigns.eko",
+	"appName": "Eko Protecting",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "dist",
+	"cordova": {}
 }
