@@ -1,6 +1,5 @@
 //#region Import modules
-import { FPSText } from '../objects/FPSText';
-import { centerX } from '../config';
+import { centerX, SCREEN_HEIGHT } from '../config';
 import { Player } from '../objects/Player';
 import { Tile } from '../objects/Tile';
 import { Helper } from '../utils/Helper';
@@ -48,7 +47,6 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private readonly LEFT_AREA: number = 275;
 	private readonly RIGHT_AREA: number = 570;
 
-	private _fpsText: Phaser.GameObjects.Text;
 	private _player: Player;
 	private _keys: KeyboardMapping;
 	private _deadZonePosY: number;
@@ -75,10 +73,9 @@ export class TestScene extends BaseScene implements ITouchControl {
 	}
 
 	create (sceneData: SceneData): void {
-		this._fpsText = new FPSText(this);
 		// Helper.drawDebugLine(this.add.graphics(), {
 		// 	dimension: 64,
-		// 	width: 2102
+		// 	width: 2000
 		// }, this);
 		Helper.printPointerPos(this, true);
 
@@ -87,13 +84,14 @@ export class TestScene extends BaseScene implements ITouchControl {
 			.setScrollFactor(0)
 			.setFontSize(32);
 
-		// const bg = this.add
-		// 	.image(0, SCREEN_HEIGHT, 'level_tutorial1')
-		// 	.setOrigin(0, 1);
+		this.add.image(0, 0, 'tutorial_stage_bg').setOrigin(0);
+		this.add.image(0, 0, 'tutorial_stage_platform_p1').setOrigin(0).setScrollFactor(0.9);
+		this.add.image(0, 0, 'tutorial_stage_platform').setOrigin(0);
+
 		const cam = this.cameras.main;
-		cam.setBounds(0, 0, 64 * 38, 276); // Set bound camera, based on background level
+		cam.setBounds(0, 0, 2000, 276); // Set bound camera, based on background level
 		// cam.setBounds(0, 136, 2112, 276); // Set bound camera, based on background level
-		this._player = new Player(this, 64, 450, 'players');
+		this._player = new Player(this, 64, 450, 'eko_idle');
 		cam.startFollow(this._player);
 
 		this._deadZonePosY = cam.y + cam.height;
@@ -153,23 +151,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 			});
 		}
 
-		//#region Experiment Vector
-		// const p1 = new Phaser.Math.Vector2();
-		// this.input.on('pointerdown', (event: MouseEvent) => {
-		// 	p1.x = event.x;
-		// 	p1.y = event.y;
-		// });
-		// const p2 = new Phaser.Math.Vector2();
-		// this.input.on('pointerup', (event: MouseEvent) => {
-		// 	p2.x = event.x;
-		// 	p2.y = event.y;
-		// 	console.log("Data p2", p2);
-		// 	console.log("Data p1", p1);
-		// 	const p3 = p2.subtract(p1);
-		// 	this._player.setPosition(this._player.x + p3.x, this._player.y + p3.y);
-		// 	console.log("Dir", p3.normalize());
-		// });
-		//#endregion
+		const touchLine = this.add.graphics();
+		touchLine.lineStyle(2, 0x000, 0.9);
+		touchLine.moveTo(this.LEFT_AREA, 0).lineTo(this.LEFT_AREA, SCREEN_HEIGHT);
+		touchLine.moveTo(this.RIGHT_AREA, 0).lineTo(this.RIGHT_AREA, SCREEN_HEIGHT);
+		touchLine.strokePath().setScrollFactor(0);
 	}
 
 	generateMapping (mappingData: Array<string>): void {
@@ -311,8 +297,6 @@ export class TestScene extends BaseScene implements ITouchControl {
 	}
 
 	update (): void {
-		this._fpsText.update();
-		
 		if (this._platformCompatible) {
 			this.touchController();
 			this.keyboardController(); // FIXME: Development only

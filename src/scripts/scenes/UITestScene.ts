@@ -4,6 +4,7 @@ import { centerX, centerY } from "../config";
 import { FlatButton } from "../objects/components/FlatButton";
 import { DimBackground } from "../objects/components/DimBackground";
 import { UIScene } from "../objects/abstract/UIScene";
+import { FPSText } from "../objects/FPSText";
 
 //#endregion
 
@@ -12,6 +13,7 @@ export class UITestScene extends UIScene {
 	private _windowPause: PopUpWindow;
 	private _gameOverWindow: PopUpWindow;
 	private _dimBackground: DimBackground;
+	private _fpsText: Phaser.GameObjects.Text;
 
 	constructor () {
 		super('UITestScene');
@@ -28,6 +30,8 @@ export class UITestScene extends UIScene {
 		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
 			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));
+
+		this._fpsText = new FPSText(this);
 
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
@@ -65,6 +69,7 @@ export class UITestScene extends UIScene {
 	}
 
 	update (): void {
+		this._fpsText.update();
 		const ESCKey = this.input.keyboard.addKey('ESC');
 		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
 			this.targetEmitter.emit('UI#do_pause');
