@@ -34,5 +34,106 @@
 				"frame": 0
 			}
 		]
+	},
+	{
+		"key": "anim_eko_idle",
+		"frameRate": 8,
+		"repeat": -1,
+		"defaultTextureKey": "eko_idle",
+		"frames": [
+			{
+				"frame": 0
+			},
+			{
+				"frame": 1
+			},
+			{
+				"frame": 2
+			},
+			{
+				"frame": 3
+			},
+			{
+				"frame": 4
+			},
+			{
+				"frame": 5
+			},
+			{
+				"frame": 6
+			}
+		]
+	},
+	{
+		"key": "anim_eko_run",
+		"frameRate": 8,
+		"repeat": -1,
+		"defaultTextureKey": "eko_run",
+		"frames": [
+			{
+				"frame": 0
+			},
+			{
+				"frame": 1
+			},
+			{
+				"frame": 2
+			},
+			{
+				"frame": 3
+			},
+			{
+				"frame": 4
+			},
+			{
+				"frame": 5
+			}
+		]
+	},
+	{
+		"key": "anim_eko_walk",
+		"frameRate": 8,
+		"repeat": -1,
+		"defaultTextureKey": "eko_walk",
+		"frames": [
+			{
+				"frame": 0
+			},
+			{
+				"frame": 1
+			},
+			{
+				"frame": 2
+			},
+			{
+				"frame": 3
+			},
+			{
+				"frame": 4
+			},
+			{
+				"frame": 5
+			}
+		]
+	},
+	{
+		"key": "anim_eko_jump",
+		"frameRate": 8,
+		"repeat": 0,
+		"defaultTextureKey": "eko_jump",
+		"frames": [
+			{
+				"frame": 0
+			},
+			{
+				"frame": 1
+			},
+			{
+				"frame": 2
+			},
+			{
+				"frame": 3
+			}
+		]
 	}
 ]

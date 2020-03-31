@@ -57,20 +57,12 @@
                 "url": "UI/popup_gameoverAdventure_win.png"
             },
             {
-                "key": "InventorySmall_btn",
-                "url": "UI/spr_InventorySmall_btn.png"
-            },
-            {
                 "key": "AchievementButton",
                 "url": "UI/spr_AchievementButton.png"
             },
             {
                 "key": "SettingButton",
                 "url": "UI/spr_SettingButton.png"
-            },
-            {
-                "key": "ui_scorebar",
-                "url": "UI/spr_ui_scorebar.png"
             },
             {
                 "key": "start_btn",
@@ -121,6 +113,14 @@
                 "url": "UI/spr_unmute_btn.png"
             },
             {
+                "key": "sfx_mute_btn",
+                "url": "UI/spr_sfx_mute_btn.png"
+            },
+            {
+                "key": "sfx_unmute_btn",
+                "url": "UI/spr_sfx_unmute_btn.png"
+            },
+            {
                 "key": "exit_btn",
                 "url": "UI/spr_exit_btn.png"
             },
@@ -157,9 +157,17 @@
                 "url": "UI/spr_right_arrow.png"
             },
             {
-                "key": "level_tutorial1",
-                "url": "backgrounds/img_level_tutorial1.png"
-            }
+                "key": "tutorial_stage_platform",
+                "url": "backgrounds/img_tutorial_stage_platform.png"
+			},
+			{
+				"key": "tutorial_stage_bg",
+				"url": "backgrounds/img_tutorial_stage_bg.png"
+			},
+			{
+				"key": "tutorial_stage_platform_p1",
+				"url": "backgrounds/img_tutorial_stage_platform_p1.png"
+			}
         ]
     },
     "spritesheetPack": {
@@ -190,7 +198,27 @@
                 "key": "virtualjoystick",
                 "url": "UI/sheet_virtualjoystick.png",
                 "frameConfig": { "frameWidth": 128, "frameHeight": 128 }
-            }
+			},
+			{
+				"key": "eko_idle",
+				"url": "sheet_eko_idle.png",
+				"frameConfig": { "frameWidth": 128, "frameHeight": 188 }
+			},
+			{
+				"key": "eko_run",
+				"url": "sheet_eko_run.png",
+				"frameConfig": { "frameWidth": 128, "frameHeight": 188 }
+			},
+			{
+				"key": "eko_walk",
+				"url": "sheet_eko_walk.png",
+				"frameConfig": { "frameWidth": 128, "frameHeight": 188 }
+			},
+			{
+				"key": "eko_jump",
+				"url": "sheet_eko_jump.png",
+				"frameConfig": { "frameWidth": 128, "frameHeight": 188 }
+			}
         ]
 	},
 	"bitmapFontPack": {
