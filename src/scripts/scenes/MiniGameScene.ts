@@ -20,19 +20,18 @@ export class MiniGameScene extends Phaser.Scene {
 	}
 
 	create (): void {
-		this.add.bitmapText(centerX, centerY - 128, 'simply roundw', 'MINIGAME TIME!')
+		this.add.bitmapText(centerX * 1.5, centerY - 128, 'simply roundw', 'MINIGAME TIME!')
 			.setOrigin(0.5, 1);
-		new FlatButton(this, centerX, centerY, 'start_btn')
+		new FlatButton(this, centerX * 1.5, centerY, 'start_btn')
+			.setCallback(() => Helper.nextSceneFadeOut(this, 'TutorialGameScene'));
+		new FlatButton(this, centerX * 1.5, centerY + 120, 'leaderboard_btn')
 			.setCallback(() => {
-				// new DimBackground(this).setVisible(true);
-				// new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
-				// 	new FlatButton(this, 0, 0, 'nextstage_btn'),
-				// 	new FlatButton(this, 0, 72, 'worldmap_btn'),
-				// ]);
-				Helper.nextSceneFadeOut(this, 'TutorialGameScene');
+				new DimBackground(this).setVisible(true);
+				new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
+					new FlatButton(this, 0, 0, 'nextstage_btn'),
+					new FlatButton(this, 0, 72, 'worldmap_btn'),
+				]);
 			});
-		new FlatButton(this, centerX, centerY + 120, 'leaderboard_btn');
-		new FlatButton(this, centerX, centerY + 120 * 2, 'inventoryBig_btn');
 	}
 
 	update (): void {
