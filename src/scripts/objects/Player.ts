@@ -12,6 +12,7 @@ export class Player extends PhysicSprite implements IMoveable {
 	private _jumpHeight: number = 400;
 	private _allowJump: boolean = false;
 	private _allowDoubleJump: boolean = true;
+	private _isJump: boolean = false;
 
 	constructor (scene: Phaser.Scene, x: number, y: number, texture: string) {
 		super(scene, x, y, texture);
@@ -38,6 +39,7 @@ export class Player extends PhysicSprite implements IMoveable {
 		if (this.isOnGround()) {
 			if (this.body.velocity.x === 0 && this.body.velocity.y === 0) {
 				this._moveState.doIdle();
+				this._isJump = false;
 			}
 			else {
 				if (this.body.velocity.x > 0 && this.body.velocity.y === 0) {
@@ -55,28 +57,18 @@ export class Player extends PhysicSprite implements IMoveable {
 				this._moveState.doJump();
 			}
 		}
-		else {
-			const lastVelocityY = this.body.velocity.y;
-			const isFalling = this.body.velocity.y - lastVelocityY < lastVelocityY;
-			if (isFalling) {
-				this._moveState.doIdle();
-			}
-			else {
-				this._moveState.doJump();
-			}
-		}
 
 		// Animation state
 		if (this._moveState instanceof IdleState) {
-			this.play("anim_player_idle");
+			this.play("anim_eko_idle", true);
 		}
-		else if (this._moveState instanceof JumpState) {
-			this.play("anim_player_jump", true);
+		else if (this._moveState instanceof JumpState && !this._isJump) {
+			this._isJump = true;
 		}
 		else if (this._moveState instanceof LeftState || this._moveState instanceof RightState) {
-			this.play("anim_player_walk", true);
+			this.play("anim_eko_walk", true);
 		}
-	}
+	}	
 
 	public doRight (): void {
 		this.isAllowJump();
@@ -99,10 +91,13 @@ export class Player extends PhysicSprite implements IMoveable {
 		if (this._allowJump && this.isOnGround()) {
 			this._allowJump = false;
 			this.setVelocityY(-this._jumpHeight);
+			this.play("anim_eko_jump");
 		}
 		else if (this._allowDoubleJump && !this.isOnGround()) {
 			this.setVelocityY(-this._jumpHeight * 0.80);
 			this._allowDoubleJump = false;
+			this.anims.stop();
+			this.play("anim_eko_jump", true);
 		}
 	}
 
