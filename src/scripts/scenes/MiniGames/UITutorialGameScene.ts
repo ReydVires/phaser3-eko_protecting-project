@@ -85,8 +85,8 @@ export class UITutorialGameScene extends UIScene {
 
 	doPause (): void {
 		const isVisible = this._windowPause.visible;
-		this.pauseScene(isVisible);
-		this._windowPause.setVisible(isVisible);
+		this.pauseScene(!isVisible);
+		this._windowPause.setVisible(!isVisible);
 		this._dimBackground.show();
 	}
 
