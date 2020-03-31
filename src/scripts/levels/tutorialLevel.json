@@ -121,17 +121,17 @@
         }
     ],
     "mappingData": [
-        "                                      ",
-        "                                      ",
-        "                                      ",
-        "                                      ",
-        "          c                 c         ",
-        "        cc   c        c   ooo         ",
-        "      ooooo    c     ooo            p ",
-        "oooo          ooooo                 p ",
-        "                               ooooooo",
-        "                                      ",
-        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-        "                                      "
+        "                                ",
+        "                                ",
+        "                                ",
+        "                                ",
+        "          c          c          ",
+        "        c   c        o          ",
+        "       c        c       c       ",
+        "      oo         oo       c  p  ",
+        "             c             c p  ",
+        "ooooo     oooooo        ooooooo ",
+        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "                                "
     ]
 }
