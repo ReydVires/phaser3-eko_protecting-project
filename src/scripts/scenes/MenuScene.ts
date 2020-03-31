@@ -35,7 +35,7 @@ export class MenuScene extends BaseScene {
 		console.log(`MenuScene`);
 		this._isGameStart = data!.isGameStarted || false;
 		this._gameTitleLabels = [];
-		App?.addListener('backButton', () => { App?.exitApp(); });
+		App?.addListener('backButton', () => this.showExitWindow());
 	}
 
 	create (): void {
@@ -65,7 +65,7 @@ export class MenuScene extends BaseScene {
 			this.createGameTitle();
 		}
 
-		this.input.on("pointerdown", () => {
+		this.input.on("pointerup", () => {
 			if (!this._isGameStart) {
 				this._isGameStart = true;
 				this.createGameTitle();
@@ -81,16 +81,10 @@ export class MenuScene extends BaseScene {
 		this._windowSetting = new PopUpWindow(this, centerX, centerY * 0.7, 'setting_win', [
 			new FlatButton(this, 320, -170, 'exit_btn')
 				.setCallback(this.showSettingWindow.bind(this)),
-			new FlatButton(this, 305 * 0.7, -16, 'resetdata_btn'),
-			new FlatButton(this, 305 * 0.7, 82, 'gamecredits_btn'),
-			this.add.bitmapText(-305 * 0.6, -48, 'simply round', "BGM SETTING", 34)
-				.setOrigin(0.5),
-			new FlatButton(this, -305 * 0.8, 4, 'unmute_btn'),
-			new FlatButton(this, -305 * 0.4, 4, 'mute_btn'),
-			this.add.bitmapText(-305 * 0.6, 64, 'simply round', "SFX SETTING", 34)
-				.setOrigin(0.5),
-			new FlatButton(this, -305 * 0.8, 116, 'unmute_btn'),
-			new FlatButton(this, -305 * 0.4, 116, 'mute_btn')
+			new FlatButton(this, 305 * 0.6, -16, 'resetdata_btn'),
+			new FlatButton(this, 305 * 0.6, 82, 'gamecredits_btn'),
+			new FlatButton(this, -305 * 0.75, 48, 'unmute_btn'),
+			new FlatButton(this, -305 * 0.35, 48, 'sfx_unmute_btn')
 		])
 		.setVisible(false);
 	}
