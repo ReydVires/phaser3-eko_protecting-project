@@ -18,6 +18,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	private _arrowQueue: Array<ArrowStruct>;
 	private _player: Phaser.GameObjects.Sprite;
 	private _enemy: Phaser.GameObjects.Sprite;
+	private _onEnemyAttack: boolean;
 	private _directions: Array<string> = new Array<string>(
 		'right_arrow', 'left_arrow', 'up_arrow'
 	);
@@ -37,6 +38,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		this._platformCompatible = Helper.checkPlatform(['Android', 'iPhone']);
 		this._onTouch = false;
 		this._testRestart = false;
+		this._onEnemyAttack = false;
 	}
 
 	create (): void {
@@ -69,32 +71,38 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	}
 
 	private enemyAttack (data: any): void {
-		const isSuccess = Array.isArray(data) ? data[0] : false;
-		this.tweens.add({
-			targets: this._enemy,
-			x: '-=64',
-			duration: 400,
-			ease: 'Back.easeIn'
-		});
+		this._onEnemyAttack = true;
 
-		const xStartPlayer = this._player.x;
+		const xStartEnemy = this._enemy.x;
+		this.tweens.createTimeline()
+			.add({
+				targets: this._enemy,
+				x: '-=64',
+				duration: 400,
+				ease: 'Back.easeIn'
+			})
+			.add({
+				targets: this._enemy,
+				x: xStartEnemy,
+				delay: 140,
+				duration: 200
+			}).play();
+
+		const isSuccess = Array.isArray(data) ? data[0] : false;
 		if (isSuccess) {
-			const delayTime = 250;
-			const backTweenPosition = this.tweens.create({
-				targets: this._player,
-				delay: delayTime,
-				x: xStartPlayer,
-				duration: 255
-			});
-			this.tweens.add({
-				targets: this._player,
-				delay: delayTime - 50,
-				x: '-=48',
-				ease: 'Expo.easeOut',
-				onComplete: () => {
-					backTweenPosition.play();
-				}
-			});
+			const xStartPlayer = this._player.x;
+			this.tweens.createTimeline()
+				.add({
+					targets: this._player,
+					delay: 200,
+					x: '-=64',
+					ease: 'Expo.easeOut'
+				})
+				.add({
+					targets: this._player,
+					x: xStartPlayer,
+					duration: 150
+				}).play();
 		}
 		else {
 			const delayTime = 400;
@@ -203,7 +211,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	}
 
 	update (): void {
-		if (this._platformCompatible) {
+		if (this._platformCompatible && !this._onEnemyAttack) {
 			this.touchController();
 		}
 

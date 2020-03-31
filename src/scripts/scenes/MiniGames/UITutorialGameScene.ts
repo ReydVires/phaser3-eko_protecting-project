@@ -4,12 +4,14 @@ import { UIScene } from "../../objects/abstract/UIScene";
 import { FillProgress } from "../../objects/FillProgress";
 import { DimBackground } from '../../objects/components/DimBackground';
 import { FlatButton } from '../../objects/components/FlatButton';
+import { PopUpWindow } from '../../objects/components/PopUpWindow';
 
 const { App } = Plugins;
 
 export class UITutorialGameScene extends UIScene {
 
 	private _gameTime: FillProgress;
+	private _windowPause: PopUpWindow;
 	private _dimBackground: DimBackground;
 
 	constructor () {
@@ -19,6 +21,7 @@ export class UITutorialGameScene extends UIScene {
 	init (): void {
 		super.init();
 		console.log("Called UITutorialGameScene");
+		// TODO: Follow the game flow
 		App?.addListener("backButton", this.startToScene.bind(this, 'MenuScene'));
 	}
 
@@ -41,8 +44,16 @@ export class UITutorialGameScene extends UIScene {
 			.setOrigin(0, 1);
 		this.add.sprite(centerX * 1.75, rightArrow.y, 'up_arrow')
 			.setOrigin(0, 1);
-		new FlatButton(this, 95, 600, 'InventorySmall_btn')
-			.setScrollFactor(0);
+
+		new FlatButton(this, 1189, 70, 'pause_btn')
+			.setScrollFactor(0)
+			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));
+		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
+			new FlatButton(this, 0, 0, 'continue_btn')
+				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
+			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
+				.setCallback(() => this.startToScene('MenuScene'))
+		]).setVisible(false);
 
 		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
 		this._gameTime.setCallback(() => {
@@ -54,6 +65,7 @@ export class UITutorialGameScene extends UIScene {
 
 		this._dimBackground = new DimBackground(this);
 
+		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('restart', this.restartScene.bind(this));
 		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
 		this.registerEvent('stop_timer', () => {
@@ -62,11 +74,20 @@ export class UITutorialGameScene extends UIScene {
 	}
 
 	update (time: number, dt: number): void {
-		this._gameTime?.updateProgressbar(5);
+		if (!this.isScenePause) {
+			this._gameTime?.updateProgressbar(5);
+		}
 
 		if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('ESC'))) {
 			this.targetEmitter.emit('UI#to_menu');
 		}
+	}
+
+	doPause (): void {
+		const isVisible = this._windowPause.visible;
+		this.pauseScene(isVisible);
+		this._windowPause.setVisible(isVisible);
+		this._dimBackground.show();
 	}
 
 }
