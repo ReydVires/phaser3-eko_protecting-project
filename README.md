@@ -3,13 +3,15 @@
 ## OS NPM Requirements
 **WINDOWS**
 
-Need to be installed:
+If not work, need to be installed:
 
 > `$ npm install webpack-dev-server -g`
 
 > `$ npm install webpack -g`
 
 > `$ npm install webpack-cli -g`
+
+after that `npm install` then `npm start`!
 
 **OSX & LINUX**
 
