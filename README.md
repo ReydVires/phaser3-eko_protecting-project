@@ -1,7 +1,7 @@
 # Phaser 3 Eko Protect
 
 ## OS NPM Requirements
-**In Windows**
+**WINDOWS**
 
 Need to be installed:
 
@@ -11,6 +11,6 @@ Need to be installed:
 
 > `$ npm install webpack-cli -g`
 
-**OSX & Linux**
+**OSX & LINUX**
 
 Just `npm install` then `npm start`!
