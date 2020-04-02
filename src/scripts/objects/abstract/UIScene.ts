@@ -43,11 +43,13 @@ export abstract class UIScene extends Phaser.Scene implements IEventUIHandler, I
 	}
 
 	startToScene(key: string, data?: object): void {
+		this._isPause = false;
 		this.scene.stop();
 		this._baseScene.startToScene(key, data);
 	}
 
 	restartScene(data?: object): void {
+		this._isPause = false;
 		this.scene.stop();
 		this._baseScene.restartScene(data);
 	}
