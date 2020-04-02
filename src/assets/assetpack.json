@@ -167,6 +167,10 @@
 			{
 				"key": "tutorial_stage_platform_p1",
 				"url": "backgrounds/img_tutorial_stage_platform_p1.png"
+			},
+			{
+				"key": "tutorial_stage_foreground",
+				"url": "backgrounds/img_tutorial_stage_foreground.png"
 			}
         ]
     },

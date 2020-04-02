@@ -6,6 +6,6 @@
 		],
 		"semicolon": [true, "always"],
 		"indent": [true, "tabs", 4],
-		"linebreak-style": [true, "LF"]
+		"linebreak-style": [true, "CRLF"]
 	}
 }
