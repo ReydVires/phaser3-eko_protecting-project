@@ -87,6 +87,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this.add.image(0, 0, 'tutorial_stage_bg').setOrigin(0);
 		this.add.image(0, 0, 'tutorial_stage_platform_p1').setOrigin(0).setScrollFactor(0.9);
 		this.add.image(0, 0, 'tutorial_stage_platform').setOrigin(0);
+		this.add.image(0, 0, 'tutorial_stage_foreground').setOrigin(0).setScrollFactor(0.95);
 
 		const cam = this.cameras.main;
 		cam.setBounds(0, 0, 2000, 276); // Set bound camera, based on background level
