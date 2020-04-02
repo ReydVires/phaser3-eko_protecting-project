@@ -1,12 +1,10 @@
-import { Plugins } from '@capacitor/core';
 import { centerX, SCREEN_HEIGHT, SCREEN_WIDTH, centerY } from "../../config";
 import { UIScene } from "../../objects/abstract/UIScene";
 import { FillProgress } from "../../objects/FillProgress";
 import { DimBackground } from '../../objects/components/DimBackground';
 import { FlatButton } from '../../objects/components/FlatButton';
 import { PopUpWindow } from '../../objects/components/PopUpWindow';
-
-const { App } = Plugins;
+import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
 
 export class UITutorialGameScene extends UIScene {
 
@@ -21,8 +19,6 @@ export class UITutorialGameScene extends UIScene {
 	init (): void {
 		super.init();
 		console.log("Called UITutorialGameScene");
-		// TODO: Follow the game flow
-		App?.addListener("backButton", this.startToScene.bind(this, 'MenuScene'));
 	}
 
 	create (): void {
@@ -36,6 +32,9 @@ export class UITutorialGameScene extends UIScene {
 		// 		}
 		// 	} while (!called);
 		// });
+		AndroidBackHelper.Instance.setCallbackBackButton(() => {
+			this.startToScene('MenuScene');
+		});
 
 		this.add.text(centerX * 0.25, centerY * 0.75, "TAP!");
 		const leftArrow = this.add.sprite(centerX * 0.25, SCREEN_HEIGHT - 64, 'left_arrow')

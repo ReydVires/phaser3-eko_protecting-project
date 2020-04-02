@@ -5,6 +5,7 @@ import { FlatButton } from "../objects/components/FlatButton";
 import { DimBackground } from "../objects/components/DimBackground";
 import { UIScene } from "../objects/abstract/UIScene";
 import { FPSText } from "../objects/FPSText";
+import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 
 //#endregion
 
@@ -53,6 +54,10 @@ export class UITestScene extends UIScene {
 		
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('do_gameover', this.doGameOver.bind(this));
+
+		AndroidBackHelper.Instance.setCallbackBackButton(() => {
+			this.targetEmitter.emit('UI#do_pause');
+		});
 	}
 
 	doPause (): void {

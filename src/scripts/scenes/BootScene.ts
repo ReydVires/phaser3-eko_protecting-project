@@ -1,5 +1,6 @@
 import { Helper } from "../utils/Helper";
-import { centerX, centerY, SCREEN_WIDTH, SCREEN_HEIGHT } from "../config";
+import { centerX, centerY } from "../config";
+import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 
 declare const WebFont: any;
 declare const AndroidFullScreen: any;
@@ -16,8 +17,13 @@ export class BootScene extends Phaser.Scene {
 		if (Helper.checkPlatform('Android')) {
 			// Installed plugin for Android
 			AndroidFullScreen?.immersiveMode();
+
 			const insomniaPlugin = (window as any)?.plugins.insomnia;
 			insomniaPlugin.keepAwake();
+			
+			AndroidBackHelper.Instance.setCallbackBackButton(() => {
+				console.log('Prevent back button to exit!');
+			});
 		}
 		this.cameras.main.setBackgroundColor(0xffffff);
 	}

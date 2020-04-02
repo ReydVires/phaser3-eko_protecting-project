@@ -6,8 +6,7 @@ import { FlatButton } from "../objects/components/FlatButton";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { DimBackground } from "../objects/components/DimBackground";
 import { BaseScene } from "../objects/abstract/BaseScene";
-import { Plugins } from '@capacitor/core';
-const { App } = Plugins;
+import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 
 export class MenuScene extends BaseScene {
 
@@ -35,11 +34,15 @@ export class MenuScene extends BaseScene {
 		console.log(`MenuScene`);
 		this._isGameStart = data!.isGameStarted || false;
 		this._gameTitleLabels = [];
-		App?.addListener('backButton', () => this.showExitWindow());
 	}
 
 	create (): void {
 		// Helper.drawDebugLine(this.add.graphics(), { dimension: 64 });
+		AndroidBackHelper.Instance.setCallbackBackButton(() => {
+			if (this._isGameStart) {
+				this.showExitWindow();
+			}
+		});
 
 		this._gameTitleLabels.push(
 			this.add.text(centerX, centerY, "EKO",
