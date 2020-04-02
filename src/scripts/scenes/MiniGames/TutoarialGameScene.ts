@@ -16,6 +16,8 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 
 	private _keys: KeyboardMapping;
 	private _arrowQueue: Array<ArrowStruct>;
+	private _arrowSuccessQueue: Array<ArrowStruct>;
+	private _playerHp: number;
 	private _player: Phaser.GameObjects.Sprite;
 	private _enemy: Phaser.GameObjects.Sprite;
 	private _onEnemyAttack: boolean;
@@ -35,10 +37,12 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		super.init();
 		console.log("Welcome in TutorialGameScene");
 		this._arrowQueue = new Array<ArrowStruct>();
+		this._arrowSuccessQueue = new Array<ArrowStruct>();
 		this._platformCompatible = Helper.checkPlatform(['Android', 'iPhone']);
 		this._onTouch = false;
 		this._testRestart = false;
 		this._onEnemyAttack = false;
+		this._playerHp = 3;
 	}
 
 	create (): void {
@@ -120,7 +124,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 				repeat: 3
 			});
 			this.time.delayedCall(delayTime, () => {
-				this.cameras.main.shake(160, 0.018);
+				this.playerDamaged();
 			});
 		}
 	}
@@ -153,8 +157,34 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		return arrows;
 	}
 
+	private playerDamaged (): void {
+		this.cameras.main.shake(160, 0.018);
+		this._playerHp = (this._playerHp > 0) ? this._playerHp - 1 : 0;
+		if (this._playerHp > 0) {
+			this.eventUI.emit('UI#reset_timer');
+			this.clearArrow();
+			this._arrowQueue = this.createArrows(5);
+			this._onEnemyAttack = false;
+		}
+		else {
+			// TODO: GameOver
+		}
+	}
+
 	private dequeueArrow (): ArrowStruct | undefined {
 		return this._arrowQueue.shift();
+	}
+
+	private clearArrow (): void {
+		let arrow: ArrowStruct;
+		while (this._arrowQueue.length > 0) {
+			arrow = this.dequeueArrow() as ArrowStruct;
+			arrow?.gameObject.destroy();
+		}
+		while (this._arrowSuccessQueue.length > 0) {
+			arrow = this._arrowSuccessQueue.shift() as ArrowStruct;
+			arrow?.gameObject.destroy();
+		}
 	}
 
 	private justDownKeyboard (key: Phaser.Input.Keyboard.Key): boolean {
@@ -169,7 +199,9 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 			const isMatch = this._directions[index].indexOf(keyId) !== -1;
 			if (isMatch) {
 				console.log("is Tap %s!", keyId);
-				this.dequeueArrow()?.gameObject.setAlpha(1);
+				const arrow = this.dequeueArrow();
+				arrow?.gameObject.setAlpha(1);
+				this._arrowSuccessQueue.push(arrow as ArrowStruct);
 			}
 		}
 	}

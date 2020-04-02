@@ -67,9 +67,8 @@ export class UITutorialGameScene extends UIScene {
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('restart', this.restartScene.bind(this));
 		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
-		this.registerEvent('stop_timer', () => {
-			this._gameTime?.stop();
-		}, true);
+		this.registerEvent('stop_timer', () => this._gameTime?.stop(), true);
+		this.registerEvent('reset_timer', () => this._gameTime?.resetProgress());
 	}
 
 	update (time: number, dt: number): void {
