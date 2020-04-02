@@ -7,6 +7,7 @@ import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { DimBackground } from "../objects/components/DimBackground";
 import { BaseScene } from "../objects/abstract/BaseScene";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
+import { ToggleButton } from "../objects/components/ToggleButton";
 
 export class MenuScene extends BaseScene {
 
@@ -86,8 +87,14 @@ export class MenuScene extends BaseScene {
 				.setCallback(this.showSettingWindow.bind(this)),
 			new FlatButton(this, 305 * 0.6, -16, 'resetdata_btn'),
 			new FlatButton(this, 305 * 0.6, 82, 'gamecredits_btn'),
-			new FlatButton(this, -305 * 0.75, 48, 'unmute_btn'),
-			new FlatButton(this, -305 * 0.35, 48, 'sfx_unmute_btn')
+			new ToggleButton(this, -305 * 0.75, 48, { active: "mute_btn", deactive: "unmute_btn" })
+				.setCallback((isActive: boolean) => {
+					console.log('is bgm mute active?', isActive);
+				}),
+			new ToggleButton(this, -305 * 0.35, 48, { active: "sfx_mute_btn", deactive: "sfx_unmute_btn" })
+				.setCallback((isActive: boolean) => {
+					console.log('is sfx mute active?', isActive);
+				}),
 		])
 		.setVisible(false);
 	}

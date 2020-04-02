@@ -4,6 +4,7 @@ import { Helper } from "../utils/Helper";
 import { FlatButton } from "../objects/components/FlatButton";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { DimBackground } from "../objects/components/DimBackground";
+import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 
 //#endregion
 export class MiniGameScene extends Phaser.Scene {
@@ -20,6 +21,10 @@ export class MiniGameScene extends Phaser.Scene {
 	}
 
 	create (): void {
+		AndroidBackHelper.Instance.setCallbackBackButton(() => {
+			console.log("Prevent to back");
+		});
+
 		this.add.bitmapText(centerX * 1.5, centerY - 128, 'simply roundw', 'MINIGAME TIME!')
 			.setOrigin(0.5, 1);
 		new FlatButton(this, centerX * 1.5, centerY, 'start_btn')
