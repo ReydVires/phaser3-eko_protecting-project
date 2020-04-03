@@ -32,6 +32,7 @@ export class MiniGameScene extends Phaser.Scene {
 		new FlatButton(this, centerX * 1.5, centerY + 120, 'leaderboard_btn')
 			.setCallback(() => {
 				new DimBackground(this).setVisible(true);
+				// TODO: Change this to leaderboard
 				new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
 					new FlatButton(this, 0, 0, 'nextstage_btn'),
 					new FlatButton(this, 0, 72, 'worldmap_btn'),
