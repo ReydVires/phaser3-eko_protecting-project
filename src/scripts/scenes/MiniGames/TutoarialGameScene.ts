@@ -167,7 +167,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 			this._onEnemyAttack = false;
 		}
 		else {
-			// TODO: GameOver
+			this.time.delayedCall(300, () => this.eventUI.emit('UI#do_gameover'));
 		}
 	}
 

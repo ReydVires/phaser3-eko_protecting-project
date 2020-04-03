@@ -1,3 +1,4 @@
+//#region Imports module
 import { centerX, SCREEN_HEIGHT, SCREEN_WIDTH, centerY } from "../../config";
 import { UIScene } from "../../objects/abstract/UIScene";
 import { FillProgress } from "../../objects/FillProgress";
@@ -6,11 +7,13 @@ import { FlatButton } from '../../objects/components/FlatButton';
 import { PopUpWindow } from '../../objects/components/PopUpWindow';
 import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
 
+//#endregion
 export class UITutorialGameScene extends UIScene {
 
 	private _gameTime: FillProgress;
 	private _windowPause: PopUpWindow;
 	private _dimBackground: DimBackground;
+	private _gameOverWindow: PopUpWindow;
 
 	constructor () {
 		super('UITutorialGameScene');
@@ -35,6 +38,8 @@ export class UITutorialGameScene extends UIScene {
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
 			this.startToScene('MenuScene');
 		});
+
+		this._dimBackground = new DimBackground(this);
 
 		this.add.text(centerX * 0.25, centerY * 0.75, "TAP!");
 		const leftArrow = this.add.sprite(centerX * 0.25, SCREEN_HEIGHT - 64, 'left_arrow')
@@ -62,10 +67,16 @@ export class UITutorialGameScene extends UIScene {
 			// this.pauseScene(true);
 		});
 
-		this._dimBackground = new DimBackground(this);
+		this._gameOverWindow = new PopUpWindow(this, centerX, centerY, 'gameoverAdventure_win', [
+			new FlatButton(this, 0, 0, 'tryagain_btn')
+				.setCallback(() => this.restartScene()),
+			new FlatButton(this, 0, 72, 'worldmap_btn')
+		])
+		.setVisible(false);
 
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('restart', this.restartScene.bind(this));
+		this.registerEvent('do_gameover', this.doGameOver.bind(this));
 		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
 		this.registerEvent('stop_timer', () => this._gameTime?.stop(), true);
 		this.registerEvent('reset_timer', () => this._gameTime?.resetProgress());
@@ -85,6 +96,12 @@ export class UITutorialGameScene extends UIScene {
 		const isVisible = this._windowPause.visible;
 		this.pauseScene(!isVisible);
 		this._windowPause.setVisible(!isVisible);
+		this._dimBackground.show();
+	}
+
+	doGameOver (): void {
+		this.pauseScene();
+		this._gameOverWindow.setVisible(true);
 		this._dimBackground.show();
 	}
 
