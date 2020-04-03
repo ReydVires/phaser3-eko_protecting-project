@@ -39,13 +39,20 @@ interface SceneData {
 	isTryAgain: boolean;
 	isGameStarted: boolean;
 }
+
+interface DialogueData {
+	text: string;
+	bubblePosition: Phaser.GameObjects.Components.Transform;
+	facing: number;
+}
 //#endregion
 
 export class TestScene extends BaseScene implements ITouchControl {
 
-	private readonly LEFT_AREA: number = 275;
+	private readonly LEFT_AREA: number = 210;
 	private readonly RIGHT_AREA: number = 570;
 
+	private _background: Phaser.GameObjects.Image;
 	private _player: Player;
 	private _keys: KeyboardMapping;
 	private _deadZonePosY: number;
@@ -55,6 +62,9 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private _interactionArea: boolean;
 	private _portalGroup: Phaser.Physics.Arcade.Group;
 	private _platformCompatible: boolean;
+
+	private _onCutsceneEvent: boolean;
+	private _dialogues: Array<DialogueData>;
 
 	private _bubbleChat: BaloonSpeech;
 
@@ -69,6 +79,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this._onTouch = false;
 		this._actionArea = false;
 		this._interactionArea = false;
+		this._onCutsceneEvent = false;
 	}
 
 	create (sceneData: SceneData): void {
@@ -83,18 +94,37 @@ export class TestScene extends BaseScene implements ITouchControl {
 			.setScrollFactor(0)
 			.setFontSize(32);
 
-		this.add.image(0, 0, 'tutorial_stage_bg').setOrigin(0);
+		this._background = this.add.image(0, 0, 'tutorial_stage_bg').setOrigin(0);
 		this.add.image(0, 0, 'tutorial_stage_platform_p1').setOrigin(0).setScrollFactor(0.9);
 		this.add.image(0, 0, 'tutorial_stage_platform').setOrigin(0);
 		this.add.image(0, 0, 'tutorial_stage_foreground').setOrigin(0).setScrollFactor(0.95);
 
 		const cam = this.cameras.main;
-		cam.setBounds(0, 0, 2000, 276); // Set bound camera, based on background level
-		// cam.setBounds(0, 136, 2112, 276); // Set bound camera, based on background level
-		this._player = new Player(this, 64, 450, 'eko_idle');
+		// Set bound camera, based on background level
+		cam.setBounds(0, 0, this._background.displayWidth, 0);
+
+		this._player = new Player(this, 64, 575, 'eko_idle');
 		cam.startFollow(this._player);
 
 		this._deadZonePosY = cam.y + cam.height;
+
+		this._dialogues = new Array<DialogueData>(
+			<DialogueData> {
+				text: "Ini dialog test ke 1",
+				bubblePosition: this._player as Phaser.GameObjects.Components.Transform,
+				facing: 2
+			},
+			<DialogueData> {
+				text: "Sekarang ada dialog test ke 2",
+				bubblePosition: this._player as Phaser.GameObjects.Components.Transform,
+				facing: 1
+			},
+			<DialogueData> {
+				text: "I'm gonna head out!",
+				bubblePosition: this._player as Phaser.GameObjects.Components.Transform,
+				facing: 2
+			}
+		);
 
 		// Tile generator
 		// const tileGroup = this.generateTileLevel(LevelData.tileData);
@@ -251,11 +281,13 @@ export class TestScene extends BaseScene implements ITouchControl {
 		if (this._onTouch) {
 			const tapLeftArea = this._pointer.x <= this.LEFT_AREA;
 			const tapRightArea = !tapLeftArea && this._pointer.x <= this.RIGHT_AREA;
-			if (tapLeftArea) {
-				this.touchLeftArea();
-			}
-			else if (tapRightArea) {
-				this.touchRightArea();
+			if (!this._onCutsceneEvent) {
+				if (tapLeftArea) {
+					this.touchLeftArea();
+				}
+				else if (tapRightArea) {
+					this.touchRightArea();
+				}
 			}
 			
 			const tapJumpArea = !tapRightArea && this._pointer.x > this.RIGHT_AREA && this._actionArea;
@@ -271,10 +303,18 @@ export class TestScene extends BaseScene implements ITouchControl {
 
 	touchRightArea(): void {
 		this._player.doRight();
+		const boundaries = this._background.displayWidth - this._player.displayWidth * 0.5;
+		if (this._player.x > boundaries) {
+			this._player.setVelocityX(0);
+		}
 	}
 	
 	touchLeftArea(): void {
 		this._player.doLeft();
+		const boundaries = this._player.displayWidth * 0.5;
+		if (this._player.x < boundaries) {
+			this._player.setVelocityX(0);
+		}
 	}
 	
 	touchAction(): void {
@@ -282,16 +322,29 @@ export class TestScene extends BaseScene implements ITouchControl {
 			this._player.doJump();
 		}
 		else {
-			console.log("Show bubble talk! or other interaction.");
-			if (this._bubbleChat) { // Destroy the previous baloon rendered!
-				this._bubbleChat.destroy();
+			this._bubbleChat?.destroy(); // Destroy the previous baloon rendered!
+			if (this._dialogues.length > 0) {
+				this._onCutsceneEvent = true;
+
+				console.log("Show bubble talk for interaction");
+				const dialogueData = this._dialogues.shift();
+				const text = dialogueData!.text;
+				const targetPosition = dialogueData!.bubblePosition;
+				console.log("Target pos:", targetPosition);
+				const facing = dialogueData!.facing;
+				this._bubbleChat = new BaloonSpeech(
+					this,
+					targetPosition.x - 280, targetPosition.y - (160 + 160 * 1.35),
+					280, 160,
+					text, facing
+				);
 			}
-			this._bubbleChat = new BaloonSpeech(
-				this,
-				this._player.x - 280, this._player.y - (160 + 160 * 0.75),
-				280, 160,
-				"I'm gonna head out!", 2
-			);
+			else {
+				this._onCutsceneEvent = false;
+				this.time.delayedCall(300, () =>
+					this.eventUI.emit('UI#start_to_scene', 'TutorialGameScene'));
+				console.log("Cutscene interaction end");
+			}
 		}
 		this._actionArea = false;
 	}
@@ -318,9 +371,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			const colliderStatus = child.touching.none;
 			if (this._interactionArea && colliderStatus) {
 				this._interactionArea = false;
-				if (this._bubbleChat) {
-					this._bubbleChat.destroy(); // After out the collision
-				}
+				this._bubbleChat?.destroy(); // After out the collision
 			}
 		});
 	}
