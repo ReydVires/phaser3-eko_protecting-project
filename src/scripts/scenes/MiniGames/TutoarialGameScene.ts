@@ -105,8 +105,13 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 				.add({
 					targets: this._player,
 					x: xStartPlayer,
-					duration: 150
-				}).play();
+					duration: 150,
+					onComplete: () =>
+						this.time.delayedCall(300, () => {
+							console.log("Success window!");
+						})
+					}
+				).play();
 		}
 		else {
 			const delayTime = 400;
