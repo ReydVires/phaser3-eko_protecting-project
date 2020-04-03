@@ -54,6 +54,12 @@ export class UITestScene extends UIScene {
 		
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('do_gameover', this.doGameOver.bind(this));
+		this.registerEvent('start_to_scene', (data: unknown) => {
+			if (Array.isArray(data)) {
+				const keyScene = data[0];
+				this.startToScene(keyScene);
+			}
+		});
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
 			this.targetEmitter.emit('UI#do_pause');
