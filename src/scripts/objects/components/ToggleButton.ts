@@ -47,6 +47,7 @@ export class ToggleButton extends Phaser.GameObjects.Sprite {
 	}
 
 	public setCallback (callback: Function): this {
+		// TODO: Make public method that can be deactive this without even interact
 		this._callback = callback;
 		return this;
 	}
