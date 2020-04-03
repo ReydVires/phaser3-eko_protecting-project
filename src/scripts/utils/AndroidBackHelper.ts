@@ -20,6 +20,7 @@ export class AndroidBackHelper {
 	}
 
 	public setCallbackBackButton (callback: Function, arg?: any, clear: boolean = false): void {
+		// TODO: Need to pass the scene instance to check is the callback in the right state
 		this._callback = callback;
 		this._argument = arg;
 		this._clear = clear;
