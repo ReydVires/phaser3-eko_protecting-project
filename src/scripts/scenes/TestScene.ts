@@ -12,34 +12,33 @@ import { ITouchControl } from '../objects/interface/ITouchControl';
 
 //#endregion
 
-// TODO: Make them interface
 //#region Types
-type TileData = {
-	x: number,
-	y: number,
-	w: number,
-	h: number
-};
+interface TileData {
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+}
 
-type CoinData = {
-	type: string,
-	x: number,
-	y: number,
-	originX: number,
-	originY: number,
-	texture: string
-};
+interface CoinData {
+	type: string;
+	x: number;
+	y: number;
+	originX: number;
+	originY: number;
+	texture: string;
+}
 
-type PortalData = {
-	id: string,
-	info: TileData,
-	goto: string
-};
+interface PortalData {
+	id: string;
+	info: TileData;
+	goto: string;
+}
 
-type SceneData = {
-	isTryAgain: boolean,
-	isGameStarted: boolean
-};
+interface SceneData {
+	isTryAgain: boolean;
+	isGameStarted: boolean;
+}
 //#endregion
 
 export class TestScene extends BaseScene implements ITouchControl {
@@ -300,10 +299,10 @@ export class TestScene extends BaseScene implements ITouchControl {
 	update (): void {
 		if (this._platformCompatible) {
 			this.touchController();
-			this.keyboardController(); // FIXME: Development only
+			this.keyboardController(); // FIXME: Touch only
 		}
 		else {
-			this.touchController(); // FIXME: Development only
+			this.touchController(); // FIXME: Keyboard only
 			this.keyboardController();
 		}
 
