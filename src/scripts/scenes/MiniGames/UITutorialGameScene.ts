@@ -6,6 +6,7 @@ import { DimBackground } from '../../objects/components/DimBackground';
 import { FlatButton } from '../../objects/components/FlatButton';
 import { PopUpWindow } from '../../objects/components/PopUpWindow';
 import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
+import { LEFT_AREA, RIGHT_AREA } from "./TutoarialGameScene";
 
 //#endregion
 export class UITutorialGameScene extends UIScene {
@@ -41,12 +42,12 @@ export class UITutorialGameScene extends UIScene {
 
 		this._dimBackground = new DimBackground(this);
 
-		this.add.text(centerX * 0.25, centerY * 0.75, "TAP!");
-		const leftArrow = this.add.sprite(centerX * 0.25, SCREEN_HEIGHT - 64, 'left_arrow')
+		this.add.text(centerX * 0.25, centerY * 0.75, "TAP!", { fontSize: '32px' });
+		const leftArrow = this.add.sprite(LEFT_AREA * 0.5, SCREEN_HEIGHT - 64, 'left_arrow')
 			.setOrigin(0, 1);
-		const rightArrow = this.add.sprite(centerX * 0.8, leftArrow.y, 'right_arrow')
+		const rightArrow = this.add.sprite(RIGHT_AREA * 0.5, leftArrow.y, 'right_arrow')
 			.setOrigin(0, 1);
-		this.add.sprite(centerX * 1.75, rightArrow.y, 'up_arrow')
+		this.add.sprite(RIGHT_AREA * 1.5, rightArrow.y, 'up_arrow')
 			.setOrigin(0, 1);
 
 		new FlatButton(this, 1189, 70, 'pause_btn')

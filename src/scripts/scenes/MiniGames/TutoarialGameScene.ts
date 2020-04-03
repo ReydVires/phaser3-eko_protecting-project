@@ -4,7 +4,7 @@ import { BaseScene } from "../../objects/abstract/BaseScene";
 import { ITouchControl } from "../../objects/interface/ITouchControl";
 import { Helper } from "../../utils/Helper";
 
-export const LEFT_AREA: number = 325;
+export const LEFT_AREA: number = 210;
 export const RIGHT_AREA: number = 570;
 
 type ArrowStruct = {
