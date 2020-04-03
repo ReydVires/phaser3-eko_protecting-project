@@ -82,7 +82,7 @@ export class MenuScene extends BaseScene {
 	}
 
 	createSettingWindow (): void {
-		this._windowSetting = new PopUpWindow(this, centerX, centerY * 0.7, 'setting_win', [
+		this._windowSetting = new PopUpWindow(this, centerX, centerY, 'setting_win', [
 			new FlatButton(this, 320, -170, 'exit_btn')
 				.setCallback(this.showSettingWindow.bind(this)),
 			new FlatButton(this, 305 * 0.6, -16, 'resetdata_btn'),
