@@ -44,6 +44,8 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 			height + borderOffset
 		);
 		bgBar.setDepth(this.depth - 0.1);
+
+		this.resetProgress();
 	}
 
 	public setCallback (func: Function): this {
@@ -75,6 +77,7 @@ export class FillProgress extends Phaser.GameObjects.Graphics {
 		this._isCall = false;
 		this.percent = value;
 		this.clear();
+		this.fillStyle(0x34495e, 1);
 		this.fillRect(this._xStart, this._yStart, this.percent * this._width, this._height);
 		return this;
 	}
