@@ -342,7 +342,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			else {
 				this._onCutsceneEvent = false;
 				this.time.delayedCall(300, () =>
-					this.eventUI.emit('UI#start_to_scene', 'TutorialGameScene'));
+					this.eventUI.emit('UI#to_scene_tutorial'));
 				console.log("Cutscene interaction end");
 			}
 		}
