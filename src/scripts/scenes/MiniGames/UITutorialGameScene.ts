@@ -37,7 +37,7 @@ export class UITutorialGameScene extends UIScene {
 		// 	} while (!called);
 		// });
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			this.startToScene('MenuScene', { isGameStarted: true });
+			this.targetEmitter.emit('UI#to_scene_menu');
 		});
 
 		this._dimBackground = new DimBackground(this);
@@ -50,28 +50,40 @@ export class UITutorialGameScene extends UIScene {
 		this.add.sprite(RIGHT_AREA * 1.5, rightArrow.y, 'up_arrow')
 			.setOrigin(0, 1);
 
-		new FlatButton(this, 1189, 70, 'pause_btn')
-			.setScrollFactor(0)
+		new FlatButton(this, 1189, 80, 'pause_btn')
 			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
-				.setCallback(() => this.startToScene('MenuScene', { isGameStarted: true }))
+				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu'))
 		]).setVisible(false);
 
 		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
 		this._gameTime.setCallback(() => {
 			console.log("Times up!");
 			this.targetEmitter.emit('event#enemy_attack', false);
-			// this._dimBackground.setVisible(true);
-			// this.pauseScene(true);
 		});
 
-		this._gameOverWindow = new PopUpWindow(this, centerX, centerY, 'gameoverAdventure_win', [
-			new FlatButton(this, 0, 0, 'tryagain_btn')
+		this._gameOverWindow = new PopUpWindow(this, centerX, centerY, 'gameoverMinigame_win', [
+			this.add.bitmapText(0, -72, 'simply_round', "Your Score: 9999")
+				.setCenterAlign()
+				.setOrigin(0.5)
+				.setFontSize(32),
+			this.add.text(0, -32, "Highest Score: 9999",
+				<Phaser.Types.GameObjects.Text.TextStyle> {
+					fontFamily: 'Comfortaa',
+					align: 'center',
+					color: 'black',
+				}).setOrigin(0.5).setFontSize(20),
+			this.add.bitmapText(0, 18, 'simply_round', "Reward: 9999 Coins")
+				.setCenterAlign()
+				.setOrigin(0.5)
+				.setFontSize(24),
+			new FlatButton(this, -128, 114, 'playagain_btn')
 				.setCallback(() => this.restartScene()),
-			new FlatButton(this, 0, 72, 'worldmap_btn')
+			new FlatButton(this, 128, 114, 'mainmenu_btn')
+				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu'))
 		])
 		.setVisible(false);
 

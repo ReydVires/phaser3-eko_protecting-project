@@ -1,9 +1,15 @@
+//#region Import modules
 import { centerX, centerY } from "../../config";
 import { KeyboardMapping } from "../../../../typings/KeyboardMapping";
 import { BaseScene } from "../../objects/abstract/BaseScene";
 import { ITouchControl } from "../../objects/interface/ITouchControl";
 import { Helper } from "../../utils/Helper";
 
+import { PopUpWindow } from "../../objects/components/PopUpWindow";
+import { FlatButton } from "../../objects/components/FlatButton";
+import { DimBackground } from "../../objects/components/DimBackground";
+
+//#endregion
 export const LEFT_AREA: number = 210;
 export const RIGHT_AREA: number = 570;
 
@@ -42,7 +48,8 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		this._onTouch = false;
 		this._testRestart = false;
 		this._onEnemyAttack = false;
-		this._playerHp = 3;
+		// this._playerHp = 3;
+		this._playerHp = 1; // FIXME: [Debug] Player HP
 	}
 
 	create (): void {
@@ -108,7 +115,15 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 					duration: 150,
 					onComplete: () =>
 						this.time.delayedCall(300, () => {
-							console.log("Success window!");
+							console.log("Stage Clear window appear!");
+							// TODO: Move it to UIScene
+							new DimBackground(this).setVisible(true);
+							new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
+								new FlatButton(this, 0, 0, 'nextstage_btn')
+									.setCallback(() => alert('Not implemented')),
+								new FlatButton(this, 0, 72, 'worldmap_btn')
+									.setCallback(() => alert('Not implemented')),
+							]);
 						})
 					}
 				).play();
@@ -165,6 +180,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	private playerDamaged (): void {
 		this.cameras.main.shake(160, 0.018);
 		this._playerHp = (this._playerHp > 0) ? this._playerHp - 1 : 0;
+		console.log('TODO: UI#change_player_life', this._playerHp);
 		if (this._playerHp > 0) {
 			this.eventUI.emit('UI#reset_timer');
 			this.clearArrow();
@@ -172,7 +188,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 			this._onEnemyAttack = false;
 		}
 		else {
-			this.time.delayedCall(300, () => this.eventUI.emit('UI#do_gameover'));
+			this.time.delayedCall(330, () => this.eventUI.emit('UI#do_gameover'));
 		}
 	}
 
