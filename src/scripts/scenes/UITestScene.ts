@@ -26,16 +26,30 @@ export class UITestScene extends UIScene {
 	}
 
 	create (): void {
-		this._dimBackground = new DimBackground(this);
+		const areaScreenImage = this.add.image(0, 0, 'area_screen_control')
+			.setOrigin(0)
+			.setAlpha(0.75);
+		this.tweens.add({
+			targets: areaScreenImage,
+			alpha: 0,
+			delay: 5000,
+			duration: 1000,
+			onComplete: () => {
+				areaScreenImage.setVisible(false).setActive(false);
+				areaScreenImage.destroy();
+			}
+		});
 
 		this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123")
 			.setOrigin(0.5, 0)
 			.setScrollFactor(0)
 			.setFontSize(32);
 
-		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn')
+		new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
 			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));
+
+		this._dimBackground = new DimBackground(this);
 
 		this._fpsText = new FPSText(this);
 
@@ -60,11 +74,21 @@ export class UITestScene extends UIScene {
 		
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('do_gameover', this.doGameOver.bind(this));
-		this.registerEvent('to_scene_tutorial', this.startToScene.bind(this, "TutorialGameScene"));
+		this.registerEvent('to_scene_tutorial', () => {
+			this.doCameraFadeOut(this.startToScene.bind(this, "TutorialGameScene"));
+		});
+		this.registerEvent('disable_input', () => { this.input.enabled = false; });
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
 			this.targetEmitter.emit('UI#do_pause');
 		});
+	}
+
+	doCameraFadeOut (onComplete: Function): void {
+		this.targetEmitter.emit('UI#disable_input');
+		const cam = this.cameras.main;
+		cam.once('camerafadeoutcomplete', () => onComplete());
+		cam.fadeOut(600);
 	}
 
 	doPause (): void {
