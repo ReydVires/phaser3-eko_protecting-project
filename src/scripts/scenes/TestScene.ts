@@ -93,30 +93,32 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this.add.image(0, 0, 'tutorial_stage_platform_p1').setOrigin(0).setScrollFactor(0.9);
 		this.add.image(0, 0, 'tutorial_stage_platform').setOrigin(0);
 		this.add.image(0, 0, 'tutorial_stage_foreground').setOrigin(0).setScrollFactor(0.95);
+		this.add.image(1725, 625, 'cave_entrance').setOrigin(0, 1);
 
 		const cam = this.cameras.main;
 		// Set bound camera, based on background level
-		cam.setBounds(0, 0, this._background.displayWidth, 0);
+		cam.setBounds(0, 0, this._background.displayWidth - 32, 0);
 
 		this._player = new Player(this, 64, 575, 'eko_idle');
 		cam.startFollow(this._player);
 
 		this._deadZonePosY = cam.y + cam.height;
 
+		const targetBubblePos = this._player as Phaser.GameObjects.Components.Transform;
 		this._dialogues = new Array<DialogueData>(
 			<DialogueData> {
 				text: "Ini dialog test ke 1",
-				bubblePosition: this._player as Phaser.GameObjects.Components.Transform,
+				bubblePosition: targetBubblePos,
 				facing: 2
 			},
 			<DialogueData> {
 				text: "Sekarang ada dialog test ke 2",
-				bubblePosition: this._player as Phaser.GameObjects.Components.Transform,
-				facing: 1
+				bubblePosition: targetBubblePos,
+				facing: 2
 			},
 			<DialogueData> {
 				text: "I'm gonna head out!",
-				bubblePosition: this._player as Phaser.GameObjects.Components.Transform,
+				bubblePosition: targetBubblePos,
 				facing: 2
 			}
 		);
@@ -298,7 +300,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 
 	touchRightArea(): void {
 		this._player.doRight();
-		const boundaries = this._background.displayWidth - this._player.displayWidth * 0.5;
+		const tolerance = 134;
+		const boundaries = (this._background.displayWidth - this._player.displayWidth * 0.5) - tolerance;
 		if (this._player.x > boundaries) {
 			this._player.setVelocityX(0);
 		}
@@ -313,24 +316,25 @@ export class TestScene extends BaseScene implements ITouchControl {
 	}
 	
 	touchAction(): void {
+		const playerOnGround = this._player.body.blocked.down;
 		if (!this._interactionArea) {
 			this._player.doJump();
 		}
-		else {
+		else if (playerOnGround) {
 			this._bubbleChat?.destroy(); // Destroy the previous baloon rendered!
 			if (this._dialogues.length > 0) {
 				this._onCutsceneEvent = true;
 
-				console.log("Show bubble talk for interaction");
 				const dialogueData = this._dialogues.shift();
-				const text = dialogueData!.text;
+				const dialogueText = dialogueData!.text;
 				const targetPosition = dialogueData!.bubblePosition;
+				// console.log("Target GO", targetPosition);
 				const facing = dialogueData!.facing;
 				this._bubbleChat = new BaloonSpeech(
 					this,
-					targetPosition.x - 280, targetPosition.y - (160 + 160 * 1.35),
+					targetPosition.x - 280, targetPosition.y - (160 + 160 * 1.25),
 					280, 160,
-					text, facing
+					dialogueText, facing
 				);
 			}
 			else {
@@ -346,10 +350,10 @@ export class TestScene extends BaseScene implements ITouchControl {
 	update (): void {
 		if (this._platformCompatible) {
 			this.touchController();
-			this.keyboardController(); // FIXME: Touch only
+			this.keyboardController(); // FIXME: [Debug] Touch only
 		}
 		else {
-			this.touchController(); // FIXME: Keyboard only
+			this.touchController(); // FIXME: [Debug] Keyboard only
 			this.keyboardController();
 		}
 
