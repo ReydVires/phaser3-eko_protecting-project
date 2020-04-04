@@ -28,6 +28,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	);
 	private _onTouch: boolean;
 	private _platformCompatible: boolean;
+	private _gameStart: boolean;
 
 	private _testRestart: boolean;
 
@@ -44,8 +45,8 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		this._onTouch = false;
 		this._testRestart = false;
 		this._onEnemyAttack = false;
-		// this._playerHp = 3;
-		this._playerHp = 1; // FIXME: [Debug] Player HP
+		this._playerHp = 1; // FIXME: [Debug] Player HP: 3
+		this._gameStart = false;
 	}
 
 	create (): void {
@@ -71,6 +72,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 			}
 		});
 		
+		this.registerEvent('game_start', () => { this._gameStart = true; });
 		this.registerEvent('touch_right', this.touchRightArea.bind(this), true);
 		this.registerEvent('touch_left', this.touchLeftArea.bind(this), true);
 		this.registerEvent('touch_action', this.touchAction.bind(this), true);
@@ -251,21 +253,23 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	}
 
 	update (): void {
-		if (this._platformCompatible && !this._onEnemyAttack) {
-			this.touchController();
-		}
-
-		if (this.justDownKeyboard(this._keys.RIGHT)) {
-			const keyId = "right";
-			this.checkTap(keyId);
-		}
-		else if (this.justDownKeyboard(this._keys.LEFT)) {
-			const keyId = "left";
-			this.checkTap(keyId);
-		}
-		else if (this.justDownKeyboard(this._keys.UP)) {
-			const keyId = "up";
-			this.checkTap(keyId);
+		if (this._gameStart) {
+			if (this._platformCompatible && !this._onEnemyAttack) {
+				this.touchController();
+			}
+	
+			if (this.justDownKeyboard(this._keys.RIGHT)) {
+				const keyId = "right";
+				this.checkTap(keyId);
+			}
+			else if (this.justDownKeyboard(this._keys.LEFT)) {
+				const keyId = "left";
+				this.checkTap(keyId);
+			}
+			else if (this.justDownKeyboard(this._keys.UP)) {
+				const keyId = "up";
+				this.checkTap(keyId);
+			}
 		}
 	}
 
