@@ -25,18 +25,15 @@ export class MiniGameScene extends Phaser.Scene {
 			console.log("Prevent to back");
 		});
 
-		this.add.bitmapText(centerX * 1.5, centerY - 128, 'simply roundw', 'MINIGAME TIME!')
+		this.add.bitmapText(centerX * 1.5, centerY - 128, 'simply_roundw', 'MINIGAME TIME!')
 			.setOrigin(0.5, 1);
 		new FlatButton(this, centerX * 1.5, centerY, 'start_btn')
 			.setCallback(() => Helper.nextSceneFadeOut(this, 'TutorialGameScene'));
 		new FlatButton(this, centerX * 1.5, centerY + 120, 'leaderboard_btn')
 			.setCallback(() => {
-				new DimBackground(this).setVisible(true);
-				// TODO: Change this to leaderboard
-				new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
-					new FlatButton(this, 0, 0, 'nextstage_btn'),
-					new FlatButton(this, 0, 72, 'worldmap_btn'),
-				]);
+				// TODO: Implement this to leaderboard!
+				// new DimBackground(this).setVisible(true);
+				alert('Not implemented');
 			});
 	}
 
