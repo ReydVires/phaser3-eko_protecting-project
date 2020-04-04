@@ -28,7 +28,10 @@ export class MiniGameScene extends Phaser.Scene {
 		this.add.bitmapText(centerX * 1.5, centerY - 128, 'simply_roundw', 'MINIGAME TIME!')
 			.setOrigin(0.5, 1);
 		new FlatButton(this, centerX * 1.5, centerY, 'start_btn')
-			.setCallback(() => Helper.nextSceneFadeOut(this, 'TutorialGameScene'));
+			.setCallback(() => {
+				this.input.enabled = false;
+				Helper.nextSceneFadeOut(this, 'TutorialGameScene');
+			}).setJustOnce();
 		new FlatButton(this, centerX * 1.5, centerY + 120, 'leaderboard_btn')
 			.setCallback(() => {
 				// TODO: Implement this to leaderboard!

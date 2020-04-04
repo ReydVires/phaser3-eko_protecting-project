@@ -37,8 +37,8 @@ export class MenuScene extends BaseScene {
 		this._isGameStart = data!.isGameStarted;
 		this._baloonTips = new Array<string>(
 			"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?",
-			"What do you want? I have nothingness.",
-			"Lorem ipsum dolor sit amet!?",
+			"The greatest glory in living lies not in never falling, but in rising every time we fall.",
+			"If life were predictable it would cease to be life, and be without flavor.",
 			"Transform your bad code to good code with our newest bundle!",
 			"Get ebooks like Becoming a Better Programmer, Head First Agile."
 		);
@@ -132,12 +132,16 @@ export class MenuScene extends BaseScene {
 	createMenuButton (): void {
 		this._playBtn = new Button(this, 1048, 334, 'AdventureButton')
 			.setCallback(() => {
+				this.input.enabled = false;
 				Helper.nextSceneFadeOut(this, 'TestScene');
 			})
 			.setJustOnce();
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
-			.setCallback(() => { Helper.nextSceneFadeOut(this, 'MiniGameScene'); })
+			.setCallback(() => {
+				this.input.enabled = false;
+				Helper.nextSceneFadeOut(this, 'MiniGameScene');
+			})
 			.setJustOnce();
 
 		this._warungGameBtn = new Button(this, 1048, 574, 'WarungButton')

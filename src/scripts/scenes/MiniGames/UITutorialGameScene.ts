@@ -16,6 +16,7 @@ export class UITutorialGameScene extends UIScene {
 	private _dimBackground: DimBackground;
 	private _gameOverWindow: PopUpWindow;
 	private _stageClearWindow: PopUpWindow;
+	private _gameStart: boolean;
 
 	constructor () {
 		super('UITutorialGameScene');
@@ -24,6 +25,8 @@ export class UITutorialGameScene extends UIScene {
 	init (): void {
 		super.init();
 		console.log("Called UITutorialGameScene");
+		this._gameStart = false;
+		this.input.enabled = false;
 	}
 
 	create (): void {
@@ -42,6 +45,14 @@ export class UITutorialGameScene extends UIScene {
 				this.targetEmitter.emit('UI#to_scene_menu');
 			}
 		});
+
+		const cam = this.cameras.main;
+		cam.once('camerafadeincomplete', () => {
+			this.targetEmitter.emit('event#game_start');
+			this._gameStart = true;
+			this.input.enabled = true;
+		});
+		cam.fadeIn(600);
 
 		this._dimBackground = new DimBackground(this);
 
@@ -91,9 +102,15 @@ export class UITutorialGameScene extends UIScene {
 				.setOrigin(0.5)
 				.setFontSize(24),
 			new FlatButton(this, -128, 114, 'playagain_btn')
-				.setCallback(() => this.restartScene()),
+				.setCallback(() => {
+					this.input.enabled = false;
+					cam.once('camerafadeoutcomplete', () => {
+						this.restartScene();
+					});
+					cam.fadeOut(600);
+				}).setJustOnce(),
 			new FlatButton(this, 128, 114, 'mainmenu_btn')
-				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu'))
+				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu')).setJustOnce()
 		])
 		.setVisible(false);
 
@@ -109,7 +126,7 @@ export class UITutorialGameScene extends UIScene {
 	}
 
 	update (time: number, dt: number): void {
-		if (!this.isScenePause) {
+		if (!this.isScenePause && this._gameStart) {
 			this._gameTime?.updateProgressbar(5);
 		}
 
