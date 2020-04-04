@@ -26,18 +26,18 @@ export class UITutorialGameScene extends UIScene {
 	}
 
 	create (): void {
-		// 	// Wait until 'UI#to_menu' registered
+		// 	// Wait until 'UI#to_scene_menu' registered
 		// Helper.doTask(() => {
 		// 	let called = false;
 		// 	do {
-		// 		if (this.targetEmitter.inspectEvents('UI#to_menu')) {
-		// 			this.targetEmitter.emit('UI#to_menu');
+		// 		if (this.targetEmitter.inspectEvents('UI#to_scene_menu')) {
+		// 			this.targetEmitter.emit('UI#to_scene_menu');
 		// 			called = true;
 		// 		}
 		// 	} while (!called);
 		// });
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			this.startToScene('MenuScene');
+			this.startToScene('MenuScene', { isGameStarted: true });
 		});
 
 		this._dimBackground = new DimBackground(this);
@@ -57,7 +57,7 @@ export class UITutorialGameScene extends UIScene {
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
-				.setCallback(() => this.startToScene('MenuScene'))
+				.setCallback(() => this.startToScene('MenuScene', { isGameStarted: true }))
 		]).setVisible(false);
 
 		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
@@ -78,7 +78,9 @@ export class UITutorialGameScene extends UIScene {
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('restart', this.restartScene.bind(this));
 		this.registerEvent('do_gameover', this.doGameOver.bind(this));
-		this.registerEvent('to_menu', this.startToScene.bind(this, 'MenuScene'));
+		this.registerEvent('to_scene_menu', this.startToScene.bind(this, 'MenuScene', {
+			isGameStarted: true
+		}));
 		this.registerEvent('stop_timer', () => this._gameTime?.stop(), true);
 		this.registerEvent('reset_timer', () => this._gameTime?.resetProgress());
 	}
@@ -89,7 +91,7 @@ export class UITutorialGameScene extends UIScene {
 		}
 
 		if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('ESC'))) {
-			this.targetEmitter.emit('UI#to_menu');
+			this.targetEmitter.emit('UI#to_scene_menu');
 		}
 	}
 
