@@ -5,10 +5,6 @@ import { BaseScene } from "../../objects/abstract/BaseScene";
 import { ITouchControl } from "../../objects/interface/ITouchControl";
 import { Helper } from "../../utils/Helper";
 
-import { PopUpWindow } from "../../objects/components/PopUpWindow";
-import { FlatButton } from "../../objects/components/FlatButton";
-import { DimBackground } from "../../objects/components/DimBackground";
-
 //#endregion
 export const LEFT_AREA: number = 210;
 export const RIGHT_AREA: number = 570;
@@ -114,17 +110,8 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 					x: xStartPlayer,
 					duration: 150,
 					onComplete: () =>
-						this.time.delayedCall(300, () => {
-							console.log("Stage Clear window appear!");
-							// TODO: Move it to UIScene
-							new DimBackground(this).setVisible(true);
-							new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
-								new FlatButton(this, 0, 0, 'nextstage_btn')
-									.setCallback(() => alert('Not implemented')),
-								new FlatButton(this, 0, 72, 'worldmap_btn')
-									.setCallback(() => alert('Not implemented')),
-							]);
-						})
+						this.time.delayedCall(300,
+							() => this.eventUI.emit('UI#show_clear_stage'))
 					}
 				).play();
 		}

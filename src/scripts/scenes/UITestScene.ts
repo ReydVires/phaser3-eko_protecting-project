@@ -54,6 +54,7 @@ export class UITestScene extends UIScene {
 			new FlatButton(this, 0, 0, 'tryagain_btn')
 				.setCallback(() => this.restartScene({ isTryAgain: true })),
 			new FlatButton(this, 0, 72, 'worldmap_btn')
+				.setCallback(() => alert('Not implemented'))
 		])
 		.setVisible(false);
 		

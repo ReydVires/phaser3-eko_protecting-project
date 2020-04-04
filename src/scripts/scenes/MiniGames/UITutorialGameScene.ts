@@ -15,6 +15,7 @@ export class UITutorialGameScene extends UIScene {
 	private _windowPause: PopUpWindow;
 	private _dimBackground: DimBackground;
 	private _gameOverWindow: PopUpWindow;
+	private _stageClearWindow: PopUpWindow;
 
 	constructor () {
 		super('UITutorialGameScene');
@@ -37,7 +38,9 @@ export class UITutorialGameScene extends UIScene {
 		// 	} while (!called);
 		// });
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			this.targetEmitter.emit('UI#to_scene_menu');
+			if (!this._dimBackground.visible) {
+				this.targetEmitter.emit('UI#to_scene_menu');
+			}
 		});
 
 		this._dimBackground = new DimBackground(this);
@@ -57,6 +60,13 @@ export class UITutorialGameScene extends UIScene {
 				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
 				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu'))
+		]).setVisible(false);
+
+		this._stageClearWindow = new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
+			new FlatButton(this, 0, 0, 'nextstage_btn')
+				.setCallback(() => alert('Not implemented')),
+			new FlatButton(this, 0, 72, 'worldmap_btn')
+				.setCallback(() => alert('Not implemented')),
 		]).setVisible(false);
 
 		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
@@ -87,6 +97,7 @@ export class UITutorialGameScene extends UIScene {
 		])
 		.setVisible(false);
 
+		this.registerEvent('show_clear_stage', this.showClearStage.bind(this));
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('restart', this.restartScene.bind(this));
 		this.registerEvent('do_gameover', this.doGameOver.bind(this));
@@ -105,6 +116,11 @@ export class UITutorialGameScene extends UIScene {
 		if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('ESC'))) {
 			this.targetEmitter.emit('UI#to_scene_menu');
 		}
+	}
+
+	showClearStage (): void {
+		this._stageClearWindow.setVisible(true);
+		this._dimBackground.show();
 	}
 
 	doPause (): void {
