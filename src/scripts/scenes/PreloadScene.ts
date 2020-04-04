@@ -83,8 +83,9 @@ export class PreloadScene extends Phaser.Scene {
 			y: y - (height + offsetY),
 			text: text,
 			style: {
-				fill: 'black',
-				fontSize: '32px'
+				fill: 'white',
+				fontSize: '32px',
+				fontStyle: 'bold'
 			}
 		};
 		this.make
