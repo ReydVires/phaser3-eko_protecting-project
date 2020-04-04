@@ -18,6 +18,7 @@ export class MenuScene extends BaseScene {
 	private _settingBtn: FlatButton;
 
 	private _baloonSpeech: BaloonSpeech;
+	private _baloonTips: Array<string>;
 
 	private _isGameStart: boolean;
 	private _gameTitleLabels: Array<Phaser.GameObjects.Text>;
@@ -33,8 +34,14 @@ export class MenuScene extends BaseScene {
 	init (data: any): void {
 		super.init(data);
 		console.log(`MenuScene`);
-		this._isGameStart = data!.isGameStarted || false;
-		this._gameTitleLabels = [];
+		this._isGameStart = data!.isGameStarted;
+		this._baloonTips = new Array<string>(
+			"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?",
+			"What do you want? I have nothingness.",
+			"Lorem ipsum dolor sit amet!?",
+			"Transform your bad code to good code with our newest bundle!",
+			"Get ebooks like Becoming a Better Programmer, Head First Agile."
+		);
 	}
 
 	create (): void {
@@ -45,7 +52,7 @@ export class MenuScene extends BaseScene {
 			}
 		});
 
-		this._gameTitleLabels.push(
+		this._gameTitleLabels = new Array<Phaser.GameObjects.Text>(
 			this.add.text(centerX, centerY, "EKO",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
@@ -112,11 +119,12 @@ export class MenuScene extends BaseScene {
 	createGameTitle (): void {
 		this._gameTitleLabels.forEach(label => label.setVisible(false));
 		const portraitImage = this.add.image(centerX - centerX * 0.55, centerY + 32, 'phaser-logo');
+		const randomTipsIndex = Phaser.Math.Between(0, this._baloonTips.length - 1);
 		this._baloonSpeech = new BaloonSpeech(
 			this,
 			395, 228 - 64,
 			300, 150,
-			"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?"
+			this._baloonTips[randomTipsIndex]
 		);
 		this.createMenuButton();
 	}
@@ -136,9 +144,9 @@ export class MenuScene extends BaseScene {
 			.setJustOnce();
 
 		this._achievementBtn = new FlatButton(this, 1100, 64, 'AchievementButton')
-			.setCallback(() => {
-				this._baloonSpeech.setText("What do you want? I have nothingness.");
-			})
+			// .setCallback(() => {
+			// 	this._baloonSpeech.setText("What do you want? I have nothingness.");
+			// })
 			.setJustOnce()
 			.setOrigin(0.5, 0.35);
 
