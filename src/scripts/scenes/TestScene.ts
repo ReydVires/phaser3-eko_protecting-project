@@ -178,11 +178,13 @@ export class TestScene extends BaseScene implements ITouchControl {
 			});
 		}
 
-		const touchLine = this.add.graphics();
-		touchLine.lineStyle(2, 0x000, 0.9);
-		touchLine.moveTo(this.LEFT_AREA, 0).lineTo(this.LEFT_AREA, SCREEN_HEIGHT);
-		touchLine.moveTo(this.RIGHT_AREA, 0).lineTo(this.RIGHT_AREA, SCREEN_HEIGHT);
-		touchLine.strokePath().setScrollFactor(0);
+		if (Helper.isInDevelopment()) {
+			const touchLine = this.add.graphics();
+			touchLine.lineStyle(2, 0x000, 0.9);
+			touchLine.moveTo(this.LEFT_AREA, 0).lineTo(this.LEFT_AREA, SCREEN_HEIGHT);
+			touchLine.moveTo(this.RIGHT_AREA, 0).lineTo(this.RIGHT_AREA, SCREEN_HEIGHT);
+			touchLine.strokePath().setScrollFactor(0);
+		}
 	}
 
 	generateMapping (mappingData: Array<string>): void {
@@ -338,9 +340,17 @@ export class TestScene extends BaseScene implements ITouchControl {
 				);
 			}
 			else {
+				this.input.enabled = false;
 				this._onCutsceneEvent = false;
-				this.time.delayedCall(300, () =>
-					this.eventUI.emit('UI#to_scene_tutorial'));
+				this.tweens.add({
+					delay: 500,
+					targets: this._player,
+					alpha: 0,
+					duration: 250,
+					onComplete: () => {
+						this.eventUI.emit('UI#to_scene_tutorial');
+					}
+				});
 				console.log("Cutscene interaction end");
 			}
 		}
