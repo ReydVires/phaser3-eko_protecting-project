@@ -73,6 +73,7 @@ export class Helper {
 
 	static nextSceneFadeOut (currentScene: Phaser.Scene, sceneName: string, data?: any): void {
 		Helper.log("Go to scene: " + sceneName);
+		// TODO: Input must be disable while being transition [scene.input.enabled = false]
 		const cam = currentScene.cameras.main;
 		cam.once('camerafadeoutcomplete', () => {
 			// Passing zero `{}` object to clear based-scene variable
