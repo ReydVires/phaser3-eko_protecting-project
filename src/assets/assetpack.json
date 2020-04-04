@@ -183,7 +183,11 @@
 			{
 				"key": "tutorial_stage_foreground",
 				"url": "backgrounds/img_tutorial_stage_foreground.png"
-			}
+            },
+            {
+                "key": "cave_entrance",
+                "url": "backgrounds/img_cave_entrance.png"
+            }
         ]
     },
     "spritesheetPack": {
