@@ -143,14 +143,11 @@ export class MenuScene extends BaseScene {
 		this._warungGameBtn = new Button(this, 1048, 574, 'WarungButton')
 			.setJustOnce();
 
-		this._achievementBtn = new FlatButton(this, 1100, 64, 'AchievementButton')
-			// .setCallback(() => {
-			// 	this._baloonSpeech.setText("What do you want? I have nothingness.");
-			// })
+		this._achievementBtn = new FlatButton(this, 1100, 64, 'achievement_btn')
 			.setJustOnce()
 			.setOrigin(0.5, 0.35);
 
-		this._settingBtn = new FlatButton(this, 1189, 64, 'SettingButton')
+		this._settingBtn = new FlatButton(this, 1189, 64, 'setting_btn')
 			.setCallback(this.showSettingWindow.bind(this));
 	}
 
