@@ -28,6 +28,11 @@ export class UITestScene extends UIScene {
 	create (): void {
 		this._dimBackground = new DimBackground(this);
 
+		this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123")
+			.setOrigin(0.5, 0)
+			.setScrollFactor(0)
+			.setFontSize(32);
+
 		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
 			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));

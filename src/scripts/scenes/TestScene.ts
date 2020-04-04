@@ -89,11 +89,6 @@ export class TestScene extends BaseScene implements ITouchControl {
 		// }, this);
 		Helper.printPointerPos(this, true);
 
-		this.add.bitmapText(centerX, 0, 'simply round', "In Testing Mode 123")
-			.setOrigin(0.5, 0)
-			.setScrollFactor(0)
-			.setFontSize(32);
-
 		this._background = this.add.image(0, 0, 'tutorial_stage_bg').setOrigin(0);
 		this.add.image(0, 0, 'tutorial_stage_platform_p1').setOrigin(0).setScrollFactor(0.9);
 		this.add.image(0, 0, 'tutorial_stage_platform').setOrigin(0);
@@ -330,7 +325,6 @@ export class TestScene extends BaseScene implements ITouchControl {
 				const dialogueData = this._dialogues.shift();
 				const text = dialogueData!.text;
 				const targetPosition = dialogueData!.bubblePosition;
-				console.log("Target pos:", targetPosition);
 				const facing = dialogueData!.facing;
 				this._bubbleChat = new BaloonSpeech(
 					this,
