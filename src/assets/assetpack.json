@@ -53,16 +53,28 @@
                 "url": "UI/spr_tryagain_btn.png"
             },
             {
+                "key": "mainmenu_btn",
+                "url": "UI/spr_mainmenu_btn.png"
+            },
+            {
+                "key": "playagain_btn",
+                "url": "UI/spr_playagain_btn.png"
+            },
+            {
                 "key": "gameoverAdventure_win",
                 "url": "UI/popup_gameoverAdventure_win.png"
             },
             {
-                "key": "AchievementButton",
-                "url": "UI/spr_AchievementButton.png"
+                "key": "gameoverMinigame_win",
+                "url": "UI/popup_gameoverMinigame_win.png"
             },
             {
-                "key": "SettingButton",
-                "url": "UI/spr_SettingButton.png"
+                "key": "achievement_btn",
+                "url": "UI/spr_achievement_btn.png"
+            },
+            {
+                "key": "setting_btn",
+                "url": "UI/spr_setting_btn.png"
             },
             {
                 "key": "start_btn",
@@ -230,12 +242,12 @@
 		"defaultType": "bitmapFont",
 		"files": [
 			{
-				"key": "simply round",
+				"key": "simply_round",
                 "textureURL": "font_simplyr.png",
                 "fontDataURL": "bitmap_simplyr.fnt"
             },
             {
-				"key": "simply roundw",
+				"key": "simply_roundw",
                 "textureURL": "font_simplyr_w.png",
                 "fontDataURL": "bitmap_simplyr_w.fnt"
 			}
