@@ -16,6 +16,7 @@ export class UITutorialGameScene extends UIScene {
 	private _dimBackground: DimBackground;
 	private _gameOverWindow: PopUpWindow;
 	private _stageClearWindow: PopUpWindow;
+	private _tutorialWindow: PopUpWindow;
 	private _gameStart: boolean;
 
 	constructor () {
@@ -49,8 +50,8 @@ export class UITutorialGameScene extends UIScene {
 		const cam = this.cameras.main;
 		cam.once('camerafadeincomplete', () => {
 			this.targetEmitter.emit('event#game_start');
-			this._gameStart = true;
 			this.input.enabled = true;
+			this.showTutorialScene();
 		});
 		cam.fadeIn(600);
 
@@ -71,20 +72,40 @@ export class UITutorialGameScene extends UIScene {
 				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
 				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu'))
-		]).setVisible(false);
+		]).setVisible(false).setActive(false);
 
 		this._stageClearWindow = new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
 			new FlatButton(this, 0, 0, 'nextstage_btn')
 				.setCallback(() => alert('Not implemented')),
 			new FlatButton(this, 0, 72, 'worldmap_btn')
 				.setCallback(() => alert('Not implemented')),
-		]).setVisible(false);
+		]).setVisible(false).setActive(false);
 
 		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
 		this._gameTime.setCallback(() => {
 			console.log("Times up!");
 			this.targetEmitter.emit('event#enemy_attack', false);
 		});
+
+		this._tutorialWindow = new PopUpWindow(this, centerX, centerY, 'how_toPlaym_win', [
+			new FlatButton(this, -256, 32, 'prev_btn'),
+			new FlatButton(this, 256, 32, 'next_btn'),
+			this.add.image(0, 0, 'phaser-logo'), // TODO: Content here!
+			this.add.text(0, 208, "Lorem Ipsum Dolor\n" +
+			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! " +
+			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! " +
+			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! ")
+				.setAlign('center')
+				.setOrigin(0.5)
+				.setFontSize(16)
+				.setFontFamily('Comfortaa')
+				.setWordWrapWidth(475, false),
+			new FlatButton(this, 728 * 0.5, -270, 'exit_btn')
+				.setCallback(() => {
+					this.showTutorialScene();
+					this._gameStart = true;
+				}).setJustOnce()
+		]).setVisible(false).setActive(false);
 
 		this._gameOverWindow = new PopUpWindow(this, centerX, centerY, 'gameoverMinigame_win', [
 			this.add.bitmapText(0, -72, 'simply_round', "Your Score: 9999")
@@ -112,7 +133,7 @@ export class UITutorialGameScene extends UIScene {
 			new FlatButton(this, 128, 114, 'mainmenu_btn')
 				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu')).setJustOnce()
 		])
-		.setVisible(false);
+		.setVisible(false).setActive(false);
 
 		this.registerEvent('show_clear_stage', this.showClearStage.bind(this));
 		this.registerEvent('do_pause', this.doPause.bind(this));
@@ -136,7 +157,13 @@ export class UITutorialGameScene extends UIScene {
 	}
 
 	showClearStage (): void {
-		this._stageClearWindow.setVisible(true);
+		this._stageClearWindow.setVisible(true).setActive(false);
+		this._dimBackground.show();
+	}
+
+	showTutorialScene (): void {
+		this._tutorialWindow.setVisible(!this._tutorialWindow.visible);
+		this._tutorialWindow.setActive(this._tutorialWindow.visible);
 		this._dimBackground.show();
 	}
 
@@ -144,12 +171,13 @@ export class UITutorialGameScene extends UIScene {
 		const isVisible = this._windowPause.visible;
 		this.pauseScene(!isVisible);
 		this._windowPause.setVisible(!isVisible);
+		this._windowPause.setActive(!isVisible);
 		this._dimBackground.show();
 	}
 
 	doGameOver (): void {
 		this.pauseScene();
-		this._gameOverWindow.setVisible(true);
+		this._gameOverWindow.setVisible(true).setActive(true);
 		this._dimBackground.show();
 	}
 
