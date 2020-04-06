@@ -33,10 +33,9 @@ export class MiniGameScene extends Phaser.Scene {
 			}).setJustOnce();
 		new FlatButton(this, centerX * 1.5, centerY + 120, 'leaderboard_btn')
 			.setCallback(() => {
-				// TODO: Implement this to leaderboard!
-				// new DimBackground(this).setVisible(true);
-				alert('Not implemented');
-			});
+				this.input.enabled = false;
+				Helper.nextSceneFadeOut(this, 'LeaderboardScene');
+			}).setJustOnce();
 
 		new PopUpWindow(this, centerX * 0.6, centerY, 'screen_booster', [
 			this.add.image(-140, -112, 'booster_display'),
