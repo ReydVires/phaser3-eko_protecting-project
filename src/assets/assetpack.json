@@ -185,12 +185,20 @@
                 "url": "UI/popup_area_screen_control.png"
             },
             {
+                "key": "back_btn",
+                "url": "UI/spr_back_btn.png"
+            },
+            {
                 "key": "screen_booster",
                 "url": "UI/spr_screen_booster.png"
             },
             {
                 "key": "booster_display",
                 "url": "UI/spr_booster_display.png"
+            },
+            {
+                "key": "screen_leaderboard",
+                "url": "UI/spr_screen_leaderboard.png"
             },
             {
                 "key": "tutorial_stage_platform",
