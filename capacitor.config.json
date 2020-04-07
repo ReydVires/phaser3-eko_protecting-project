@@ -4,5 +4,11 @@
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
 	"webDir": "dist",
+	"plugins": {
+		"SplashScreen": {
+			"splashFullScreen": true,
+			"splashImmersive": true
+		}
+	},
 	"cordova": {}
 }
