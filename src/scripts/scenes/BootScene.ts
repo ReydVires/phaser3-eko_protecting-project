@@ -45,7 +45,7 @@ export class BootScene extends Phaser.Scene {
 
 	createSplashscreen (): void {
 		const teluLogo = this.add.image(centerX, centerY, 'telu_logo').setAlpha(0);
-		const phaserLogo = this.add.image(centerX, centerY, 'phaser-logo').setAlpha(0);
+		// const phaserLogo = this.add.image(centerX, centerY, 'phaser-logo').setAlpha(0);
 
 		const timelineSplash = this.tweens.createTimeline();
 		timelineSplash.add({
@@ -58,17 +58,6 @@ export class BootScene extends Phaser.Scene {
 			targets: teluLogo,
 			delay: 800,
 			alpha: 0,
-			duration: 800
-		})
-		.add({
-			targets: phaserLogo,
-			alpha: 1,
-			duration: 800,
-		})
-		.add({
-			targets: phaserLogo,
-			delay: 800,
-			alpha: 0,
 			duration: 800,
 			onComplete: () => {
 				this.time.delayedCall(150, () => {
@@ -76,6 +65,22 @@ export class BootScene extends Phaser.Scene {
 				});
 			}
 		});
+		// .add({
+		// 	targets: phaserLogo,
+		// 	alpha: 1,
+		// 	duration: 800,
+		// })
+		// .add({
+		// 	targets: phaserLogo,
+		// 	delay: 800,
+		// 	alpha: 0,
+		// 	duration: 800,
+		// 	onComplete: () => {
+		// 		this.time.delayedCall(150, () => {
+		// 			this.scene.start('PreloadScene');
+		// 		});
+		// 	}
+		// });
 		timelineSplash.play();
 	}
 
