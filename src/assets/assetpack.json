@@ -201,6 +201,14 @@
                 "url": "UI/spr_screen_leaderboard.png"
             },
             {
+                "key": "dialogue_box",
+                "url": "UI/spr_dialogue_box.png"
+            },
+            {
+                "key": "face_holder",
+                "url": "UI/faces/spr_face_holder.png"
+            },
+            {
                 "key": "tutorial_stage_platform",
                 "url": "backgrounds/img_tutorial_stage_platform.png"
 			},
