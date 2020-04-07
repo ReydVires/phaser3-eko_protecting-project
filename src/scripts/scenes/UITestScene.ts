@@ -6,6 +6,7 @@ import { DimBackground } from "../objects/components/DimBackground";
 import { UIScene } from "../objects/abstract/UIScene";
 import { FPSText } from "../objects/FPSText";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
+import { DialogueBox } from "../objects/DialogueBox";
 
 //#endregion
 
@@ -38,6 +39,13 @@ export class UITestScene extends UIScene {
 				areaScreenImage.setVisible(false).setActive(false);
 				areaScreenImage.destroy();
 			}
+		});
+
+		const dialogueBox = new DialogueBox(this, centerX, 128, 'face_holder', 'Namae', 'Lorem ipsum dolors sits amets! Lorem ipsum dolors sits amets! Lorem ip sum dolors sits amets! Lorem ipsum dolors sits amets!')
+		.setCallback(() => {
+			dialogueBox.changeDialogueText("Whats done, is done! You're amazing. It's sad how less people know of this cover.");
+			dialogueBox.disableInteractive();
+			this.time.delayedCall(3200, () => dialogueBox.destroy());
 		});
 
 		this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123")
