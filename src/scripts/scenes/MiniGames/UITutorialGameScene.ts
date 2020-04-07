@@ -42,9 +42,7 @@ export class UITutorialGameScene extends UIScene {
 		// 	} while (!called);
 		// });
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			if (!this._dimBackground.visible) {
-				this.targetEmitter.emit('UI#to_scene_menu');
-			}
+			this.targetEmitter.emit('UI#to_scene_menu');
 		});
 
 		const cam = this.cameras.main;
