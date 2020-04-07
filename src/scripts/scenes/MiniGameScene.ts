@@ -21,7 +21,11 @@ export class MiniGameScene extends Phaser.Scene {
 
 	create (): void {
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			Helper.nextSceneFadeOut(this, 'MenuScene', { isGameStarted: true });
+			// Prevent to make double tap back
+			if (this.input.enabled) {
+				Helper.nextSceneFadeOut(this, 'MenuScene', { isGameStarted: true });
+				this.input.enabled = false;
+			}
 		});
 
 		this.add.bitmapText(centerX * 1.5, centerY - 128, 'simply_roundw', 'MINIGAME TIME!')
