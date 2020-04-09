@@ -145,6 +145,10 @@ export class MenuScene extends BaseScene {
 			.setJustOnce();
 
 		this._warungGameBtn = new Button(this, 1048, 574, 'WarungButton')
+			.setCallback(() => {
+				this.input.enabled = false;
+				Helper.nextSceneFadeOut(this, 'StoreScene');
+			})
 			.setJustOnce();
 
 		this._achievementBtn = new FlatButton(this, 1100, 64, 'achievement_btn')
