@@ -101,12 +101,12 @@ export class LeaderboardScene extends Phaser.Scene {
 
 		this.input.on('pointerdown', (pointer: PointerEvent) => {
 			if (canSwipe) {
-				startTouch = new Phaser.Math.Vector2(pointer.x, pointer.y);
+				startTouch.set(pointer.x, pointer.y);
 			}
 		})
 		.on('pointermove', (pointer: PointerEvent) => {
 			if (canSwipe) {
-				onTouchMove = new Phaser.Math.Vector2(pointer.x, pointer.y);
+				onTouchMove.set(pointer.x, pointer.y);
 				let newY = (onTouchMove.y - startTouch.y) + targetObject.y;
 				if (newY > thresholdUp) {
 					newY = thresholdUp;
@@ -119,7 +119,7 @@ export class LeaderboardScene extends Phaser.Scene {
 		})
 		.on('pointerup', () => {
 			if (canSwipe) {
-				targetObject = new Phaser.Math.Vector2(this._testerContainer.x, this._testerContainer.y);
+				targetObject.set(this._testerContainer.x, this._testerContainer.y);
 			}
 		});
 	}
