@@ -209,6 +209,18 @@
                 "url": "UI/faces/spr_face_holder.png"
             },
             {
+                "key": "warung_display_box",
+                "url": "UI/spr_warung_display_box.png"
+            },
+            {
+                "key": "item_box_nocoin",
+                "url": "UI/spr_item_box_nocoin.png"
+            },
+            {
+                "key": "item_box",
+                "url": "UI/spr_item_box.png"
+            },
+            {
                 "key": "tutorial_stage_platform",
                 "url": "backgrounds/img_tutorial_stage_platform.png"
 			},
