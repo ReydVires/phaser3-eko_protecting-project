@@ -63,7 +63,7 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 		return dialogue;
 	}
 
-	changeFace (texture: string, frame?: string | number): this {
+	public changeFace (texture: string, frame?: string | number): this {
 		this._faceHolder.setTexture(texture);
 		if (frame) {
 			this._faceHolder.setFrame(frame);
@@ -71,22 +71,27 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 		return this;
 	}
 
-	changeName (name: string): this {
+	public changeFaceFrame (frame: string | number): this {
+		this._faceHolder.setFrame(frame);
+		return this;
+	}
+
+	public changeName (name: string): this {
 		this._nameLabel.setText(name);
 		return this;
 	}
 
-	changeDialogueText (text: string): this {
+	public changeDialogueText (text: string): this {
 		this._dialogueText.setText(text);
 		return this;
 	}
 
-	setCallback (callback: Function): this {
+	public setCallback (callback: Function): this {
 		this._callback = callback;
 		return this;
 	}
 
-	enableInteractive (): this {
+	public enableInteractive (): this {
 		this._interactionBlock.setInteractive();
 		return this;
 	}
@@ -104,7 +109,7 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 	 */
 	setVisible (value: boolean): this {
 		super.setVisible(value).setActive(value);
-		this._faceHolder!.setVisible(value).setActive(value);
+		this._faceHolder.setVisible(value).setActive(value);
 		return this;
 	}
 
