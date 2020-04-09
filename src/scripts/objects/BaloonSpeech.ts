@@ -77,6 +77,7 @@ export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 
 	public setText (quote: string): void {
 		// TODO: Set origin relatively to the class (currently in (0, 0))
+		// TODO: Override the setX & setY method
 		if (this._content) {
 			this.clear();
 			this._content.destroy();
