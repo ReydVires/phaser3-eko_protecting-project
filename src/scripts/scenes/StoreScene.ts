@@ -1,6 +1,8 @@
 import { centerX, centerY, SCREEN_WIDTH } from "../config";
 import { DimBackground } from "../objects/components/DimBackground";
 import { BaloonSpeech } from "../objects/BaloonSpeech";
+import { Helper } from "../utils/Helper";
+import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 
 export class StoreScene extends Phaser.Scene {
 
@@ -14,6 +16,13 @@ export class StoreScene extends Phaser.Scene {
 	init (): void {}
 
 	create (): void {
+		AndroidBackHelper.Instance.setCallbackBackButton(() => {
+			// Prevent to make double tap back
+			if (this.input.enabled) {
+				this.gotoMenu();
+			}
+		});
+
 		const displayBox = this.add.image(centerX, centerY * 1.55, 'warung_display_box');
 		const portrait = this.add.image(centerX, centerY, 'phaser-logo');
 		new BaloonSpeech(
@@ -52,9 +61,9 @@ export class StoreScene extends Phaser.Scene {
 		const targetObject = new Phaser.Math.Vector2(this._itemsContainer.x, this._itemsContainer.y);
 
 		// Threshold of scrollable
-		const canSwipe = totalWidth > maskWidth;
+		let canSwipe = totalWidth > maskWidth;
 		const thresholdLeft = 640;
-		const thresholdRight = canSwipe ? totalWidth - maskWidth : 0;
+		const thresholdRight = canSwipe ? Math.round(thresholdLeft - (totalWidth - maskWidth)) : 0;
 
 		this.input.on('pointerdown', (pointer: PointerEvent) => {
 			if (canSwipe) {
@@ -68,17 +77,55 @@ export class StoreScene extends Phaser.Scene {
 				if (newX > thresholdLeft) {
 					newX = thresholdLeft;
 				}
-				else if (newX < (thresholdLeft - thresholdRight)) {
-					newX = (thresholdLeft - thresholdRight);
+				else if (newX < thresholdRight) {
+					newX = thresholdRight;
 				}
 				this._itemsContainer.setX(Math.round(newX));
 			}
 		})
 		.on('pointerup', () => {
 			if (canSwipe) {
-				targetObject.set(this._itemsContainer.x, this._itemsContainer.y);
+				// Snap feature
+				canSwipe = false;
+
+				const itemWidth = totalWidth / totalItem;
+				const diff = this._itemsContainer.x % itemWidth;
+				let snapX = 0;
+				if (diff >= itemWidth / 2) {
+					snapX = this._itemsContainer.x + (itemWidth - diff);
+				}
+				else {
+					snapX = this._itemsContainer.x - diff;
+				}
+
+				snapX = this._itemsContainer.x === thresholdLeft ? thresholdLeft : snapX;
+				snapX = this._itemsContainer.x === thresholdRight ? thresholdRight : snapX;
+
+				this.tweens.add({
+					targets: this._itemsContainer,
+					x: snapX,
+					duration: 200,
+					onComplete: () => {
+						targetObject.set(this._itemsContainer.x, this._itemsContainer.y);
+						canSwipe = true;
+					}
+				});
 			}
 		});
+	}
+
+	gotoMenu (): void {
+		Helper.nextSceneFadeOut(this, 'MenuScene', { isGameStarted: true });
+		this.input.enabled = false;
+	}
+
+	update (): void {
+		const ESCKey = this.input.keyboard.addKey('ESC');
+		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
+			if (this.input.enabled) {
+				this.gotoMenu();
+			}
+		}
 	}
 
 }
