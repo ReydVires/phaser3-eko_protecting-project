@@ -101,4 +101,24 @@ export class Player extends PhysicSprite implements IMoveable {
 		}
 	}
 
+	public animWalk (): void {
+		if (this.isOnGround()) {
+			this.play("anim_eko_walk", true);
+		}
+	}
+
+	public animIdlle (): void {
+		this.anims.stop();
+		this.play("anim_eko_idle", true);
+		this.setVelocity(0);
+	}
+
+	public animJump (heightScale = 1.15): void {
+		if (this.isOnGround()) {
+			this.anims.stop();
+			this.play("anim_eko_jump", true);
+			this.setVelocityY(-this._jumpHeight * heightScale);
+		}
+	}
+
 }
