@@ -12,7 +12,7 @@ import { ITouchControl } from '../objects/interface/ITouchControl';
 
 //#endregion
 
-//#region Types
+//#region Intarfaces
 interface TileData {
 	x: number;
 	y: number;
@@ -47,6 +47,11 @@ interface DialogueData {
 }
 //#endregion
 
+enum InGameState {
+	Playable,
+	Cutscene
+}
+
 export class TestScene extends BaseScene implements ITouchControl {
 
 	private readonly LEFT_AREA: number = 210;
@@ -62,6 +67,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private _interactionArea: boolean;
 	private _portalGroup: Phaser.Physics.Arcade.Group;
 	private _platformCompatible: boolean;
+	private _sceneState: InGameState;
 
 	private _onCutsceneEvent: boolean;
 	private _dialogues: Array<DialogueData>;
@@ -80,6 +86,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this._actionArea = false;
 		this._interactionArea = false;
 		this._onCutsceneEvent = false;
+		this._sceneState = InGameState.Playable;
 	}
 
 	create (sceneData: SceneData): void {
@@ -185,12 +192,17 @@ export class TestScene extends BaseScene implements ITouchControl {
 			touchLine.moveTo(this.RIGHT_AREA, 0).lineTo(this.RIGHT_AREA, SCREEN_HEIGHT);
 			touchLine.strokePath().setScrollFactor(0);
 		}
+
+		this.registerEvent('scenestate_playable', () => {
+			this._sceneState = InGameState.Playable;
+		});
 	}
 
 	generateMapping (mappingData: Array<string>): void {
 		const maxLength = mappingData.length;
 		const tileGroup = this.physics.add.staticGroup();
 		const coinGroup = this.physics.add.group();
+		const cutsceneZone = this.add.zone(0, 0, 0, 0);
 		this._portalGroup = this.physics.add.group();
 		for (let i = 0; i < maxLength; i++) {
 			const row = mappingData[i].length;
@@ -209,11 +221,18 @@ export class TestScene extends BaseScene implements ITouchControl {
 						coin.getBody().setAllowGravity(false);
 						break;
 					case 'p':
-						const zone = this.add.zone(j *64, i * 64, 70, 64)
+						const zone = this.add.zone(j * 64, i * 64, 70, 64)
 							.setOrigin(0);
 						this.physics.world.enable(zone);
 						this._portalGroup.add(zone);
 						(zone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+						break;
+					case 'e':
+						cutsceneZone.setPosition(j * 64, i * 64)
+							.setSize(64, 64)
+							.setOrigin(0);
+						this.physics.world.enable(cutsceneZone);
+						(cutsceneZone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 						break;
 					default:
 						break;
@@ -223,6 +242,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 
 		this.physics.add.overlap(this._player, coinGroup, (player, coin) => {
 			coin.destroy();
+		});
+		this.physics.add.overlap(this._player, cutsceneZone, (player, zone) => {
+			console.log('Active Cutscene');
+			this.callCutscene();
+			zone.destroy();
 		});
 		this.physics.add.collider(this._player, tileGroup);
 		this.physics.add.overlap(this._player, this._portalGroup, () => {
@@ -268,6 +292,71 @@ export class TestScene extends BaseScene implements ITouchControl {
 			groups.add(tile);
 		}
 		return groups;
+	}
+
+	callCutscene (): void {
+		this._sceneState = InGameState.Cutscene;
+		const cutscenes = new Array<Phaser.Tweens.Tween>(
+			this.tweens.create({
+				targets: this._player,
+				x: `+=64`,
+				duration: 300,
+				onComplete: () => {
+					this._player.animJump(0.4);
+					cutscenes[1].play();
+				}
+			}),
+			this.tweens.create({
+				targets: this._player,
+				x: `+=276`,
+				duration: 750,
+				onComplete: () => {
+					this._player.animIdlle();
+					this.time.delayedCall(700, () => {
+						this._player.animWalk();
+						this._player.setFlipX(true);
+						cutscenes[2].play();
+					});
+				}
+			}),
+			this.tweens.create({
+				targets: this._player,
+				x: `-=64`,
+				duration: 450,
+				onComplete: () => {
+					this._player.animIdlle();
+					this.eventUI.emit('UI#show_dialogue');
+					// this._sceneState = InGameState.Playable;
+				}
+			})
+		);
+		const timelineCutscene = this.tweens.createTimeline();
+		this._player.animIdlle();
+		timelineCutscene.add({
+			targets: this._player,
+			x: `+=96`,
+			duration: 325,
+			onComplete: () => {
+				this._player.animJump();
+			}
+		})
+		.add({
+			targets: this._player,
+			x: `+=182`,
+			duration: 550,
+			onComplete: () => {
+				this._player.animIdlle();
+				this.time.delayedCall(500, () => {
+					this._player.animWalk();
+					cutscenes[0].play();
+				});
+			}
+		});
+
+		this.time.delayedCall(500, () => {
+			this._player.animWalk();
+			timelineCutscene.play();
+		});
 	}
 
 	keyboardController (): void {
@@ -358,13 +447,15 @@ export class TestScene extends BaseScene implements ITouchControl {
 	}
 
 	update (): void {
-		if (this._platformCompatible) {
-			this.touchController();
-			this.keyboardController(); // FIXME: [Debug] Touch only
-		}
-		else {
-			this.touchController(); // FIXME: [Debug] Keyboard only
-			this.keyboardController();
+		if (this._sceneState === InGameState.Playable) {
+			if (this._platformCompatible) {
+				this.touchController();
+				this.keyboardController(); // FIXME: [Debug] Touch only
+			}
+			else {
+				this.touchController(); // FIXME: [Debug] Keyboard only
+				this.keyboardController();
+			}
 		}
 
 		// Fall condition
