@@ -110,6 +110,8 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 	setVisible (value: boolean): this {
 		super.setVisible(value).setActive(value);
 		this._faceHolder.setVisible(value).setActive(value);
+		this._nameLabel.setVisible(value).setActive(value);
+		this._dialogueText.setVisible(value).setActive(value);
 		return this;
 	}
 

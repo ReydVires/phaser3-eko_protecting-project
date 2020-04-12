@@ -44,9 +44,13 @@ export class UITestScene extends UIScene {
 		const dialogueBox = new DialogueBox(this, centerX, 128, 'face_holder', 'Namae', 'Lorem ipsum dolors sits amets! Lorem ipsum dolors sits amets! Lorem ip sum dolors sits amets! Lorem ipsum dolors sits amets!')
 		.setCallback(() => {
 			dialogueBox.changeDialogueText("Whats done, is done! You're amazing. It's sad how less people know of this cover.");
-			dialogueBox.disableInteractive();
-			this.time.delayedCall(3200, () => dialogueBox.destroy());
-		});
+			dialogueBox.setCallback(() => {
+				dialogueBox.setVisible(false);
+				dialogueBox.disableInteractive();
+				this.targetEmitter.emit('event#scenestate_playable');
+				this.time.delayedCall(500, () => dialogueBox.destroy());
+			});
+		}).disableInteractive().setVisible(false);
 
 		this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123")
 			.setOrigin(0.5, 0)
@@ -86,6 +90,9 @@ export class UITestScene extends UIScene {
 			this.doCameraFadeOut(this.startToScene.bind(this, "TutorialGameScene"));
 		});
 		this.registerEvent('disable_input', () => { this.input.enabled = false; });
+		this.registerEvent('show_dialogue', () => {
+			dialogueBox.enableInteractive().setVisible(true);
+		}, true);
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
 			this.targetEmitter.emit('UI#do_pause');
