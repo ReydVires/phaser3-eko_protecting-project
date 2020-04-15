@@ -1,5 +1,4 @@
 import { SCREEN_WIDTH, centerX, centerY } from "../config";
-import PlayerAnim from "../../assets/animations/player_anim.json";
 
 export class PreloadScene extends Phaser.Scene {
 
@@ -22,12 +21,18 @@ export class PreloadScene extends Phaser.Scene {
 		this.load.pack('image', 'assets/assetpack.json', 'imagePack');
 		this.load.pack('spritesheet', 'assets/assetpack.json', 'spritesheetPack');
 		this.load.pack('bitmapFont', 'assets/assetpack.json', 'bitmapFontPack');
+
+		this.load.json('player_anim', 'assets/animations/player_anim.json');
+		this.load.json('gameObject_anim', 'assets/animations/gameObject_anim.json');
 	}
 
 	create (): void {
-		this.registerAnimate([
-			PlayerAnim
-		]);
+		const cacheJSON = this.cache.json;
+		const animateJSON = [
+			cacheJSON.get('player_anim'),
+			cacheJSON.get('gameObject_anim'),
+		];
+		this.registerAnimate(animateJSON);
 		/**
 		 * This is how you would dynamically import the mainScene class (with code splitting),
 		 * add the mainScene to the Scene Manager
@@ -44,11 +49,12 @@ export class PreloadScene extends Phaser.Scene {
 		// 	console.log('The mainScene class will not even be loaded by the browser');
 	}
 
-	registerAnimate (jsonAnimate: unknown): void {
-		if (Array.isArray(jsonAnimate)) {
-			for (const anims of jsonAnimate) {
+	registerAnimate (animateJSON: unknown): void {
+		if (Array.isArray(animateJSON)) {
+			for (const anims of animateJSON) {
 				for (const anim of anims) {
-					this.anims.create(anim as Phaser.Types.Animations.Animation);
+					const config = anim as Phaser.Types.Animations.Animation;
+					this.anims.create(config);
 				}
 			}
 		}
@@ -71,8 +77,8 @@ export class PreloadScene extends Phaser.Scene {
 		this.load.on('progress', this.updateProgressbar.bind(this));
 		this.load.once('complete', () => {
 			this.load.off('progress', this.updateProgressbar.bind(this));
+			this._progressBar.destroy();
 			this.scene.start('MenuScene');
-			this._progressBar.destroy(); // Experiment
 		});
 	}
 
