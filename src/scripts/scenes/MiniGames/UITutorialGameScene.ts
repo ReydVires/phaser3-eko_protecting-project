@@ -98,7 +98,7 @@ export class UITutorialGameScene extends UIScene {
 				.setFontSize(16)
 				.setFontFamily('Comfortaa')
 				.setWordWrapWidth(475, false),
-			new FlatButton(this, 728 * 0.455, -248, 'exit_btn')
+			new FlatButton(this, 728 * 0.455, -245, 'exit_btn')
 				.setCallback(() => {
 					this.showTutorialScene();
 					this._gameStart = true;
