@@ -11,14 +11,16 @@ export class ToggleButton extends Phaser.GameObjects.Sprite {
 	private _callback: unknown;
 
 	constructor (scene: Phaser.Scene, x: number, y: number, textures: ISpriteTextures, onActive?: boolean) {
-		super(scene, x, y, textures.deactive);
+		super(scene, x, y, "");
+		scene.add.existing(this);
 		this._spriteTextures = textures;
-		this._onActive = onActive ? true : false;
 		this._pressed = false;
-		this.interactiveEvent();
+		this._onActive = onActive ? true : false;
+		this.changeTexture();
+		this.initInteractive();
 	}
 
-	private interactiveEvent (): void {
+	private initInteractive (): void {
 		this.setInteractive({ useHandCursor: true })
 		.on('pointerdown', () => {
 			this._pressed = true;
@@ -34,11 +36,15 @@ export class ToggleButton extends Phaser.GameObjects.Sprite {
 	}
 
 	private onClick (): void {
+		this._onActive = !this._onActive;
 		if (this._callback instanceof Function) {
 			this._callback(this._onActive);
 		}
-		this._onActive = !this._onActive;
-		const getTexture = this._onActive ? this._spriteTextures.active : this._spriteTextures.deactive;
+		this.changeTexture();
+	}
+
+	private changeTexture (): void {
+		const getTexture = this._onActive ? this._spriteTextures?.active : this._spriteTextures?.deactive;
 		this.setTexture(getTexture);
 	}
 
@@ -46,8 +52,13 @@ export class ToggleButton extends Phaser.GameObjects.Sprite {
 		return this._onActive;
 	}
 
+	public setDeactive (value: boolean): this {
+		this._onActive = !value;
+		this.changeTexture();
+		return this;
+	}
+
 	public setCallback (callback: Function): this {
-		// TODO: Make public method that can be deactive this without even interact
 		this._callback = callback;
 		return this;
 	}
