@@ -215,8 +215,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 						tileGroup.add(platform);
 						break;
 					case 'c':
-						const coin = new Coin(this, 64 * j, 64 * i, 'coin')
-							.setOrigin(0, 0.3);
+						const coin = new Coin(this, 64 * j, 64 * i, 'coin_game').setOrigin(0, 0.3);
+						coin.play('anim_coin_game');
 						coinGroup.add(coin);
 						coin.getBody().setAllowGravity(false);
 						break;
