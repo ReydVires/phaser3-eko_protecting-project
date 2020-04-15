@@ -90,7 +90,7 @@ export class MenuScene extends BaseScene {
 
 	createSettingWindow (): void {
 		this._windowSetting = new PopUpWindow(this, centerX, centerY, 'setting_win', [
-			new FlatButton(this, 320, -170, 'exit_btn')
+			new FlatButton(this, 315, -165, 'exit_btn')
 				.setCallback(this.showSettingWindow.bind(this)),
 			new FlatButton(this, 305 * 0.6, -16, 'resetdata_btn'),
 			new FlatButton(this, 305 * 0.6, 82, 'gamecredits_btn'),
@@ -134,24 +134,22 @@ export class MenuScene extends BaseScene {
 			.setCallback(() => {
 				this.input.enabled = false;
 				Helper.nextSceneFadeOut(this, 'TestScene');
-			})
-			.setJustOnce();
+			});
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
 			.setCallback(() => {
 				this.input.enabled = false;
 				Helper.nextSceneFadeOut(this, 'MiniGameScene');
-			})
-			.setJustOnce();
+			});
 
 		this._warungGameBtn = new Button(this, 1048, 574, 'WarungButton')
 			.setCallback(() => {
 				this.input.enabled = false;
 				Helper.nextSceneFadeOut(this, 'StoreScene');
-			})
-			.setJustOnce();
+			});
 
 		this._achievementBtn = new FlatButton(this, 1100, 64, 'achievement_btn')
+			.setCallback(() => alert('Not implemented!'))
 			.setJustOnce()
 			.setOrigin(0.5, 0.35);
 
