@@ -1,41 +1,5 @@
 [
 	{
-		"key": "anim_player_walk",
-		"frameRate": 10,
-		"repeat": 0,
-		"defaultTextureKey": "players",
-		"frames": [
-			{
-				"frame": 2
-			},
-			{
-				"frame": 3
-			}
-		]
-	},
-	{
-		"key": "anim_player_jump",
-		"frameRate": 8,
-		"repeat": 0,
-		"defaultTextureKey": "players",
-		"frames": [
-			{
-				"frame": 1
-			}
-		]
-	},
-	{
-		"key": "anim_player_idle",
-		"frameRate": 8,
-		"repeat": 0,
-		"defaultTextureKey": "players",
-		"frames": [
-			{
-				"frame": 0
-			}
-		]
-	},
-	{
 		"key": "anim_eko_idle",
 		"frameRate": 8,
 		"repeat": -1,

@@ -29,10 +29,6 @@
         "defaultType": "image",
         "files": [
             {
-                "key": "coin",
-                "url": "spr_coin.png"
-            },
-            {
                 "key": "timer_base",
                 "url": "UI/spr_timer_base.png"
             },
@@ -262,11 +258,6 @@
                 "frameConfig": { "frameWidth": 345, "frameHeight": 85 }
             },
             {
-                "key": "players",
-                "url": "sheet_players.png",
-                "frameConfig": { "frameWidth": 96, "frameHeight": 96 }
-            },
-            {
                 "key": "virtualjoystick",
                 "url": "UI/sheet_virtualjoystick.png",
                 "frameConfig": { "frameWidth": 128, "frameHeight": 128 }
@@ -275,6 +266,11 @@
                 "key": "booster_box",
                 "url": "UI/sheet_booster_box.png",
                 "frameConfig": { "frameWidth": 130, "frameHeight": 126 }
+            },
+            {
+                "key": "coin_game",
+                "url": "spr_coin_game.png",
+                "frameConfig": { "frameWidth": 64, "frameHeight": 64 }
 			},
 			{
 				"key": "eko_idle",
