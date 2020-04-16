@@ -59,9 +59,7 @@ export class LeaderboardViews extends BaseScene {
 		AndroidBackHelper.Instance.setCallbackBackButton(this.goToMiniGame.bind(this));
 
 		const leaderboardScreen = this.add.image(centerX, centerY, 'screen_leaderboard');
-		new FlatButton(this, 70, 68, 'back_btn')
-			.setCallback(this.goToMiniGame.bind(this))
-			.setJustOnce();
+		new FlatButton(this, 70, 68, 'back_btn').setCallback(this.goToMiniGame.bind(this));
 
 		// Creating mask
 		const maskWidth = leaderboardScreen.displayWidth * 0.8;

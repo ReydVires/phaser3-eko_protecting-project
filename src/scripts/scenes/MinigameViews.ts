@@ -35,12 +35,12 @@ export class MinigameViews extends BaseScene {
 			.setCallback(() => {
 				this.input.enabled = false;
 				Helper.nextSceneFadeOut(this, 'TutorialGameScene');
-			}).setJustOnce();
+			});
 		new FlatButton(this, centerX * 1.5, centerY + 120, 'leaderboard_btn')
 			.setCallback(() => {
 				this.input.enabled = false;
 				Helper.nextSceneFadeOut(this, 'LeaderboardViews');
-			}).setJustOnce();
+			});
 
 		new PopUpWindow(this, centerX * 0.6, centerY, 'screen_booster', [
 			this.add.image(-140, -112, 'booster_display'),

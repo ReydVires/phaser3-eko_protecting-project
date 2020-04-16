@@ -102,7 +102,7 @@ export class TutorialGameUIScene extends UIScene {
 				.setCallback(() => {
 					this.showTutorialScene();
 					this._gameStart = true;
-				}).setJustOnce()
+				})
 		]).setVisible(false).setActive(false);
 
 		this._gameOverWindow = new PopUpWindow(this, centerX, centerY, 'gameoverMinigame_win', [
@@ -127,9 +127,9 @@ export class TutorialGameUIScene extends UIScene {
 						this.restartScene();
 					});
 					cam.fadeOut(600);
-				}).setJustOnce(),
+				}),
 			new FlatButton(this, 128, 114, 'mainmenu_btn')
-				.setCallback(() => this.eventHandler.emit('UI#to_scene_menu')).setJustOnce()
+				.setCallback(() => this.eventHandler.emit('UI#to_scene_menu'))
 		])
 		.setVisible(false).setActive(false);
 
