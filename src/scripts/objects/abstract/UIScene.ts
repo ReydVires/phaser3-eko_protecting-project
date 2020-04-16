@@ -13,7 +13,6 @@ export abstract class UIScene extends Phaser.Scene implements IEventUIHandler, I
 
 	constructor(key: string) {
 		super(key);
-		// TODO: Sync with TS template approach
 		this._baseSceneKey = this.evaluateSceneKey(key);
 		this._isPause = false;
 	}
@@ -22,14 +21,14 @@ export abstract class UIScene extends Phaser.Scene implements IEventUIHandler, I
 		const keyValid = key.length > 7;
 		const regexValid = key.indexOf(this._postfixID) !== -1;
 		console.assert(keyValid && regexValid, "BaseScene Key is not found, and will not be synchronized!");
-		return (keyValid && regexValid) ? (key.slice(0, key.length - 7) + postfixScene) : key;
+		return (keyValid && regexValid) ? (key.slice(0, key.length - 7) + postfixScene) : '';
 	}
 
 	registerEvent(key: string, value: Function, once?: boolean | undefined): void {
-		this.targetEmitter.registerEvent(this._prefixID + '#' + key, value, once);
+		this.eventHandler.registerEvent(this._prefixID + '#' + key, value, once);
 	}
 
-	public get targetEmitter (): EventUIHandler {
+	public get eventHandler (): EventUIHandler {
 		return this._baseScene?.eventUI;
 	}
 	

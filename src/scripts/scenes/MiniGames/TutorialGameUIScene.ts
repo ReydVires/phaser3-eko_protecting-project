@@ -35,19 +35,19 @@ export class TutorialGameUIScene extends UIScene {
 		// Helper.doTask(() => {
 		// 	let called = false;
 		// 	do {
-		// 		if (this.targetEmitter.inspectEvents('UI#to_scene_menu')) {
-		// 			this.targetEmitter.emit('UI#to_scene_menu');
+		// 		if (this.eventHandler.inspectEvents('UI#to_scene_menu')) {
+		// 			this.eventHandler.emit('UI#to_scene_menu');
 		// 			called = true;
 		// 		}
 		// 	} while (!called);
 		// });
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			this.targetEmitter.emit('UI#to_scene_menu');
+			this.eventHandler.emit('UI#to_scene_menu');
 		});
 
 		const cam = this.cameras.main;
 		cam.once('camerafadeincomplete', () => {
-			this.targetEmitter.emit('event#game_start');
+			this.eventHandler.emit('event#game_start');
 			this.input.enabled = true;
 			this.showTutorialScene();
 		});
@@ -64,12 +64,12 @@ export class TutorialGameUIScene extends UIScene {
 			.setOrigin(0, 1);
 
 		new FlatButton(this, 1189, 80, 'pause_btn')
-			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));
+			.setCallback(() => this.eventHandler.emit('UI#do_pause'));
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
-				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
+				.setCallback(() => this.eventHandler.emit('UI#do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
-				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu'))
+				.setCallback(() => this.eventHandler.emit('UI#to_scene_menu'))
 		]).setVisible(false).setActive(false);
 
 		this._stageClearWindow = new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
@@ -82,7 +82,7 @@ export class TutorialGameUIScene extends UIScene {
 		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
 		this._gameTime.setCallback(() => {
 			console.log("Times up!");
-			this.targetEmitter.emit('event#enemy_attack', false);
+			this.eventHandler.emit('event#enemy_attack', false);
 		});
 
 		this._tutorialWindow = new PopUpWindow(this, centerX, centerY, 'how_toPlaym_win', [
@@ -129,7 +129,7 @@ export class TutorialGameUIScene extends UIScene {
 					cam.fadeOut(600);
 				}).setJustOnce(),
 			new FlatButton(this, 128, 114, 'mainmenu_btn')
-				.setCallback(() => this.targetEmitter.emit('UI#to_scene_menu')).setJustOnce()
+				.setCallback(() => this.eventHandler.emit('UI#to_scene_menu')).setJustOnce()
 		])
 		.setVisible(false).setActive(false);
 
@@ -150,7 +150,7 @@ export class TutorialGameUIScene extends UIScene {
 		}
 
 		if (Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey('ESC'))) {
-			this.targetEmitter.emit('UI#to_scene_menu');
+			this.eventHandler.emit('UI#to_scene_menu');
 		}
 	}
 

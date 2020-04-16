@@ -47,7 +47,7 @@ export class TestUIScene extends UIScene {
 			dialogueBox.setCallback(() => {
 				dialogueBox.setVisible(false);
 				dialogueBox.disableInteractive();
-				this.targetEmitter.emit('event#scenestate_playable');
+				this.eventHandler.emit('event#scenestate_playable');
 				this.time.delayedCall(500, () => dialogueBox.destroy());
 			});
 		}).disableInteractive().setVisible(false);
@@ -59,7 +59,7 @@ export class TestUIScene extends UIScene {
 
 		new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
-			.setCallback(() => this.targetEmitter.emit('UI#do_pause'));
+			.setCallback(() => this.eventHandler.emit('UI#do_pause'));
 
 		this._dimBackground = new DimBackground(this);
 
@@ -67,7 +67,7 @@ export class TestUIScene extends UIScene {
 
 		this._windowPause = new PopUpWindow(this, centerX, centerY, 'gamepaused_win', [
 			new FlatButton(this, 0, 0, 'continue_btn')
-				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
+				.setCallback(() => this.eventHandler.emit('UI#do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
 				.setCallback(() => this.startToScene('MenuViews', {
 					isGameStarted: true,
@@ -95,12 +95,12 @@ export class TestUIScene extends UIScene {
 		}, true);
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			this.targetEmitter.emit('UI#do_pause');
+			this.eventHandler.emit('UI#do_pause');
 		});
 	}
 
 	doCameraFadeOut (onComplete: Function): void {
-		this.targetEmitter.emit('UI#disable_input');
+		this.eventHandler.emit('UI#disable_input');
 		const cam = this.cameras.main;
 		cam.once('camerafadeoutcomplete', () => onComplete());
 		cam.fadeOut(600);
@@ -123,7 +123,7 @@ export class TestUIScene extends UIScene {
 		this._fpsText.update();
 		const ESCKey = this.input.keyboard.addKey('ESC');
 		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
-			this.targetEmitter.emit('UI#do_pause');
+			this.eventHandler.emit('UI#do_pause');
 		}
 		const RKey = this.input.keyboard.addKey('R');
 		if (Phaser.Input.Keyboard.JustDown(RKey)) {
