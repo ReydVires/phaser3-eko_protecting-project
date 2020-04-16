@@ -4,11 +4,15 @@ import { BaloonSpeech } from "../objects/BaloonSpeech";
 import { Helper } from "../utils/Helper";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 import { BaseScene } from "../objects/abstract/BaseScene";
+import { FlatButton } from "../objects/components/FlatButton";
+import { PopUpWindow } from "../objects/components/PopUpWindow";
 
 export class StoreViews extends BaseScene {
 
 	private _itemsContainer: Phaser.GameObjects.Container;
 	private _dimBackground: DimBackground;
+	private _windowBuy: PopUpWindow;
+	private _canSwipe: boolean;
 
 	constructor () {
 		super('StoreViews');
@@ -17,12 +21,7 @@ export class StoreViews extends BaseScene {
 	init (): void {}
 
 	create (): void {
-		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			// Prevent to make double tap back
-			if (this.input.enabled) {
-				this.gotoMenu();
-			}
-		});
+		AndroidBackHelper.Instance.setCallbackBackButton(this.gotoMenu.bind(this));
 
 		const displayBox = this.add.image(centerX, centerY * 1.55, 'warung_display_box');
 		const portrait = this.add.image(centerX, centerY, 'phaser-logo');
@@ -46,15 +45,34 @@ export class StoreViews extends BaseScene {
 		const itemSpace = 32;
 		let totalWidth = 0;
 		for (let i = 0; i < totalItem; i++) {
-			const element = this.add.image(0, 0, 'item_box_nocoin')
+			const element = new FlatButton(this, 0, 0, 'item_box_nocoin')
 				.setOrigin(0, 0.5)
-				.setMask(new Phaser.Display.Masks.GeometryMask(this, dbMask));
+				.setMask(new Phaser.Display.Masks.GeometryMask(this, dbMask))
+				.setCallback(() => {
+					this._dimBackground.show();
+					this._windowBuy.setVisible(this._dimBackground.visible);
+				});
 			this._itemsContainer.add(element);
 			element.setX(-maskWidth * 0.5 + element.displayWidth * i + (itemSpace * i));
+			element.setOrigin(0.5).setX(element.x + element.displayWidth * 0.5);
 			totalWidth += element.displayWidth + itemSpace;
 		}
 
 		this._dimBackground = new DimBackground(this);
+		this._windowBuy = new PopUpWindow(this, centerX, centerY, 'confirm_buy_win', [
+			new FlatButton(this, 0, -12, 'yes_btn')
+				.setCallback(() => {
+					this._dimBackground.show();
+					this._windowBuy.setVisible(false);
+					this._canSwipe = true;
+				}),
+			new FlatButton(this, 0, 74, 'no_btn')
+				.setCallback(() => {
+					this._dimBackground.show();
+					this._windowBuy.setVisible(false);
+					this._canSwipe = true;
+				})
+		]).setVisible(false);
 
 		// Scroll property
 		const startTouch = new Phaser.Math.Vector2(0, 0);
@@ -62,17 +80,17 @@ export class StoreViews extends BaseScene {
 		const targetObject = new Phaser.Math.Vector2(this._itemsContainer.x, this._itemsContainer.y);
 
 		// Threshold of scrollable
-		let canSwipe = totalWidth > maskWidth;
+		this._canSwipe = totalWidth > maskWidth;
 		const thresholdLeft = 640;
-		const thresholdRight = canSwipe ? Math.round(thresholdLeft - (totalWidth - maskWidth)) : 0;
+		const thresholdRight = this._canSwipe ? Math.round(thresholdLeft - (totalWidth - maskWidth)) : 0;
 
 		this.input.on('pointerdown', (pointer: PointerEvent) => {
-			if (canSwipe) {
+			if (this._canSwipe) {
 				startTouch.set(pointer.x, pointer.y);
 			}
 		})
 		.on('pointermove', (pointer: PointerEvent) => {
-			if (canSwipe) {
+			if (this._canSwipe) {
 				onTouchMove.set(pointer.x, pointer.y);
 				let newX = (onTouchMove.x - startTouch.x) + targetObject.x;
 				if (newX > thresholdLeft) {
@@ -85,9 +103,9 @@ export class StoreViews extends BaseScene {
 			}
 		})
 		.on('pointerup', () => {
-			if (canSwipe) {
+			if (this._canSwipe) {
 				// Snap feature
-				canSwipe = false;
+				this._canSwipe = false;
 
 				const itemWidth = totalWidth / totalItem;
 				const diff = this._itemsContainer.x % itemWidth;
@@ -108,7 +126,7 @@ export class StoreViews extends BaseScene {
 					duration: 200,
 					onComplete: () => {
 						targetObject.set(this._itemsContainer.x, this._itemsContainer.y);
-						canSwipe = true;
+						this._canSwipe = !this._dimBackground.visible;
 					}
 				});
 			}
@@ -116,16 +134,22 @@ export class StoreViews extends BaseScene {
 	}
 
 	gotoMenu (): void {
-		Helper.nextSceneFadeOut(this, 'MenuViews', { isGameStarted: true });
-		this.input.enabled = false;
+		if (this.input.enabled) {
+			if (this._dimBackground.visible) {
+				this._dimBackground.show();
+				this._windowBuy.setVisible(false);
+			}
+			else {
+				Helper.nextSceneFadeOut(this, 'MenuViews', { isGameStarted: true });
+				this.input.enabled = false;
+			}
+		}
 	}
 
 	update (): void {
 		const ESCKey = this.input.keyboard.addKey('ESC');
 		if (Phaser.Input.Keyboard.JustDown(ESCKey)) {
-			if (this.input.enabled) {
-				this.gotoMenu();
-			}
+			this.gotoMenu();
 		}
 	}
 
