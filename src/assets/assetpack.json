@@ -217,6 +217,10 @@
                 "url": "UI/spr_item_box.png"
             },
             {
+                "key": "confirm_buy_win",
+                "url": "UI/popup_confirm_buy_win.png"
+            },
+            {
                 "key": "tutorial_stage_platform",
                 "url": "backgrounds/img_tutorial_stage_platform.png"
 			},
