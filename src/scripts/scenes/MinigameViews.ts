@@ -4,18 +4,19 @@ import { Helper } from "../utils/Helper";
 import { FlatButton } from "../objects/components/FlatButton";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
+import { BaseScene } from "../objects/abstract/BaseScene";
 
 //#endregion
-export class MiniGameScene extends Phaser.Scene {
+export class MinigameViews extends BaseScene {
 
 	private _goToMenuScene: boolean;
 
 	constructor () {
-		super('MiniGameScene');
+		super('MinigameViews');
 	}
 
 	init (): void {
-		console.log('MiniGameScene');
+		console.log('MinigameViews');
 		this._goToMenuScene = false;
 	}
 
@@ -23,7 +24,7 @@ export class MiniGameScene extends Phaser.Scene {
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
 			// Prevent to make double tap back
 			if (this.input.enabled) {
-				Helper.nextSceneFadeOut(this, 'MenuScene', { isGameStarted: true });
+				Helper.nextSceneFadeOut(this, 'MenuViews', { isGameStarted: true });
 				this.input.enabled = false;
 			}
 		});
@@ -38,7 +39,7 @@ export class MiniGameScene extends Phaser.Scene {
 		new FlatButton(this, centerX * 1.5, centerY + 120, 'leaderboard_btn')
 			.setCallback(() => {
 				this.input.enabled = false;
-				Helper.nextSceneFadeOut(this, 'LeaderboardScene');
+				Helper.nextSceneFadeOut(this, 'LeaderboardViews');
 			}).setJustOnce();
 
 		new PopUpWindow(this, centerX * 0.6, centerY, 'screen_booster', [
@@ -62,7 +63,7 @@ export class MiniGameScene extends Phaser.Scene {
 		if (Phaser.Input.Keyboard.JustDown(ESCKey) && !this._goToMenuScene) {
 			this.input.enabled = false;
 			this._goToMenuScene = true;
-			Helper.nextSceneFadeOut(this, 'MenuScene', { isGameStarted: true });
+			Helper.nextSceneFadeOut(this, 'MenuViews', { isGameStarted: true });
 		}
 	}
 

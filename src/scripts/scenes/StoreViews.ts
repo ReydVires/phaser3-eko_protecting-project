@@ -1,16 +1,17 @@
-import { centerX, centerY, SCREEN_WIDTH } from "../config";
+import { centerX, centerY } from "../config";
 import { DimBackground } from "../objects/components/DimBackground";
 import { BaloonSpeech } from "../objects/BaloonSpeech";
 import { Helper } from "../utils/Helper";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
+import { BaseScene } from "../objects/abstract/BaseScene";
 
-export class StoreScene extends Phaser.Scene {
+export class StoreViews extends BaseScene {
 
 	private _itemsContainer: Phaser.GameObjects.Container;
 	private _dimBackground: DimBackground;
 
 	constructor () {
-		super('StoreScene');
+		super('StoreViews');
 	}
 
 	init (): void {}
@@ -115,7 +116,7 @@ export class StoreScene extends Phaser.Scene {
 	}
 
 	gotoMenu (): void {
-		Helper.nextSceneFadeOut(this, 'MenuScene', { isGameStarted: true });
+		Helper.nextSceneFadeOut(this, 'MenuViews', { isGameStarted: true });
 		this.input.enabled = false;
 	}
 

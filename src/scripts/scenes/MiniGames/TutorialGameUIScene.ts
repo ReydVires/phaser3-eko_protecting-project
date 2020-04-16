@@ -9,7 +9,7 @@ import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
 import { LEFT_AREA, RIGHT_AREA } from "./TutoarialGameScene";
 
 //#endregion
-export class UITutorialGameScene extends UIScene {
+export class TutorialGameUIScene extends UIScene {
 
 	private _gameTime: FillProgress;
 	private _windowPause: PopUpWindow;
@@ -20,12 +20,12 @@ export class UITutorialGameScene extends UIScene {
 	private _gameStart: boolean;
 
 	constructor () {
-		super('UITutorialGameScene');
+		super('TutorialGameUIScene');
 	}
 
 	init (): void {
 		super.init();
-		console.log("Called UITutorialGameScene");
+		console.log("Called TutorialGameUIScene");
 		this._gameStart = false;
 		this.input.enabled = false;
 	}
@@ -137,7 +137,7 @@ export class UITutorialGameScene extends UIScene {
 		this.registerEvent('do_pause', this.doPause.bind(this));
 		this.registerEvent('restart', this.restartScene.bind(this));
 		this.registerEvent('do_gameover', this.doGameOver.bind(this));
-		this.registerEvent('to_scene_menu', this.startToScene.bind(this, 'MenuScene', {
+		this.registerEvent('to_scene_menu', this.startToScene.bind(this, 'MenuViews', {
 			isGameStarted: true
 		}));
 		this.registerEvent('stop_timer', () => this._gameTime?.stop(), true);

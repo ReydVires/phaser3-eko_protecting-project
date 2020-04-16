@@ -1,16 +1,16 @@
 //#region Import scene modules
 import { BootScene } from './scenes/BootScene';
 import { PreloadScene } from './scenes/PreloadScene';
-import { MenuScene } from './scenes/MenuScene';
+import { MenuViews } from './scenes/MenuViews';
 import { GameScene } from './scenes/GameScene';
-import { TestScene } from './scenes/TestScene';
-import { UITestScene } from './scenes/UITestScene';
-import { UIGameScene } from './scenes/UIGameScene';
-import { MiniGameScene } from './scenes/MiniGameScene';
+import { GameUIScene } from './scenes/GameUIScene';
+import { TestScene } from './test/scenes/TestScene';
+import { TestUIScene } from './test/scenes/TestUIScene';
+import { MinigameViews } from './scenes/MinigameViews';
 import { TutorialGameScene } from './scenes/MiniGames/TutoarialGameScene';
-import { UITutorialGameScene } from './scenes/MiniGames/UITutorialGameScene';
-import { LeaderboardScene } from './scenes/LeaderboardScene';
-import { StoreScene } from './scenes/StoreScene';
+import { TutorialGameUIScene } from './scenes/MiniGames/TutorialGameUIScene';
+import { LeaderboardViews } from './scenes/LeaderboardViews';
+import { StoreViews } from './scenes/StoreViews';
 
 //#endregion
 export const SCREEN_WIDTH: number = 1280;
@@ -21,16 +21,16 @@ export const centerY: number = SCREEN_HEIGHT / 2;
 const scenes: Array<Function> = [
 	BootScene,
 	PreloadScene,
-	MenuScene,
-	GameScene,
-	UIGameScene,
-	MiniGameScene,
-	StoreScene,
-	LeaderboardScene,
+	MenuViews,
+	MinigameViews,
+	LeaderboardViews,
+	StoreViews,
 	TutorialGameScene,
-	UITutorialGameScene,
+	TutorialGameUIScene,
+	GameScene,
+	GameUIScene,
 	TestScene,
-	UITestScene
+	TestUIScene
 ];
 
 export const Config: Phaser.Types.Core.GameConfig = {

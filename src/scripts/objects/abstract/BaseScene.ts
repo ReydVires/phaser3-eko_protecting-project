@@ -6,6 +6,7 @@ export abstract class BaseScene extends Phaser.Scene implements IEventUIHandler,
 
 	private _eventUIHandler: EventUIHandler;
 	private _prefixID: string = 'event';
+	private _postfixID: string = 'UIScene';
 
 	constructor (key: string) {
 		super(key);
@@ -15,7 +16,13 @@ export abstract class BaseScene extends Phaser.Scene implements IEventUIHandler,
 	 * @override
 	 */
 	init (data?: object): void {
-		this.scene.launch("UI" + this.scene.key);
+		const keyValid = this.scene.key.length > 5;
+		const regexValid = this.scene.key.indexOf('Scene') !== -1;
+		const UIKey = (keyValid && regexValid) ? (this.scene.key.replace('Scene', '') + this._postfixID) : '';
+		const isUISceneAvailable = this.scene.get(UIKey);
+		if (isUISceneAvailable) {
+			this.scene.launch(UIKey);
+		}
 		this._eventUIHandler = new EventUIHandler(this.events);
 	}
 

@@ -9,7 +9,7 @@ import { BaseScene } from "../objects/abstract/BaseScene";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 import { ToggleButton } from "../objects/components/ToggleButton";
 
-export class MenuScene extends BaseScene {
+export class MenuViews extends BaseScene {
 
 	private _playBtn: Button;
 	private _miniGameBtn: Button;
@@ -28,12 +28,12 @@ export class MenuScene extends BaseScene {
 	private _dimBackground: DimBackground;
 
 	constructor () {
-		super('MenuScene');
+		super('MenuViews');
 	}
 
 	init (data: any): void {
 		super.init(data);
-		console.log(`MenuScene`);
+		console.log(`MenuViews`);
 		this._isGameStart = data!.isGameStarted;
 		this._baloonTips = new Array<string>(
 			"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?",
@@ -139,13 +139,13 @@ export class MenuScene extends BaseScene {
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
 			.setCallback(() => {
 				this.input.enabled = false;
-				Helper.nextSceneFadeOut(this, 'MiniGameScene');
+				Helper.nextSceneFadeOut(this, 'MinigameViews');
 			});
 
 		this._warungGameBtn = new Button(this, 1048, 574, 'WarungButton')
 			.setCallback(() => {
 				this.input.enabled = false;
-				Helper.nextSceneFadeOut(this, 'StoreScene');
+				Helper.nextSceneFadeOut(this, 'StoreViews');
 			});
 
 		this._achievementBtn = new FlatButton(this, 1100, 64, 'achievement_btn')

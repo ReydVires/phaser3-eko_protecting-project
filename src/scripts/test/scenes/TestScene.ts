@@ -1,14 +1,14 @@
 //#region Import modules
-import { centerX, SCREEN_HEIGHT } from '../config';
-import { Player } from '../objects/Player';
-import { Tile } from '../objects/Tile';
-import { Helper } from '../utils/Helper';
-import * as LevelData from '../levels/tutorialLevel.json';
-import { KeyboardMapping } from '../../../typings/KeyboardMapping';
-import { Coin } from '../objects/collectable/Coin';
-import { BaloonSpeech } from '../objects/BaloonSpeech';
-import { BaseScene } from '../objects/abstract/BaseScene';
-import { ITouchControl } from '../objects/interface/ITouchControl';
+import { centerX, SCREEN_HEIGHT } from '../../config';
+import { Player } from '../../objects/Player';
+import { Tile } from '../../objects/Tile';
+import { Helper } from '../../utils/Helper';
+import * as LevelData from '../../levels/tutorialLevel.json';
+import { KeyboardMapping } from '../../../../typings/KeyboardMapping';
+import { Coin } from '../../objects/collectable/Coin';
+import { BaloonSpeech } from '../../objects/BaloonSpeech';
+import { BaseScene } from '../../objects/abstract/BaseScene';
+import { ITouchControl } from '../../objects/interface/ITouchControl';
 
 //#endregion
 

@@ -78,7 +78,7 @@ export class PreloadScene extends Phaser.Scene {
 		this.load.once('complete', () => {
 			this.load.off('progress', this.updateProgressbar.bind(this));
 			this._progressBar.destroy();
-			this.scene.start('MenuScene');
+			this.scene.start('MenuViews');
 		});
 	}
 

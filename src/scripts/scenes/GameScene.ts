@@ -1,6 +1,7 @@
 import { centerX, centerY } from '../config';
+import { BaseScene } from '../objects/abstract/BaseScene';
 
-export class GameScene extends Phaser.Scene {
+export class GameScene extends BaseScene {
 
 	constructor () {
 		super('GameScene');

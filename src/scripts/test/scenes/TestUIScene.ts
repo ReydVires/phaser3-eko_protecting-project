@@ -1,16 +1,16 @@
 //#region Import modules
-import { PopUpWindow } from "../objects/components/PopUpWindow";
-import { centerX, centerY } from "../config";
-import { FlatButton } from "../objects/components/FlatButton";
-import { DimBackground } from "../objects/components/DimBackground";
-import { UIScene } from "../objects/abstract/UIScene";
-import { FPSText } from "../objects/FPSText";
-import { AndroidBackHelper } from "../utils/AndroidBackHelper";
-import { DialogueBox } from "../objects/DialogueBox";
+import { PopUpWindow } from "../../objects/components/PopUpWindow";
+import { centerX, centerY } from "../../config";
+import { FlatButton } from "../../objects/components/FlatButton";
+import { DimBackground } from "../../objects/components/DimBackground";
+import { UIScene } from "../../objects/abstract/UIScene";
+import { FPSText } from "../../objects/FPSText";
+import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
+import { DialogueBox } from "../../objects/DialogueBox";
 
 //#endregion
 
-export class UITestScene extends UIScene {
+export class TestUIScene extends UIScene {
 
 	private _windowPause: PopUpWindow;
 	private _gameOverWindow: PopUpWindow;
@@ -18,12 +18,12 @@ export class UITestScene extends UIScene {
 	private _fpsText: Phaser.GameObjects.Text;
 
 	constructor () {
-		super('UITestScene');
+		super('TestUIScene');
 	}
 
 	init (): void {
 		super.init();
-		console.log('UITestScene');
+		console.log('TestUIScene');
 	}
 
 	create (): void {
@@ -69,7 +69,7 @@ export class UITestScene extends UIScene {
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(() => this.targetEmitter.emit('UI#do_pause')),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
-				.setCallback(() => this.startToScene('MenuScene', {
+				.setCallback(() => this.startToScene('MenuViews', {
 					isGameStarted: true,
 					isTryAgain: false
 				}))

@@ -2,19 +2,20 @@ import { FlatButton } from "../objects/components/FlatButton";
 import { centerX, centerY } from "../config";
 import { Helper } from "../utils/Helper";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
+import { BaseScene } from "../objects/abstract/BaseScene";
 
 interface Betatester {
 	name: string;
 	score: number;
 }
 
-export class LeaderboardScene extends Phaser.Scene {
+export class LeaderboardViews extends BaseScene {
 
 	private _betaTester: Array<Betatester>;
 	private _testerContainer: Phaser.GameObjects.Container;
 
 	constructor () {
-		super('LeaderboardScene');
+		super('LeaderboardViews');
 	}
 
 	init (): void {
@@ -127,7 +128,7 @@ export class LeaderboardScene extends Phaser.Scene {
 	goToMiniGame (): void {
 		if (this.input.enabled) {
 			this.input.enabled = false;
-			Helper.nextSceneFadeOut(this, 'MiniGameScene');
+			Helper.nextSceneFadeOut(this, 'MinigameViews');
 		}
 	}
 
