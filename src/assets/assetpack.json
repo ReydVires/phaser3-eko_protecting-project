@@ -29,6 +29,10 @@
         "defaultType": "image",
         "files": [
             {
+                "key": "item_random",
+                "url": "img_item_random.png"
+            },
+            {
                 "key": "timer_base",
                 "url": "UI/spr_timer_base.png"
             },
