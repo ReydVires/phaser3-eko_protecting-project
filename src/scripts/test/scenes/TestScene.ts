@@ -58,7 +58,10 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private readonly RIGHT_AREA: number = 570;
 
 	private _background: Phaser.GameObjects.Image;
+
 	private _player: Player;
+	private _playerInteractWith: Phaser.GameObjects.GameObject;
+
 	private _keys: KeyboardMapping;
 	private _deadZonePosY: number;
 	private _pointer: Phaser.Input.InputPlugin;
@@ -68,11 +71,13 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private _portalGroup: Phaser.Physics.Arcade.Group;
 	private _platformCompatible: boolean;
 	private _sceneState: InGameState;
+	private _itemsOnMaps: Phaser.Physics.Arcade.Group;
 
 	private _onCutsceneEvent: boolean;
 	private _dialogues: Array<DialogueData>;
 
 	private _bubbleChat: BaloonSpeech;
+	private _hintTexts: Array<Phaser.GameObjects.Text>;
 
 	constructor () {
 		super('TestScene');
@@ -87,6 +92,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this._interactionArea = false;
 		this._onCutsceneEvent = false;
 		this._sceneState = InGameState.Playable;
+		this._hintTexts = new Array<Phaser.GameObjects.Text>();
+		this._itemsOnMaps = this.physics.add.group();
 	}
 
 	create (sceneData: SceneData): void {
@@ -146,6 +153,37 @@ export class TestScene extends BaseScene implements ITouchControl {
 
 		this.generateMapping(LevelData.mappingData);
 
+		// Create hints!
+		const hintData = [
+			{
+				x: 176, y: 363,
+				hintMessage: "Berjalanlah dengan\nmenekan area arah"
+			},
+			{
+				x: 420, y: 230,
+				hintMessage: "Melompatlah dengan\nmenekan area gesture"
+			},
+			{
+				x: 805, y: 270,
+				hintMessage: "Kumpulkanlah koin\nsebanyak banyaknya"
+			},
+			{
+				x: 1090, y: 345,
+				hintMessage: "Tekan area gesture untuk\nberinteraksi dengan\norang-orang"
+			},
+			{
+				x: 1450, y: 150,
+				hintMessage: "Tekan area gesture untuk\nmengambil barang yang\nkamu temui"
+			},
+		];
+		for (const data of hintData) {
+			const hintObject = this.add.text(data.x, data.y, data.hintMessage);
+			hintObject.setAlign('center')
+				.setOrigin(0.5)
+				.setFontSize(20);
+			this._hintTexts.push(hintObject);
+		}
+
 		// Define keyboard control
 		// Alternate: this.input.keyboard.createCursorKeys();
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE, ESC') as KeyboardMapping;
@@ -170,7 +208,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			}
 		});
 
-		if (sceneData!.isTryAgain) {
+		if (sceneData?.isTryAgain) {
 			this.tweens.add({
 				targets: this._player,
 				props: {
@@ -234,6 +272,13 @@ export class TestScene extends BaseScene implements ITouchControl {
 						this.physics.world.enable(cutsceneZone);
 						(cutsceneZone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 						break;
+					case 'i':
+						const gameItem = new Coin(this, j * 64, i * 64, 'item_random');
+						this._itemsOnMaps.add(gameItem);
+						gameItem.setName('OrdinaryItem');
+						gameItem.setOrigin(0);
+						gameItem.getBody().setAllowGravity(false);
+						break;
 					default:
 						break;
 				}
@@ -250,6 +295,10 @@ export class TestScene extends BaseScene implements ITouchControl {
 		});
 		this.physics.add.collider(this._player, tileGroup);
 		this.physics.add.overlap(this._player, this._portalGroup, () => {
+			this._interactionArea = true;
+		});
+		this.physics.add.overlap(this._player, this._itemsOnMaps, (player, item) => {
+			this._playerInteractWith = item;
 			this._interactionArea = true;
 		});
 	}
@@ -393,7 +442,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this._player.doRight();
 		const tolerance = 134;
 		const boundaries = (this._background.displayWidth - this._player.displayWidth * 0.5) - tolerance;
-		if (this._player.x > boundaries) {
+		if (this._player.x >= boundaries) {
 			this._player.setVelocityX(0);
 		}
 	}
@@ -401,7 +450,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 	touchLeftArea(): void {
 		this._player.doLeft();
 		const boundaries = this._player.displayWidth * 0.5;
-		if (this._player.x < boundaries) {
+		if (this._player.x <= boundaries) {
 			this._player.setVelocityX(0);
 		}
 	}
@@ -410,6 +459,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 		const playerOnGround = this._player.body.blocked.down;
 		if (!this._interactionArea) {
 			this._player.doJump();
+		}
+		else if (this._playerInteractWith?.active) {
+			console.log('Interact with:', this._playerInteractWith.name);
+			this._interactionArea = false;
+			this._playerInteractWith.destroy();
 		}
 		else if (playerOnGround) {
 			this._bubbleChat?.destroy(); // Destroy the previous baloon rendered!
@@ -459,7 +513,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		}
 
 		// Fall condition
-		if (this!._player.y - this._player.displayHeight > this._deadZonePosY) {
+		if (this._player.y - this._player.displayHeight > this._deadZonePosY) {
 			console.log('Dead flag!');
 			this.eventUI.emit('UI#do_gameover');
 		}

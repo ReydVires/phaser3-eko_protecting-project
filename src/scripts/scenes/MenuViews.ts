@@ -34,7 +34,7 @@ export class MenuViews extends BaseScene {
 	init (data: any): void {
 		super.init(data);
 		console.log(`MenuViews`);
-		this._isGameStart = data!.isGameStarted;
+		this._isGameStart = data?.isGameStarted;
 		this._baloonTips = new Array<string>(
 			"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?",
 			"The greatest glory in living lies not in never falling, but in rising every time we fall.",
