@@ -7,6 +7,7 @@ import { UIScene } from "../../objects/abstract/UIScene";
 import { FPSText } from "../../objects/FPSText";
 import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
 import { DialogueBox } from "../../objects/DialogueBox";
+import { Helper } from "../../utils/Helper";
 
 //#endregion
 
@@ -52,10 +53,12 @@ export class TestUIScene extends UIScene {
 			});
 		}).disableInteractive().setVisible(false);
 
-		this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123")
-			.setOrigin(0.5, 0)
-			.setScrollFactor(0)
-			.setFontSize(32);
+		if (Helper.isInDevelopment()) {
+			const bitmapTxtTest = this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123");
+			bitmapTxtTest.setOrigin(0.5, 0);
+			bitmapTxtTest.setScrollFactor(0);
+			bitmapTxtTest.setFontSize(32);
+		}
 
 		new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)
@@ -95,7 +98,9 @@ export class TestUIScene extends UIScene {
 		}, true);
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
-			this.eventHandler.emit('UI#do_pause');
+			if (!this._dimBackground.visible) {
+				this.eventHandler.emit('UI#do_pause');
+			}
 		});
 	}
 
