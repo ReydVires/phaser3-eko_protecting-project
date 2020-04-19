@@ -58,8 +58,8 @@ export const Config: Phaser.Types.Core.GameConfig = {
 		pixelArt: false,
 		antialias: true
 	},
-	// fps: {
-	// 	target: 50,
-	// 	forceSetTimeOut: true,
-	// }
+	fps: {
+		target: 60,
+		forceSetTimeOut: false // true
+	}
 };
