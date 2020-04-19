@@ -238,8 +238,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 
 	generateMapping (mappingData: Array<string>): void {
 		const maxLength = mappingData.length;
-		const tileGroup = this.physics.add.staticGroup();
-		const coinGroup = this.physics.add.group();
+		const tileGroup = this.physics.add.staticGroup({ classType: Tile });
+		const coinGroup = this.physics.add.group({ classType: Coin });
 		const cutsceneZone = this.add.zone(0, 0, 0, 0);
 		this._portalGroup = this.physics.add.group();
 		for (let i = 0; i < maxLength; i++) {
