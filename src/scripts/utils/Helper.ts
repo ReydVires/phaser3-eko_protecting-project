@@ -122,7 +122,7 @@ export class Helper {
 	}
 
 	static isInDevelopment (): boolean | undefined {
-		return Config.physics!.arcade!.debug;
+		return Config.physics?.arcade?.debug;
 	}
 
 	static log (message: string, arg?: any): void {
