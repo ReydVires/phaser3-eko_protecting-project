@@ -1,14 +1,14 @@
 //#region Import modules
-import { centerX, SCREEN_HEIGHT } from '../../config';
+import { SCREEN_HEIGHT } from '../../config';
 import { Player } from '../../objects/Player';
 import { Tile } from '../../objects/Tile';
-import { Helper } from '../../utils/Helper';
 import * as LevelData from '../../levels/tutorialLevel.json';
 import { KeyboardMapping } from '../../../../typings/KeyboardMapping';
 import { Coin } from '../../objects/collectable/Coin';
 import { BaloonSpeech } from '../../objects/BaloonSpeech';
 import { BaseScene } from '../../objects/abstract/BaseScene';
 import { ITouchControl } from '../../objects/interface/ITouchControl';
+import { CheckPlatform, PrintPointerPos, IsInDevelopment } from '../../utils/Helper';
 
 //#endregion
 
@@ -86,7 +86,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 	init (): void {
 		super.init();
 		console.log(`TestScene: For experimental only!`);
-		this._platformCompatible = Helper.checkPlatform(['Android', 'iPhone']);
+		this._platformCompatible = CheckPlatform(['Android', 'iPhone']);
 		this._onTouch = false;
 		this._actionArea = false;
 		this._interactionArea = false;
@@ -101,7 +101,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		// 	dimension: 64,
 		// 	width: 2000
 		// }, this);
-		Helper.printPointerPos(this, true);
+		PrintPointerPos(this, true);
 
 		this._background = this.add.image(0, 0, 'tutorial_stage_bg').setOrigin(0);
 		this.add.image(0, 0, 'tutorial_stage_platform_p1').setOrigin(0).setScrollFactor(0.9);
@@ -223,7 +223,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			});
 		}
 
-		if (Helper.isInDevelopment()) {
+		if (IsInDevelopment()) {
 			const touchLine = this.add.graphics();
 			touchLine.lineStyle(2, 0x000, 0.9);
 			touchLine.moveTo(this.LEFT_AREA, 0).lineTo(this.LEFT_AREA, SCREEN_HEIGHT);

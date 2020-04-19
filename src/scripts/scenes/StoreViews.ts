@@ -1,11 +1,11 @@
 import { centerX, centerY } from "../config";
 import { DimBackground } from "../objects/components/DimBackground";
 import { BaloonSpeech } from "../objects/BaloonSpeech";
-import { Helper } from "../utils/Helper";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 import { BaseScene } from "../objects/abstract/BaseScene";
 import { FlatButton } from "../objects/components/FlatButton";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
+import { NextSceneFadeOut } from "../utils/Helper";
 
 export class StoreViews extends BaseScene {
 
@@ -140,7 +140,7 @@ export class StoreViews extends BaseScene {
 				this._windowBuy.setVisible(false);
 			}
 			else {
-				Helper.nextSceneFadeOut(this, 'MenuViews', { isGameStarted: true });
+				NextSceneFadeOut(this, 'MenuViews', { isGameStarted: true });
 				this.input.enabled = false;
 			}
 		}

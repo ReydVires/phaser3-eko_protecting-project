@@ -1,8 +1,8 @@
 import { FlatButton } from "../objects/components/FlatButton";
 import { centerX, centerY } from "../config";
-import { Helper } from "../utils/Helper";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 import { BaseScene } from "../objects/abstract/BaseScene";
+import { NextSceneFadeOut } from "../utils/Helper";
 
 interface Betatester {
 	name: string;
@@ -126,7 +126,7 @@ export class LeaderboardViews extends BaseScene {
 	goToMiniGame (): void {
 		if (this.input.enabled) {
 			this.input.enabled = false;
-			Helper.nextSceneFadeOut(this, 'MinigameViews');
+			NextSceneFadeOut(this, 'MinigameViews');
 		}
 	}
 

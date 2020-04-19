@@ -1,6 +1,6 @@
-import { Helper } from "../utils/Helper";
 import { centerX, centerY } from "../config";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
+import { CheckPlatform, IsInDevelopment } from "../utils/Helper";
 
 declare const WebFont: any;
 declare const AndroidFullScreen: any;
@@ -14,7 +14,7 @@ export class BootScene extends Phaser.Scene {
 	init (): void {
 		console.log(`BootScene`);
 		console.log("platform:", navigator.userAgent);
-		if (Helper.checkPlatform('Android')) {
+		if (CheckPlatform('Android')) {
 			// Installed plugin for Android
 			AndroidFullScreen?.immersiveMode();
 
@@ -35,7 +35,7 @@ export class BootScene extends Phaser.Scene {
 
 	create (): void {
 		this.loadWebFont(['Comfortaa']);
-		if (Helper.isInDevelopment()) {
+		if (IsInDevelopment()) {
 			this.scene.start('PreloadScene');
 		}
 		else {

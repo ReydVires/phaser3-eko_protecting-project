@@ -7,7 +7,7 @@ import { UIScene } from "../../objects/abstract/UIScene";
 import { FPSText } from "../../objects/FPSText";
 import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
 import { DialogueBox } from "../../objects/DialogueBox";
-import { Helper } from "../../utils/Helper";
+import { IsInDevelopment } from "../../utils/Helper";
 
 //#endregion
 
@@ -53,7 +53,7 @@ export class TestUIScene extends UIScene {
 			});
 		}).disableInteractive().setVisible(false);
 
-		if (Helper.isInDevelopment()) {
+		if (IsInDevelopment()) {
 			const bitmapTxtTest = this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123");
 			bitmapTxtTest.setOrigin(0.5, 0);
 			bitmapTxtTest.setScrollFactor(0);

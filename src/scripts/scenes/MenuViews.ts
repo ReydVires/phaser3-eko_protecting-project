@@ -1,5 +1,4 @@
 import { centerX, centerY } from "../config";
-import { Helper } from "../utils/Helper";
 import { BaloonSpeech } from "../objects/BaloonSpeech";
 import { Button } from "../objects/components/Button";
 import { FlatButton } from "../objects/components/FlatButton";
@@ -8,6 +7,7 @@ import { DimBackground } from "../objects/components/DimBackground";
 import { BaseScene } from "../objects/abstract/BaseScene";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 import { ToggleButton } from "../objects/components/ToggleButton";
+import { ExitApp, NextSceneFadeOut } from "../utils/Helper";
 
 export class MenuViews extends BaseScene {
 
@@ -109,7 +109,7 @@ export class MenuViews extends BaseScene {
 	createExitWindow (): void {
 		this._windowExit = new PopUpWindow(this, centerX, centerY, 'quit_win', [
 			new FlatButton(this, 0, 0, 'yes_btn')
-				.setCallback(() => { Helper.exitApp(); }),
+				.setCallback(() => { ExitApp(); }),
 			new FlatButton(this, 0, 80, 'no_btn')
 				.setCallback(() => this.showExitWindow())
 		])
@@ -133,19 +133,19 @@ export class MenuViews extends BaseScene {
 		this._playBtn = new Button(this, 1048, 334, 'AdventureButton')
 			.setCallback(() => {
 				this.input.enabled = false;
-				Helper.nextSceneFadeOut(this, 'TestScene');
+				NextSceneFadeOut(this, 'TestScene');
 			});
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
 			.setCallback(() => {
 				this.input.enabled = false;
-				Helper.nextSceneFadeOut(this, 'MinigameViews');
+				NextSceneFadeOut(this, 'MinigameViews');
 			});
 
 		this._warungGameBtn = new Button(this, 1048, 574, 'WarungButton')
 			.setCallback(() => {
 				this.input.enabled = false;
-				Helper.nextSceneFadeOut(this, 'StoreViews');
+				NextSceneFadeOut(this, 'StoreViews');
 			});
 
 		this._achievementBtn = new FlatButton(this, 1100, 64, 'achievement_btn')

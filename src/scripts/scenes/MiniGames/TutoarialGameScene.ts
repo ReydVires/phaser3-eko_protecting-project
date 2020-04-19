@@ -3,7 +3,7 @@ import { centerX, centerY } from "../../config";
 import { KeyboardMapping } from "../../../../typings/KeyboardMapping";
 import { BaseScene } from "../../objects/abstract/BaseScene";
 import { ITouchControl } from "../../objects/interface/ITouchControl";
-import { Helper } from "../../utils/Helper";
+import { CheckPlatform } from "../../utils/Helper";
 
 //#endregion
 export const LEFT_AREA: number = 210;
@@ -41,7 +41,7 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		console.log("Welcome in TutorialGameScene");
 		this._arrowQueue = new Array<ArrowStruct>();
 		this._arrowSuccessQueue = new Array<ArrowStruct>();
-		this._platformCompatible = Helper.checkPlatform(['Android', 'iPhone']);
+		this._platformCompatible = CheckPlatform(['Android', 'iPhone']);
 		this._onTouch = false;
 		this._testRestart = false;
 		this._onEnemyAttack = false;
