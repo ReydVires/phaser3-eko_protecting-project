@@ -53,7 +53,7 @@ export const Config: Phaser.Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {
 			debug: true,
-			gravity: { y: 600 }
+			gravity: { y: 550 }
 		}
 	},
 	render: {
