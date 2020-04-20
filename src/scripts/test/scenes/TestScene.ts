@@ -8,7 +8,8 @@ import { Coin } from '../../objects/collectable/Coin';
 import { BaloonSpeech } from '../../objects/BaloonSpeech';
 import { BaseScene } from '../../objects/abstract/BaseScene';
 import { ITouchControl } from '../../objects/interface/ITouchControl';
-import { CheckPlatform, PrintPointerPos, IsInDevelopment } from '../../utils/Helper';
+import { CheckPlatform, PrintPointerPos, IsInDevelopment, DebugLog } from '../../utils/Helper';
+import { OnExitOverlap } from '../../utils/PhysicsHelper';
 
 //#endregion
 
@@ -79,6 +80,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private _bubbleChat: BaloonSpeech;
 	private _hintTexts: Array<Phaser.GameObjects.Text>;
 
+	private _testPhysicsHelper: Phaser.Physics.Arcade.Sprite;
+
 	constructor () {
 		super('TestScene');
 	}
@@ -93,7 +96,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this._onCutsceneEvent = false;
 		this._sceneState = InGameState.Playable;
 		this._hintTexts = new Array<Phaser.GameObjects.Text>();
-		this._itemsOnMaps = this.physics.add.group();
+		this._itemsOnMaps = this.physics.add.group({ allowGravity: false });
 	}
 
 	create (sceneData: SceneData): void {
@@ -239,7 +242,10 @@ export class TestScene extends BaseScene implements ITouchControl {
 	generateMapping (mappingData: Array<string>): void {
 		const maxLength = mappingData.length;
 		const tileGroup = this.physics.add.staticGroup({ classType: Tile });
-		const coinGroup = this.physics.add.group({ classType: Coin });
+		const coinGroup = this.physics.add.group({
+			classType: Coin,
+			allowGravity: false
+		});
 		const cutsceneZone = this.add.zone(0, 0, 0, 0);
 		this._portalGroup = this.physics.add.group();
 		for (let i = 0; i < maxLength; i++) {
@@ -256,7 +262,6 @@ export class TestScene extends BaseScene implements ITouchControl {
 						const coin = new Coin(this, 64 * j, 64 * i, 'coin_game').setOrigin(0, 0.3);
 						coin.play('anim_coin_game');
 						coinGroup.add(coin);
-						coin.getBody().setAllowGravity(false);
 						break;
 					case 'p':
 						const zone = this.add.zone(j * 64, i * 64, 70, 64)
@@ -277,7 +282,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 						this._itemsOnMaps.add(gameItem);
 						gameItem.setName('OrdinaryItem');
 						gameItem.setOrigin(0);
-						gameItem.getBody().setAllowGravity(false);
+						this._testPhysicsHelper = gameItem; // Test
 						break;
 					default:
 						break;
@@ -304,7 +309,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 	}
 
 	generatePortal (portalData: Array<PortalData>): Phaser.Physics.Arcade.Group {
-		const groups = this.physics.add.group();
+		const groups = this.physics.add.group({ allowGravity: false });
 		const maxPortal = portalData.length;
 		for (let i = 0; i < maxPortal; i++) {
 			const data = portalData[i].info;
@@ -312,20 +317,21 @@ export class TestScene extends BaseScene implements ITouchControl {
 			zone.setOrigin(0);
 			this.physics.world.enable(zone);
 			groups.add(zone);
-			(zone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 		}
 		return groups;
 	}
 
 	generateCoin (coinData: Array<CoinData>): Phaser.Physics.Arcade.Group {
-		const groups = this.physics.add.group({ classType: Coin });
+		const groups = this.physics.add.group({
+			classType: Coin,
+			allowGravity: false
+		});
 		const maxCoin = coinData.length;
 		for (let i = 0; i < maxCoin; i++) {
 			const data = coinData[i];
 			const coin = new Coin(this, data.x, data.y, data.texture)
 				.setOrigin(data.originX, data.originY);
 			groups.add(coin);
-			coin.getBody().setAllowGravity(false);
 		}
 		return groups;
 	}
@@ -527,6 +533,18 @@ export class TestScene extends BaseScene implements ITouchControl {
 				this._bubbleChat?.destroy(); // After out the collision
 			}
 		});
+
+		OnExitOverlap(this._testPhysicsHelper, () => {
+			console.log('OnExit worked!');
+		});
+
+		// this._itemsOnMaps.getChildren().forEach((object) => {
+		// 	const gameObject = object.body as Phaser.Physics.Arcade.Body;
+		// 	const overlapStatus = gameObject.touching.none;
+		// 	if (this._interactionArea && overlapStatus) {
+		// 		this._interactionArea = false;
+		// 	}
+		// });
 	}
 
 	/**
