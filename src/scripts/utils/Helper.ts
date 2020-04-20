@@ -77,6 +77,12 @@ export function NextSceneFadeOut (currentScene: Phaser.Scene, sceneName: string,
 	cam.fadeOut(300);
 }
 
+export function FadeIn (currentScene: Phaser.Scene, callback: Function, duration: number = 300): void {
+	const cam = currentScene.cameras.main;
+	cam.once('camerafadeincomplete', () => callback());
+	cam.fadeIn(duration);
+}
+
 export function CheckPlatform (platformName: string | string[]): boolean {
 	let isCompatible = false;
 	let platformMap = new Map<string, boolean>();
