@@ -97,6 +97,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this._sceneState = InGameState.Playable;
 		this._hintTexts = new Array<Phaser.GameObjects.Text>();
 		this._itemsOnMaps = this.physics.add.group({ allowGravity: false });
+		this.input.enabled = false;
 	}
 
 	create (sceneData: SceneData): void {
@@ -237,6 +238,9 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this.registerEvent('scenestate_playable', () => {
 			this._sceneState = InGameState.Playable;
 		});
+		this.registerEvent('allow_input', () => {
+			this.input.enabled = true;
+		});
 	}
 
 	generateMapping (mappingData: Array<string>): void {
@@ -274,8 +278,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 						cutsceneZone.setPosition(j * 64, i * 64)
 							.setSize(64, 64)
 							.setOrigin(0);
-						this.physics.world.enable(cutsceneZone);
-						(cutsceneZone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+						this.physics.world.enable(cutsceneZone, 1); // 0: Dynamic | 1: Static
 						break;
 					case 'i':
 						const gameItem = new Coin(this, j * 64, i * 64, 'item_random');
@@ -303,7 +306,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			this._interactionArea = true;
 		});
 		this.physics.add.overlap(this._player, this._itemsOnMaps, (player, item) => {
-			this._playerInteractWith = item;
+			this._playerInteractWith = item.setActive(true);
 			this._interactionArea = true;
 		});
 	}
@@ -445,11 +448,13 @@ export class TestScene extends BaseScene implements ITouchControl {
 	}
 
 	touchRightArea(): void {
-		this._player.doRight();
 		const tolerance = 134;
 		const boundaries = (this._background.displayWidth - this._player.displayWidth * 0.5) - tolerance;
 		if (this._player.x >= boundaries) {
 			this._player.setVelocityX(0);
+		}
+		else {
+			this._player.doRight();
 		}
 	}
 	
@@ -524,18 +529,9 @@ export class TestScene extends BaseScene implements ITouchControl {
 			this.eventUI.emit('UI#do_gameover');
 		}
 
-		// Test on exit collider
-		this._portalGroup.getChildren().forEach((object) => {
-			const child = (object.body as Phaser.Physics.Arcade.Body);
-			const colliderStatus = child.touching.none;
-			if (this._interactionArea && colliderStatus) {
-				this._interactionArea = false;
-				this._bubbleChat?.destroy(); // After out the collision
-			}
-		});
-
 		OnExitOverlap(this._testPhysicsHelper, () => {
-			console.log('OnExit worked!');
+			this._playerInteractWith.setActive(false);
+			this._interactionArea = false;
 		});
 
 		// this._itemsOnMaps.getChildren().forEach((object) => {
