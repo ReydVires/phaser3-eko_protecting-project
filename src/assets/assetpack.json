@@ -33,6 +33,10 @@
                 "url": "img_item_random.png"
             },
             {
+                "key": "caution_mini",
+                "url": "UI/img_caution_mini.png"
+            },
+            {
                 "key": "timer_base",
                 "url": "UI/spr_timer_base.png"
             },
@@ -243,6 +247,10 @@
             {
                 "key": "cave_entrance",
                 "url": "backgrounds/img_cave_entrance.png"
+            },
+            {
+                "key": "world_map",
+                "url": "img_world_map.png"
             }
         ]
     },
