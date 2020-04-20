@@ -52,6 +52,16 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	create (): void {
 		this._player = this.add.sprite(centerX * 0.3, centerY * 1.3, 'phaser-logo');
 		this._enemy = this.add.sprite(centerX * 1.3, centerY * 0.9, 'phaser-logo');
+
+		const cautionMark = this.add.image(this._enemy.x - 165, this._enemy.y, 'caution_mini');
+		this.tweens.add({
+			targets: cautionMark,
+			alpha: 0.3,
+			yoyo: true,
+			repeat: -1,
+			duration: 500
+		});
+
 		this._arrowQueue = this.createArrows(5);
 		this._keys = this.input.keyboard.addKeys('RIGHT, LEFT, UP, ESC') as KeyboardMapping;
 
