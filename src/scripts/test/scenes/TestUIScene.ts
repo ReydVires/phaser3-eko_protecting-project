@@ -7,7 +7,7 @@ import { UIScene } from "../../objects/abstract/UIScene";
 import { FPSText } from "../../objects/FPSText";
 import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
 import { DialogueBox } from "../../objects/DialogueBox";
-import { IsInDevelopment } from "../../utils/Helper";
+import { IsInDevelopment, FadeIn } from "../../utils/Helper";
 
 //#endregion
 
@@ -25,9 +25,14 @@ export class TestUIScene extends UIScene {
 	init (): void {
 		super.init();
 		console.log('TestUIScene');
+		this.input.enabled = false;
 	}
 
 	create (): void {
+		FadeIn(this, () => { 
+			this.input.enabled = true;
+			this.eventHandler.emit('event#allow_input');
+		}, 200);
 		const areaScreenImage = this.add.image(0, 0, 'area_screen_control')
 			.setOrigin(0)
 			.setAlpha(0.75);
