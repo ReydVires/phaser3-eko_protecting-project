@@ -133,7 +133,7 @@ export class MenuViews extends BaseScene {
 		this._playBtn = new Button(this, 1048, 334, 'AdventureButton')
 			.setCallback(() => {
 				this.input.enabled = false;
-				NextSceneFadeOut(this, 'TestScene');
+				NextSceneFadeOut(this, 'WorldmapViews');
 			});
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
