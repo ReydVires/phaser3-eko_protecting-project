@@ -251,6 +251,10 @@
             {
                 "key": "world_map",
                 "url": "img_world_map.png"
+            },
+            {
+                "key": "world_map_pemukiman",
+                "url": "img_world_map_pemukiman.png"
             }
         ]
     },
