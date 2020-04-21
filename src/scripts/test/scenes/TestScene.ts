@@ -476,7 +476,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			this._interactionArea = false;
 			this._playerInteractWith.destroy();
 		}
-		else if (playerOnGround) {
+		else if (playerOnGround && this._interactionArea) {
 			this._bubbleChat?.destroy(); // Destroy the previous baloon rendered!
 			if (this._dialogues.length > 0) {
 				this._onCutsceneEvent = true;
@@ -529,18 +529,18 @@ export class TestScene extends BaseScene implements ITouchControl {
 			this.eventUI.emit('UI#do_gameover');
 		}
 
-		OnExitOverlap(this._testPhysicsHelper, () => {
+		OnExitOverlap(this._testPhysicsHelper.body, () => {
 			this._playerInteractWith.setActive(false);
 			this._interactionArea = false;
 		});
 
-		// this._itemsOnMaps.getChildren().forEach((object) => {
-		// 	const gameObject = object.body as Phaser.Physics.Arcade.Body;
-		// 	const overlapStatus = gameObject.touching.none;
-		// 	if (this._interactionArea && overlapStatus) {
-		// 		this._interactionArea = false;
-		// 	}
-		// });
+		this._portalGroup.getChildren().forEach((gameObject) => {
+			const body = gameObject.body as Phaser.Physics.Arcade.Body;
+			OnExitOverlap(body, () => {
+				this._interactionArea = false;
+				console.log('Exit portal');
+			});
+		});
 	}
 
 	/**
