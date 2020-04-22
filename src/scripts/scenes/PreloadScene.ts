@@ -1,4 +1,5 @@
 import { SCREEN_WIDTH, centerX, centerY } from "../config";
+import { RetrieveOnceJSON } from "../utils/Helper";
 
 export class PreloadScene extends Phaser.Scene {
 
@@ -17,20 +18,22 @@ export class PreloadScene extends Phaser.Scene {
 	}
 
 	preload (): void {
-		this.createLoadingBar(centerX, centerY, 12, 32);
+		this.createLoadingBar(centerX, centerY, 16, 32);
 		this.load.pack('image', 'assets/assetpack.json', 'imagePack');
 		this.load.pack('spritesheet', 'assets/assetpack.json', 'spritesheetPack');
 		this.load.pack('bitmapFont', 'assets/assetpack.json', 'bitmapFontPack');
 
 		this.load.json('player_anim', 'assets/animations/player_anim.json');
 		this.load.json('gameObject_anim', 'assets/animations/gameObject_anim.json');
+
+		this.load.json('tutorial_data_level', 'src/scripts/levels/tutorialLevel.json');
 	}
 
 	create (): void {
-		const cacheJSON = this.cache.json;
+		const cache = this.cache.json;
 		const animateJSON = [
-			cacheJSON.get('player_anim'),
-			cacheJSON.get('gameObject_anim'),
+			RetrieveOnceJSON(cache, 'player_anim'),
+			RetrieveOnceJSON(cache, 'gameObject_anim')
 		];
 		this.registerAnimate(animateJSON);
 		/**
