@@ -311,7 +311,12 @@
 				"key": "eko_jump",
 				"url": "sheet_eko_jump.png",
 				"frameConfig": { "frameWidth": 128, "frameHeight": 188 }
-			}
+            },
+            {
+                "key": "lady_npc",
+                "url": "spr_lady_npc.png",
+                "frameConfig": { "frameWidth": 64, "frameHeight": 188 }
+            }
         ]
 	},
 	"bitmapFontPack": {
