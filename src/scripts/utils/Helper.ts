@@ -130,3 +130,13 @@ export function DebugDrawLine (graphics: Phaser.GameObjects.Graphics, option?: L
 	}
 	graphics.strokePath();
 }
+
+export function RetrieveOnceJSON (cache: Phaser.Cache.BaseCache, key: string): any {
+	let data = null;
+	if (cache.has(key)) {
+		data = cache.get(key);
+		cache.remove(key);
+	}
+	console.assert(data !== null, "Retrieving a null value of JSON data");
+	return data;
+}
