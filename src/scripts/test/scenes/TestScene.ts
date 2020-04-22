@@ -2,14 +2,13 @@
 import { SCREEN_HEIGHT } from '../../config';
 import { Player } from '../../objects/Player';
 import { Tile } from '../../objects/Tile';
-import * as LevelData from '../../levels/tutorialLevel.json';
 import { KeyboardMapping } from '../../../../typings/KeyboardMapping';
 import { Coin } from '../../objects/collectable/Coin';
 import { BaloonSpeech } from '../../objects/BaloonSpeech';
 import { BaseScene } from '../../objects/abstract/BaseScene';
 import { ITouchControl } from '../../objects/interface/ITouchControl';
-import { CheckPlatform, PrintPointerPos, IsInDevelopment, DebugLog } from '../../utils/Helper';
-import { OnExitOverlap } from '../../utils/PhysicsHelper';
+import { CheckPlatform, PrintPointerPos, IsInDevelopment } from '../../utils/Helper';
+import { OnExitOverlap, OnEnterOverlap } from '../../utils/PhysicsHelper';
 
 //#endregion
 
@@ -155,7 +154,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 		// 	this._interactionArea = true;
 		// });
 
-		this.generateMapping(LevelData.mappingData);
+		const levelData = this.cache.json.get('tutorial_data_level');
+		this.generateMapping(levelData!.mappingData);
 
 		// Create hints!
 		const hintData = [
@@ -168,11 +168,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 				hintMessage: "Melompatlah dengan\nmenekan area gesture"
 			},
 			{
-				x: 805, y: 270,
+				x: 810, y: 260,
 				hintMessage: "Kumpulkanlah koin\nsebanyak banyaknya"
 			},
 			{
-				x: 1090, y: 345,
+				x: 1035, y: 355,
 				hintMessage: "Tekan area gesture untuk\nberinteraksi dengan\norang-orang"
 			},
 			{
@@ -308,6 +308,9 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this.physics.add.overlap(this._player, this._itemsOnMaps, (player, item) => {
 			this._playerInteractWith = item.setActive(true);
 			this._interactionArea = true;
+			OnEnterOverlap((item.body as Phaser.Physics.Arcade.Body), () => {
+				console.log('Enter item', item.name);
+			});
 		});
 	}
 
