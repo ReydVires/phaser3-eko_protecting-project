@@ -79,8 +79,6 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private _bubbleChat: BaloonSpeech;
 	private _hintTexts: Array<Phaser.GameObjects.Text>;
 
-	private _testPhysicsHelper: Phaser.Physics.Arcade.Sprite;
-
 	constructor () {
 		super('TestScene');
 	}
@@ -115,6 +113,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 		const cam = this.cameras.main;
 		// Set bound camera, based on background level
 		cam.setBounds(0, 0, this._background.displayWidth - 32, 0);
+
+		const npc = this.physics.add.sprite(960, 574, 'lady_npc')
+			.setOrigin(0.5, 1)
+			.setName('npc');
+		(npc.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
 		this._player = new Player(this, 64, 575, 'eko_idle');
 		cam.startFollow(this._player);
@@ -153,6 +156,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 		// this.physics.add.overlap(this._player, this._portalGroup, () => {
 		// 	this._interactionArea = true;
 		// });
+
+		this.physics.add.overlap(this._player, npc, (p, n) => {
+			this._playerInteractWith = n.setActive(true);
+			this._interactionArea = true;
+		});
 
 		const levelData = this.cache.json.get('tutorial_data_level');
 		this.generateMapping(levelData!.mappingData);
@@ -285,7 +293,6 @@ export class TestScene extends BaseScene implements ITouchControl {
 						this._itemsOnMaps.add(gameItem);
 						gameItem.setName('OrdinaryItem');
 						gameItem.setOrigin(0);
-						this._testPhysicsHelper = gameItem; // Test
 						break;
 					default:
 						break;
@@ -309,7 +316,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			this._playerInteractWith = item.setActive(true);
 			this._interactionArea = true;
 			OnEnterOverlap((item.body as Phaser.Physics.Arcade.Body), () => {
-				console.log('Enter item', item.name);
+				console.log('Enter interact', item.name);
 			});
 		});
 	}
@@ -476,8 +483,14 @@ export class TestScene extends BaseScene implements ITouchControl {
 		}
 		else if (this._playerInteractWith?.active) {
 			console.log('Interact with:', this._playerInteractWith.name);
+			if (this._playerInteractWith.name === 'npc') {
+				this._playerInteractWith.setActive(false);
+				console.log('Show dialog box!');
+			}
+			else {
+				this._playerInteractWith.destroy();
+			}
 			this._interactionArea = false;
-			this._playerInteractWith.destroy();
 		}
 		else if (playerOnGround && this._interactionArea) {
 			this._bubbleChat?.destroy(); // Destroy the previous baloon rendered!
@@ -532,7 +545,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			this.eventUI.emit('UI#do_gameover');
 		}
 
-		OnExitOverlap(this._testPhysicsHelper.body, () => {
+		OnExitOverlap((this._playerInteractWith?.body as Phaser.Physics.Arcade.Body), () => {
 			this._playerInteractWith.setActive(false);
 			this._interactionArea = false;
 		});
@@ -541,7 +554,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 			const body = gameObject.body as Phaser.Physics.Arcade.Body;
 			OnExitOverlap(body, () => {
 				this._interactionArea = false;
-				console.log('Exit portal');
+				console.log('Not in portal');
 			});
 		});
 	}
