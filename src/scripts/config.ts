@@ -32,7 +32,7 @@ const scenes: Array<Function> = [
 	GameScene,
 	GameUIScene,
 	TestScene,
-	TestUIScene
+	TestUIScene,
 ];
 
 export const Config: Phaser.Types.Core.GameConfig = {
