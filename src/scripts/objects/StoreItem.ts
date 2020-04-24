@@ -1,4 +1,4 @@
-export class ItemStore extends Phaser.GameObjects.Image {
+export class StoreItem extends Phaser.GameObjects.Image {
 
 	constructor (scene: Phaser.Scene, x: number, y: number, texture: string, name: string) {
 		super(scene, x, y, texture);
