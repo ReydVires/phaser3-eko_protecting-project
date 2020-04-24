@@ -149,7 +149,6 @@ export class MenuViews extends BaseScene {
 			});
 
 		this._achievementBtn = new FlatButton(this, 1100, 64, 'achievement_btn')
-			.setCallback(() => alert('Not implemented!'))
 			.setOrigin(0.5, 0.35);
 
 		this._settingBtn = new FlatButton(this, 1189, 64, 'setting_btn')

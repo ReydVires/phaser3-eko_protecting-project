@@ -9,6 +9,7 @@ import { BaseScene } from '../../objects/abstract/BaseScene';
 import { ITouchControl } from '../../objects/interface/ITouchControl';
 import { CheckPlatform, PrintPointerPos, IsInDevelopment } from '../../utils/Helper';
 import { OnExitOverlap, OnEnterOverlap } from '../../utils/PhysicsHelper';
+import { ObjectiveItem } from '../../objects/collectable/ObjectiveItem';
 
 //#endregion
 
@@ -276,11 +277,9 @@ export class TestScene extends BaseScene implements ITouchControl {
 						coinGroup.add(coin);
 						break;
 					case 'p':
-						const zone = this.add.zone(j * 64, i * 64, 70, 64)
-							.setOrigin(0);
-						this.physics.world.enable(zone);
+						const zone = this.add.zone(j * 64, i * 64, 70, 64).setOrigin(0);
 						this._portalGroup.add(zone);
-						(zone.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+						(zone.body as Phaser.Physics.Arcade.Body).setEnable().setAllowGravity(false);
 						break;
 					case 'e':
 						cutsceneZone.setPosition(j * 64, i * 64)
@@ -289,10 +288,10 @@ export class TestScene extends BaseScene implements ITouchControl {
 						this.physics.world.enable(cutsceneZone, 1); // 0: Dynamic | 1: Static
 						break;
 					case 'i':
-						const gameItem = new Coin(this, j * 64, i * 64, 'item_random');
-						this._itemsOnMaps.add(gameItem);
-						gameItem.setName('OrdinaryItem');
-						gameItem.setOrigin(0);
+						const item = new ObjectiveItem(this, j * 64, i * 64, 'item_random', '0001');
+						this._itemsOnMaps.add(item);
+						item.setName('Pouch');
+						item.setOrigin(0);
 						break;
 					default:
 						break;
@@ -300,8 +299,9 @@ export class TestScene extends BaseScene implements ITouchControl {
 			}
 		}
 
-		this.physics.add.overlap(this._player, coinGroup, (player, coin) => {
-			coin.destroy();
+		this.physics.add.overlap(this._player, coinGroup, (player, child) => {
+			const coin = child as Coin;
+			console.log("Collecting coin:", coin.collect());
 		});
 		this.physics.add.overlap(this._player, cutsceneZone, (player, zone) => {
 			console.log('Active Cutscene');
@@ -395,6 +395,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 					this._player.animIdlle();
 					this.eventUI.emit('UI#show_dialogue');
 					// this._sceneState = InGameState.Playable;
+					cutscenes.length = 0;
 				}
 			})
 		);
@@ -487,7 +488,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 				this._playerInteractWith.setActive(false);
 				console.log('Show dialog box!');
 			}
+			else if (this._playerInteractWith instanceof ObjectiveItem) {
+				console.log(this._playerInteractWith.collect());
+			}
 			else {
+				console.log('Just destroy', this._playerInteractWith);
 				this._playerInteractWith.destroy();
 			}
 			this._interactionArea = false;
