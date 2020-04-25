@@ -332,6 +332,21 @@
 				"key": "simply_roundw",
                 "textureURL": "font_simplyr_w.png",
                 "fontDataURL": "bitmap_simplyr_w.fnt"
+            },
+            {
+				"key": "comfortaa_b",
+                "textureURL": "font_comfortaa_b.png",
+                "fontDataURL": "bitmap_comfortaa_b.fnt"
+            },
+            {
+				"key": "comfortaa_b_bold",
+                "textureURL": "font_comfortaa_b_bold.png",
+                "fontDataURL": "bitmap_comfortaa_b_bold.fnt"
+            },
+            {
+				"key": "comfortaa_w",
+                "textureURL": "font_comfortaa_w.png",
+                "fontDataURL": "bitmap_comfortaa_w.fnt"
 			}
 		]
 	}
