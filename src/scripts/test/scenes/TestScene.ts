@@ -78,7 +78,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 	private _dialogues: Array<DialogueData>;
 
 	private _bubbleChat: BaloonSpeech;
-	private _hintTexts: Array<Phaser.GameObjects.Text>;
+	private _hintTexts: Array<Phaser.GameObjects.BitmapText>;
 
 	constructor () {
 		super('TestScene');
@@ -93,7 +93,7 @@ export class TestScene extends BaseScene implements ITouchControl {
 		this._interactionArea = false;
 		this._onCutsceneEvent = false;
 		this._sceneState = InGameState.Playable;
-		this._hintTexts = new Array<Phaser.GameObjects.Text>();
+		this._hintTexts = new Array<Phaser.GameObjects.BitmapText>();
 		this._itemsOnMaps = this.physics.add.group({ allowGravity: false });
 		this.input.enabled = false;
 	}
@@ -190,8 +190,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 			},
 		];
 		for (const data of hintData) {
-			const hintObject = this.add.text(data.x, data.y, data.hintMessage);
-			hintObject.setAlign('center')
+			const hintObject = this.add.bitmapText(data.x, data.y, 'comfortaa_w', data.hintMessage);
+			hintObject.setCenterAlign()
 				.setOrigin(0.5)
 				.setFontSize(20);
 			this._hintTexts.push(hintObject);

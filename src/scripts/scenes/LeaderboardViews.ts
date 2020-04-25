@@ -74,13 +74,11 @@ export class LeaderboardViews extends BaseScene {
 		let dataScoreText = `#${(1)}    ${this._betaTester[0].name}        ${this._betaTester[0].score}`;
 		for (let i = 1; i < this._betaTester.length; i++) {
 			const data = this._betaTester[i];
-			dataScoreText += `\n#${(i+1)}    ${data.name}        ${data.score}`;
+			dataScoreText += `\n\n#${(i+1)}    ${data.name}        ${data.score}`;
 		}
 
-		const testText = this.add.text(0, 0, dataScoreText, { color: 'black' });
-		testText.setFontFamily('Comfortaa');
+		const testText = this.add.bitmapText(0, 0, 'comfortaa_b', dataScoreText);
 		testText.setFontSize(28);
-		testText.setLineSpacing(40);
 		testText.setOrigin(0.5, 0);
 		testText.setMask(new Phaser.Display.Masks.GeometryMask(this, lbMask));
 

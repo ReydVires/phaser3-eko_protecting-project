@@ -6,9 +6,9 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 
 	private _faceHolder: Phaser.GameObjects.Sprite;
 	private _padding: number = 16;
-	private _nameLabel: Phaser.GameObjects.Text;
+	private _nameLabel: Phaser.GameObjects.BitmapText;
 	private _textWidth: number;
-	private _dialogueText: Phaser.GameObjects.Text;
+	private _dialogueText: Phaser.GameObjects.BitmapText;
 	private _interactionBlock: Phaser.GameObjects.Rectangle;
 	private _callback: Function;
 
@@ -40,24 +40,19 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 		return face;
 	}
 
-	private createNameLabel (name: string): Phaser.GameObjects.Text {
-		const label = this.scene.add.text(0, 0, name)
-			.setFontFamily('Comfortaa')
-			.setFontSize(28)
-			.setFill('0x000')
-			.setFontStyle('bold');
+	private createNameLabel (name: string): Phaser.GameObjects.BitmapText {
+		const label = this.scene.add.bitmapText(0, 0, 'comfortaa_b_bold', name)
+			.setFontSize(28);
 		label.setX(this.x - this.displayWidth * 0.5 + this._padding * 2);
 		label.setY(this.y - this.displayHeight * 0.5 + this._padding);
 		return label;
 	}
 
-	private createDialogueText (text?: string): Phaser.GameObjects.Text {
+	private createDialogueText (text?: string): Phaser.GameObjects.BitmapText {
 		text = (typeof text !== "undefined") ? text : '';
-		const dialogue = this.scene.add.text(0, 0, text)
-			.setWordWrapWidth(this._textWidth, false)
-			.setFontFamily('Comfortaa')
-			.setFontSize(21)
-			.setFill('0x000');
+		const dialogue = this.scene.add.bitmapText(0, 0, 'comfortaa_b', text)
+			.setMaxWidth(this._textWidth)
+			.setFontSize(21);
 		dialogue.setX(this._nameLabel.x);
 		dialogue.setY(this._nameLabel.y + this._nameLabel.height + this._padding);
 		return dialogue;

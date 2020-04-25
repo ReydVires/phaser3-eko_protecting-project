@@ -7,7 +7,7 @@ import { UIScene } from "../../objects/abstract/UIScene";
 import { FPSText } from "../../objects/FPSText";
 import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
 import { DialogueBox } from "../../objects/DialogueBox";
-import { IsInDevelopment, FadeIn } from "../../utils/Helper";
+import { FadeIn } from "../../utils/Helper";
 
 //#endregion
 
@@ -16,7 +16,7 @@ export class TestUIScene extends UIScene {
 	private _windowPause: PopUpWindow;
 	private _gameOverWindow: PopUpWindow;
 	private _dimBackground: DimBackground;
-	private _fpsText: Phaser.GameObjects.Text;
+	private _fpsText: Phaser.GameObjects.BitmapText;
 
 	constructor () {
 		super('TestUIScene');
@@ -57,13 +57,6 @@ export class TestUIScene extends UIScene {
 				this.time.delayedCall(500, () => dialogueBox.destroy());
 			});
 		}).disableInteractive().setVisible(false);
-
-		if (IsInDevelopment()) {
-			const bitmapTxtTest = this.add.bitmapText(centerX, 0, 'simply_round', "In Testing Mode 123");
-			bitmapTxtTest.setOrigin(0.5, 0);
-			bitmapTxtTest.setScrollFactor(0);
-			bitmapTxtTest.setFontSize(32);
-		}
 
 		new FlatButton(this, 1189, 48, 'pause_btn')
 			.setScrollFactor(0)

@@ -45,10 +45,8 @@ export class MinigameViews extends BaseScene {
 		new PopUpWindow(this, centerX * 0.6, centerY, 'screen_booster', [
 			this.add.image(-140, -112, 'booster_display'),
 			this.add.image(-140, -112, 'phaser-logo').setScale(0.45), // TODO:Set content here!
-			this.add.text(-40, -165, '> Game Booster A\nMinuman segar yang mampu\nmenaikan score 150%')
-				.setFill('0x000')
-				.setFontSize(18)
-				.setFontFamily('Comfortaa'),
+			this.add.bitmapText(-40, -165, 'comfortaa_b', '> Game Booster A\nMinuman segar yang mampu\nmenaikan score 150%')
+				.setFontSize(18),
 			this.add.sprite(-155, 120, 'booster_box', 1),
 			this.add.image(-155, 120, 'phaser-logo').setScale(0.35), // TODO:Set content here!
 			this.add.sprite(0, 120, 'booster_box', 1),

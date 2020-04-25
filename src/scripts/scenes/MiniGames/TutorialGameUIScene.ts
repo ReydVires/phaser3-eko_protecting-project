@@ -55,7 +55,7 @@ export class TutorialGameUIScene extends UIScene {
 
 		this._dimBackground = new DimBackground(this);
 
-		this.add.text(centerX * 0.25, centerY * 0.75, "TAP!", { fontSize: '32px' });
+		this.add.bitmapText(centerX * 0.25, centerY * 0.72, 'comfortaa_w', "TAP!").setFontSize(32);
 		const leftArrow = this.add.sprite(LEFT_AREA * 0.5, SCREEN_HEIGHT - 64, 'left_arrow')
 			.setOrigin(0, 1);
 		const rightArrow = this.add.sprite(RIGHT_AREA * 0.5, leftArrow.y, 'right_arrow')
@@ -89,15 +89,14 @@ export class TutorialGameUIScene extends UIScene {
 			new FlatButton(this, -256, 32, 'prev_btn'),
 			new FlatButton(this, 256, 32, 'next_btn'),
 			this.add.image(0, 0, 'phaser-logo'), // TODO: Content here!
-			this.add.text(0, 208, "Lorem Ipsum Dolor\n" +
+			this.add.bitmapText(0, 208, 'comfortaa_w', "Lorem Ipsum Dolor\n" +
 			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! " +
 			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! " +
 			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! ")
-				.setAlign('center')
+				.setCenterAlign()
 				.setOrigin(0.5)
 				.setFontSize(16)
-				.setFontFamily('Comfortaa')
-				.setWordWrapWidth(475, false),
+				.setMaxWidth(475),
 			new FlatButton(this, 728 * 0.455, -245, 'exit_btn')
 				.setCallback(() => {
 					this.showTutorialScene();
@@ -110,12 +109,10 @@ export class TutorialGameUIScene extends UIScene {
 				.setCenterAlign()
 				.setOrigin(0.5)
 				.setFontSize(32),
-			this.add.text(0, -32, "Highest Score: 9999",
-				<Phaser.Types.GameObjects.Text.TextStyle> {
-					fontFamily: 'Comfortaa',
-					align: 'center',
-					color: 'black',
-				}).setOrigin(0.5).setFontSize(20),
+			this.add.bitmapText(0, -21, 'comfortaa_b', "Highest Score: 9999")
+				.setCenterAlign()
+				.setOrigin(0.5)
+				.setFontSize(20),
 			this.add.bitmapText(0, 18, 'simply_round', "Reward: 9999 Coins")
 				.setCenterAlign()
 				.setOrigin(0.5)
