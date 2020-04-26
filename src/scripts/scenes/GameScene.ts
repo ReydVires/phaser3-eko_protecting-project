@@ -1,4 +1,3 @@
-import { centerX, centerY } from '../config';
 import { BaseScene } from '../objects/abstract/BaseScene';
 
 export class GameScene extends BaseScene {
@@ -7,20 +6,27 @@ export class GameScene extends BaseScene {
 		super('GameScene');
 	}
 
-	init (): void {
+	init (data: object): void {
+		super.init(data);
 		console.log(`GameScene`);
-		const titleText = `Welcome to\nPhaser v${Phaser.VERSION}`;
-		this.add
-			.text(centerX, centerY, titleText, {
-				color: '#000000',
-				fontSize: '32px',
-				fontStyle: 'bold'
-			})
-			.setAlign('center')
-			.setOrigin(0.5);
 	}
 
-	create (): void {}
+	create (): void {
+		const test1 = this.add.bitmapText(64, 64, 'comfortaa_b', 'Comfortaa Black')
+			.setFontSize(32);
+		
+		const test2 = this.add.bitmapText(64, test1.y + 64, 'comfortaa_b_bold', 'Comfortaa Black Bold')
+			.setFontSize(32);
+
+		const test3 = this.add.bitmapText(64, test2.y + 64, 'comfortaa_w', 'Comfortaa White')
+			.setFontSize(32);
+
+		const test4 = this.add.bitmapText(64, test3.y + 64, 'simply_round', 'Simply Round Black')
+			.setFontSize(32);
+
+		this.add.bitmapText(64, test4.y + 64, 'simply_roundw', 'Simply Round White')
+			.setFontSize(32);
+	}
 
 	update (): void {}
 
