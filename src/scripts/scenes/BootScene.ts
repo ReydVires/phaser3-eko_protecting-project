@@ -13,7 +13,6 @@ export class BootScene extends Phaser.Scene {
 
 	init (): void {
 		console.log(`BootScene`);
-		console.log("platform:", navigator.userAgent);
 		if (CheckPlatform('Android')) {
 			// Installed plugin for Android
 			AndroidFullScreen?.immersiveMode();
@@ -36,6 +35,7 @@ export class BootScene extends Phaser.Scene {
 	create (): void {
 		this.loadWebFont(['Comfortaa']);
 		if (IsInDevelopment()) {
+			console.log("platform:", navigator.userAgent);
 			this.scene.start('PreloadScene');
 		}
 		else {
