@@ -26,7 +26,7 @@ export class PreloadScene extends Phaser.Scene {
 		this.load.json('player_anim', 'assets/animations/player_anim.json');
 		this.load.json('gameObject_anim', 'assets/animations/gameObject_anim.json');
 
-		this.load.json('tutorial_data_level', 'src/scripts/levels/tutorialLevel.json');
+		this.load.json('tutorial_data_level', 'assets/levels/tutorialLevel.json');
 	}
 
 	create (): void {
