@@ -10,6 +10,7 @@ export class WorldmapViews extends BaseScene {
 
 	init (): void {
 		super.init();
+		console.log('WorldmapViews');
 		this.input.enabled = false;
 	}
 
@@ -22,6 +23,7 @@ export class WorldmapViews extends BaseScene {
 		villageLevelBtn.setCallback(() => {
 			this.input.enabled = false;
 			NextSceneFadeOut(this, 'TestScene');
+			// NextSceneFadeOut(this, 'GameScene');
 		});
 	}
 
