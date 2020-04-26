@@ -47,6 +47,10 @@ export class TestUIScene extends UIScene {
 			}
 		});
 
+		const text = "Get pouch item!\n";
+		const objectivesLabel = this.add.bitmapText(64, 32, 'comfortaa_w', text + '(0/1)');
+		objectivesLabel.setFontSize(42).setVisible(false).setActive(false);
+
 		const dialogueBox = new DialogueBox(this, centerX, 128, 'face_holder', 'Namae', 'Lorem ipsum dolors sits amets! Lorem ipsum dolors sits amets! Lorem ip sum dolors sits amets! Lorem ipsum dolors sits amets!')
 		.setCallback(() => {
 			dialogueBox.changeDialogueText("Whats done, is done! You're amazing. It's sad how less people know of this cover.");
@@ -93,6 +97,13 @@ export class TestUIScene extends UIScene {
 		this.registerEvent('disable_input', () => { this.input.enabled = false; });
 		this.registerEvent('show_dialogue', () => {
 			dialogueBox.enableInteractive().setVisible(true);
+		}, true);
+		this.registerEvent('show_objectives', () => {
+			objectivesLabel.setActive(true).setVisible(true);
+		}, true);
+		this.registerEvent('get_objective_item', () => {
+			objectivesLabel.setText(text + '(1/1)');
+			console.log(text + '(1/1)');
 		}, true);
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {

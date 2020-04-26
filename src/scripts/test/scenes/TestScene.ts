@@ -304,11 +304,14 @@ export class TestScene extends BaseScene implements ITouchControl {
 			const coin = child as Coin;
 			console.log("Collecting coin:", coin.collect());
 		});
-		this.physics.add.overlap(this._player, cutsceneZone, (player, zone) => {
+
+		const cutsceneTrigger = this.physics.add.overlap(this._player, cutsceneZone, (player, zone) => {
 			console.log('Active Cutscene');
 			this.callCutscene();
 			zone.destroy();
 		});
+		cutsceneTrigger.active = false;
+
 		this.physics.add.collider(this._player, tileGroup);
 		this.physics.add.overlap(this._player, this._portalGroup, () => {
 			this._interactionArea = true;
@@ -488,9 +491,11 @@ export class TestScene extends BaseScene implements ITouchControl {
 			if (this._playerInteractWith.name === 'npc') {
 				this._playerInteractWith.setActive(false);
 				console.log('Show dialog box!');
+				this.eventUI.emit('UI#show_objectives');
 			}
 			else if (this._playerInteractWith instanceof ObjectiveItem) {
 				console.log(this._playerInteractWith.collect());
+				this.eventUI.emit('UI#get_objective_item');
 			}
 			else {
 				console.log('Just destroy', this._playerInteractWith);
