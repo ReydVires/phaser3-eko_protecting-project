@@ -164,7 +164,8 @@ export class TestScene extends BaseScene implements ITouchControl {
 		});
 
 		const levelData = this.cache.json.get('tutorial_data_level');
-		this.generateMapping(levelData!.mappingData);
+		const mappingData = levelData!.mappingData;
+		this.generateMapping(mappingData);
 
 		// Create hints!
 		const hintData = [
