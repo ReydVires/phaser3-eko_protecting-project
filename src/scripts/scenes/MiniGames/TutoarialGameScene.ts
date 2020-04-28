@@ -1,13 +1,11 @@
 //#region Import modules
-import { centerX, centerY } from "../../config";
+import { centerX, centerY, LEFT_AREA, RIGHT_AREA } from "../../config";
 import { KeyboardMapping } from "../../../../typings/KeyboardMapping";
 import { BaseScene } from "../../objects/abstract/BaseScene";
 import { ITouchControl } from "../../objects/interface/ITouchControl";
 import { CheckPlatform } from "../../utils/Helper";
 
 //#endregion
-export const LEFT_AREA: number = 210;
-export const RIGHT_AREA: number = 570;
 
 type ArrowStruct = {
 	gameObject: Phaser.GameObjects.Sprite,

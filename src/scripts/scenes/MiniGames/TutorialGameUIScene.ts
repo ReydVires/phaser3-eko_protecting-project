@@ -1,12 +1,11 @@
 //#region Imports module
-import { centerX, SCREEN_HEIGHT, SCREEN_WIDTH, centerY } from "../../config";
+import { centerX, SCREEN_HEIGHT, SCREEN_WIDTH, centerY, LEFT_AREA, RIGHT_AREA } from "../../config";
 import { UIScene } from "../../objects/abstract/UIScene";
 import { FillProgress } from "../../objects/FillProgress";
 import { DimBackground } from '../../objects/components/DimBackground';
 import { FlatButton } from '../../objects/components/FlatButton';
 import { PopUpWindow } from '../../objects/components/PopUpWindow';
 import { AndroidBackHelper } from "../../utils/AndroidBackHelper";
-import { LEFT_AREA, RIGHT_AREA } from "./TutoarialGameScene";
 
 //#endregion
 export class TutorialGameUIScene extends UIScene {
