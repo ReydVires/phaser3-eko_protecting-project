@@ -16,6 +16,8 @@ import { WorldmapViews } from './scenes/WorldmapViews';
 //#endregion
 export const SCREEN_WIDTH: number = 1280;
 export const SCREEN_HEIGHT: number = 720;
+export const LEFT_AREA: number = 210;
+export const RIGHT_AREA: number = 570;
 export const centerX: number = SCREEN_WIDTH / 2;
 export const centerY: number = SCREEN_HEIGHT / 2;
 
