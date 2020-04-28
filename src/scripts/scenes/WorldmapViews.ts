@@ -22,8 +22,7 @@ export class WorldmapViews extends BaseScene {
 		const villageLevelBtn = new FlatButton(this, 876, 405, 'world_map_pemukiman');
 		villageLevelBtn.setCallback(() => {
 			this.input.enabled = false;
-			NextSceneFadeOut(this, 'TestScene');
-			// NextSceneFadeOut(this, 'GameScene');
+			NextSceneFadeOut(this, 'GameScene');
 		});
 	}
 
