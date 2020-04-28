@@ -4,8 +4,6 @@ import { PreloadScene } from './scenes/PreloadScene';
 import { MenuViews } from './scenes/MenuViews';
 import { GameScene } from './scenes/GameScene';
 import { GameUIScene } from './scenes/GameUIScene';
-import { TestScene } from './test/scenes/TestScene';
-import { TestUIScene } from './test/scenes/TestUIScene';
 import { MinigameViews } from './scenes/MinigameViews';
 import { TutorialGameScene } from './scenes/MiniGames/TutoarialGameScene';
 import { TutorialGameUIScene } from './scenes/MiniGames/TutorialGameUIScene';
@@ -33,8 +31,6 @@ const scenes: Array<Function> = [
 	TutorialGameUIScene,
 	GameScene,
 	GameUIScene,
-	TestScene,
-	TestUIScene,
 ];
 
 export const Config: Phaser.Types.Core.GameConfig = {
@@ -62,8 +58,8 @@ export const Config: Phaser.Types.Core.GameConfig = {
 		pixelArt: false,
 		antialias: true
 	},
-	fps: {
-		target: 60,
-		forceSetTimeOut: false // true
-	}
+	// fps: {
+	// 	target: 60,
+	// 	forceSetTimeOut: false // true
+	// }
 };
