@@ -109,6 +109,26 @@ export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 	/**
 	 * @override
 	 */
+	public setPosition (x: number, y?: number): this {
+		super.setPosition(x, y);
+		if (this._quote) {
+			this.setText(this._quote);
+		}
+		return this;
+	}
+
+	/**
+	 * @override
+	 */
+	public setDepth (value: number): this {
+		super.setDepth(value);
+		this._content.setDepth(value);
+		return this;
+	}
+
+	/**
+	 * @override
+	 */
 	public destroy (): any {
 		this.clear();
 		this._content.destroy();
