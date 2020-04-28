@@ -1,3 +1,8 @@
+enum FacingType {
+	LEFT = 1,
+	RIGHT = 2
+}
+
 export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 
 	private _content: Phaser.GameObjects.Text;
@@ -6,16 +11,16 @@ export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 	private _height: number;
 	private _padding: number;
 	private _arrowHeight: number;
-	private _arrowFacing: number; // 1: Left, 2: Right
+	private _arrowFacing: FacingType; // 1: Left, 2: Right
 
-	constructor (scene: Phaser.Scene, x: number, y: number, width: number, height: number, quote: string, arrowFacing: number = 1) {
+	constructor (scene: Phaser.Scene, x: number, y: number, width: number, height: number, quote: string, arrowFacing?: FacingType) {
 		super(scene, {x: x, y: y});
 		scene.add.existing(this);
 		this._width = width;
 		this._height = height;
 		this._arrowHeight = height / 4;
 		this._padding = 10;
-		this._arrowFacing = arrowFacing;
+		this._arrowFacing = arrowFacing || FacingType.LEFT;
 		this.setText(quote);
 	}
 
@@ -55,7 +60,7 @@ export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 
 	private createArrowBaloonStyle (): void {
 		//  Calculate arrow coordinates
-		const arrowFacing = this._arrowFacing === 1 ? 0 : 1;
+		const arrowFacing = this._arrowFacing === FacingType.LEFT ? 0 : 1;
 		const multiplier = arrowFacing * this._width / this._arrowFacing;
 		const point1X = Math.floor(multiplier + this._width / 7);
 		const point1Y = this._height;
@@ -73,6 +78,18 @@ export class BaloonSpeech extends Phaser.GameObjects.Graphics {
 		this.lineStyle(2, 0x565656, 1);
 		this.lineBetween(point2X, point2Y, point3X, point3Y);
 		this.lineBetween(point1X, point1Y, point3X, point3Y);
+	}
+
+	public get width (): number {
+		return this._width;
+	}
+
+	public get height (): number {
+		return this._height;
+	}
+
+	public setFacing (facing: FacingType): void {
+		this._arrowFacing = facing;
 	}
 
 	public setText (quote: string): void {
