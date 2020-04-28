@@ -8,6 +8,7 @@ import { BaseScene } from "../objects/abstract/BaseScene";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 import { ToggleButton } from "../objects/components/ToggleButton";
 import { ExitApp, NextSceneFadeOut } from "../utils/Helper";
+import { SceneData } from "./GameScene";
 
 export class MenuViews extends BaseScene {
 
@@ -31,7 +32,7 @@ export class MenuViews extends BaseScene {
 		super('MenuViews');
 	}
 
-	init (data: any): void {
+	init (data: SceneData): void {
 		super.init(data);
 		console.log(`MenuViews`);
 		this._isGameStart = data?.isGameStarted;
