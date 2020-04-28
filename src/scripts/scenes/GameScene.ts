@@ -1,5 +1,9 @@
 import { BaseScene } from '../objects/abstract/BaseScene';
 
+export type SceneData = {
+	isTryAgain: boolean,
+	isGameStarted: boolean
+};
 export class GameScene extends BaseScene {
 
 	constructor () {
