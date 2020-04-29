@@ -396,7 +396,7 @@ export class GameScene extends BaseScene {
 			touchLine.lineStyle(2, 0x000, 0.9);
 			touchLine.moveTo(LEFT_AREA, 0).lineTo(LEFT_AREA, SCREEN_HEIGHT);
 			touchLine.moveTo(RIGHT_AREA, 0).lineTo(RIGHT_AREA, SCREEN_HEIGHT);
-			touchLine.strokePath().setScrollFactor(0);
+			touchLine.strokePath().setScrollFactor(0).setDepth(1);
 		}
 	}
 

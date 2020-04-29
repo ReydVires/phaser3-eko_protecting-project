@@ -50,10 +50,12 @@ export class GameUIScene extends UIScene {
 			new FlatButton(this, 0, 0, 'continue_btn')
 				.setCallback(this.doPause.bind(this)),
 			new FlatButton(this, 0, 80, 'backtomainmenu_btn')
-				.setCallback(() => this.startToScene('MenuViews', <SceneData> {
-					isGameStarted: true,
-					isTryAgain: false
-				}))
+				.setCallback(() => 
+					this.doCameraFadeOut(this.startToScene.bind(this, 'MenuViews', <SceneData> {
+						isGameStarted: true,
+						isTryAgain: false
+					}))
+				)
 		]).setVisible(false);
 
 		this._gameOverWindow = new PopUpWindow(this, centerX, centerY, 'gameoverAdventure_win', [
