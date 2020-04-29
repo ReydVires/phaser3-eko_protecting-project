@@ -56,11 +56,11 @@ export class GameScene extends BaseScene {
 	init (data: object): void {
 		super.init(data);
 		console.log("GameScene");
+		this.input.enabled = false;
 		this._gameState = GameState.Playable;
 		this._portalGroup = this.physics.add.group({ allowGravity: false });
 		this._onInteraction = false;
 		this._onMove = false;
-		// TODO: Register allow_input event for transition fadeout
 	}
 
 	create (sceneData: SceneData): void {
@@ -132,6 +132,12 @@ export class GameScene extends BaseScene {
 		this.registerEvent('show_hint', () => {
 			hintObjects.forEach(gameObject => gameObject.setActive(true).setVisible(true));
 		}, true);
+
+		this.registerEvent('allow_input', (data: unknown) => {
+			if (Array.isArray(data)) {
+				this.input.enabled = data.length > 0 ? data.pop() : true;
+			}
+		});
 
 		this.onDevelopmentMethod();
 	}
