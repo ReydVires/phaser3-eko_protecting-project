@@ -1,5 +1,5 @@
 import { UIScene } from "../objects/abstract/UIScene";
-import { FadeIn } from "../utils/Helper";
+import { FadeIn, NextSceneFadeOut } from "../utils/Helper";
 import { DimBackground } from "../objects/components/DimBackground";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { centerX, centerY } from "../config";
@@ -32,7 +32,10 @@ export class GameUIScene extends UIScene {
 	create (sceneData: SceneData): void {
 		this._sceneData = sceneData;
 
-		FadeIn(this, () => { this.input.enabled = true; }, 200);
+		FadeIn(this, () => {
+			this.input.enabled = true;
+			this.eventHandler.emit('event#allow_input');
+		}, 200);
 
 		const objectiveLabel = this.createObjectiveLabel();
 
@@ -71,11 +74,11 @@ export class GameUIScene extends UIScene {
 			const text = `Get pouch item!\n(${this._completeObjective}/${this._totalObjective})`;
 			objectiveLabel.setText(text);
 		});
-		this.registerEvent('to_scene_tutorial', () => {
-			this.startToScene("TutorialGameScene");
-		});
 		this.registerEvent('to_scene_worldmap', () => {
-			this.startToScene("WorldmapViews");
+			this.doCameraFadeOut(this.startToScene.bind(this, 'WorldmapViews'), 300);
+		});
+		this.registerEvent('to_scene_tutorial', () => {
+			this.doCameraFadeOut(this.startToScene.bind(this, 'TutorialGameScene'));
 		});
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
@@ -122,6 +125,14 @@ export class GameUIScene extends UIScene {
 		this._overlay.show();
 		this._gameOverWindow.setVisible(true);
 		this.pauseScene();
+	}
+
+	private doCameraFadeOut (onComplete: Function, duration: number = 500): void {
+		this.input.enabled = false;
+		this.eventHandler.emit('event#allow_input', false);
+		const cam = this.cameras.main;
+		cam.once('camerafadeoutcomplete', () => onComplete());
+		cam.fadeOut(duration);
 	}
 
 	update (time: number, delta: number): void {}
