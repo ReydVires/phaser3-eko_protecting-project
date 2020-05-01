@@ -30,16 +30,6 @@ export class TutorialGameUIScene extends UIScene {
 	}
 
 	create (): void {
-		// 	// Wait until 'UI#to_scene_menu' registered
-		// Helper.doTask(() => {
-		// 	let called = false;
-		// 	do {
-		// 		if (this.eventHandler.inspectEvents('UI#to_scene_menu')) {
-		// 			this.eventHandler.emit('UI#to_scene_menu');
-		// 			called = true;
-		// 		}
-		// 	} while (!called);
-		// });
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
 			this.eventHandler.emit('UI#to_scene_menu');
 		});
@@ -73,9 +63,12 @@ export class TutorialGameUIScene extends UIScene {
 
 		this._stageClearWindow = new PopUpWindow(this, centerX, centerY, 'stageclear_win', [
 			new FlatButton(this, 0, 0, 'nextstage_btn')
-				.setCallback(() => alert('Not implemented')),
+				.setCallback(() => console.log('still not implemented!')),
 			new FlatButton(this, 0, 72, 'worldmap_btn')
-				.setCallback(() => alert('Not implemented')),
+				.setCallback(() => {
+					this.input.enabled = false;
+					this.startToScene('WorldmapViews');
+				}),
 		]).setVisible(false).setActive(false);
 
 		this._gameTime = new FillProgress(this, centerX, 20, SCREEN_WIDTH, 32);
@@ -151,7 +144,7 @@ export class TutorialGameUIScene extends UIScene {
 	}
 
 	showClearStage (): void {
-		this._stageClearWindow.setVisible(true).setActive(false);
+		this._stageClearWindow.setVisible(true).setActive(true);
 		this._dimBackground.show();
 	}
 
