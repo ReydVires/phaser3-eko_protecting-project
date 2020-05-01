@@ -43,13 +43,13 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 		this._onTouch = false;
 		this._testRestart = false;
 		this._onEnemyAttack = false;
-		this._playerHp = 1; // FIXME: [Debug] Player HP: 3
+		this._playerHp = 3;
 		this._gameStart = false;
 	}
 
 	create (): void {
 		this._player = this.add.sprite(centerX * 0.3, centerY * 1.3, 'phaser-logo');
-		this._enemy = this.add.sprite(centerX * 1.3, centerY * 0.9, 'phaser-logo');
+		this._enemy = this.add.sprite(centerX * 1.3, centerY * 0.9, 'enemy_lum');
 
 		const cautionMark = this.add.image(this._enemy.x - 165, this._enemy.y, 'caution_mini');
 		this.tweens.add({
