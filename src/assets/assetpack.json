@@ -33,6 +33,10 @@
                 "url": "img_item_random.png"
             },
             {
+                "key": "enemy_lum",
+                "url": "img_enemy_lum.png"
+            },
+            {
                 "key": "caution_mini",
                 "url": "UI/img_caution_mini.png"
             },
@@ -250,11 +254,31 @@
             },
             {
                 "key": "world_map",
-                "url": "img_world_map.png"
+                "url": "backgrounds/img_world_map.png"
+            },
+            {
+                "key": "boardname_pemukiman",
+                "url": "img_boardname_pemukiman.png"
+            },
+            {
+                "key": "boardname_gua",
+                "url": "img_boardname_gua.png"
+            },
+            {
+                "key": "boardname_pantai",
+                "url": "img_boardname_pantai.png"
             },
             {
                 "key": "world_map_pemukiman",
                 "url": "img_world_map_pemukiman.png"
+            },
+            {
+                "key": "world_map_gua_lock",
+                "url": "img_world_map_gua_lock.png"
+            },
+            {
+                "key": "world_map_pantai_lock",
+                "url": "img_world_map_pantai_lock.png"
             }
         ]
     },
