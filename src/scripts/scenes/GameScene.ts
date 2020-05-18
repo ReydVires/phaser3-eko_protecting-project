@@ -458,53 +458,6 @@ export class GameScene extends BaseScene {
 		}
 	}
 
-	private keyboardController (dt: number): void {
-		const keys = this.input.keyboard.addKeys('RIGHT, LEFT, SPACE, ESC') as KeyboardMapping;
-
-		const onDialogueState = this._gameState === GameState.Dialogue;
-		if (keys.RIGHT.isDown && !onDialogueState) {
-			this._player.doRight();
-		}
-		else if (keys.LEFT.isDown && !onDialogueState) {
-			this._player.doLeft();
-		}
-		else {
-			this._player.doIdle();
-		}
-
-		if (Phaser.Input.Keyboard.JustDown(keys.SPACE)) {
-			const canInteraction = this._playerInteractWith?.active;
-			if (canInteraction) {
-				console.log('Interact with object:', this._playerInteractWith.name);
-				if (this._playerInteractWith instanceof ObjectiveItem) {
-					console.log(this._playerInteractWith.collect());
-					this.completeObjectiveBound('get_pouch_item');
-				}
-				else if (this._playerInteractWith.name === 'NPC') {
-					this.eventUI.emit('event#register_dialogue');
-					this.eventUI.emit('event#npc_dialogue', 'talk_to_npc');
-				}
-				else if (this._playerInteractWith.name === 'Portal') {
-					this.eventUI.emit('event#register_dialogue');
-					this.eventUI.emit('event#npc_dialogue', 'next_stage');
-				}
-			}
-			else {
-				this._player.doJump();
-			}
-		}
-		else if (Phaser.Input.Keyboard.JustDown(keys.ESC)) {
-			this.restartScene();
-			// this.tweens.add({
-			// 	onStart: () => this._camera.stopFollow(),
-			// 	targets: this._camera,
-			// 	scrollX: '+=128',
-			// 	duration: 350,
-			// 	onComplete: () => this._camera.startFollow(this._player)
-			// });
-		}
-	}
-
 	playerFallCondition (): void {
 		const playerPosY = this._player.y - this._player.displayHeight;
 		const isPlayerFall = playerPosY > this._deadAreaY;
