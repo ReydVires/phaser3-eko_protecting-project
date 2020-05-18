@@ -29,12 +29,24 @@
         "defaultType": "image",
         "files": [
             {
+                "key": "menu_bg",
+                "url": "backgrounds/img_menu_bg.jpg"
+            },
+            {
                 "key": "item_random",
                 "url": "img_item_random.png"
             },
             {
                 "key": "enemy_lum",
                 "url": "img_enemy_lum.png"
+            },
+            {
+                "key": "trivia_btn",
+                "url": "UI/img_trivia_btn.png"
+            },
+            {
+                "key": "trivia_question_win",
+                "url": "UI/popup_trivia_question_win.png"
             },
             {
                 "key": "caution_mini",
