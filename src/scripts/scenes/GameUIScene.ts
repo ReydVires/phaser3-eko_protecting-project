@@ -1,11 +1,12 @@
 import { UIScene } from "../objects/abstract/UIScene";
-import { FadeIn, NextSceneFadeOut } from "../utils/Helper";
+import { FadeIn } from "../utils/Helper";
 import { DimBackground } from "../objects/components/DimBackground";
 import { PopUpWindow } from "../objects/components/PopUpWindow";
 import { centerX, centerY } from "../config";
 import { FlatButton } from "../objects/components/FlatButton";
 import { AndroidBackHelper } from "../utils/AndroidBackHelper";
 import { SceneData } from "./GameScene";
+import { DialogueBox } from "../objects/DialogueBox";
 
 export class GameUIScene extends UIScene {
 
@@ -43,6 +44,32 @@ export class GameUIScene extends UIScene {
 
 		const pauseBtn = new FlatButton(this, 1189, 48, 'pause_btn').setScrollFactor(0);
 		pauseBtn.setCallback(this.doPause.bind(this));
+
+		this.registerEvent('show_dialogue', (params: Array<any>) => {
+			const dataDialogue = params.shift();
+			if (!dataDialogue || dataDialogue.length === 0) {
+				return;
+			}
+			const { name, text, faceKey } = dataDialogue.shift()!;
+			const dialogueBox = new DialogueBox(this, centerX, 128, faceKey, name, text)
+			.setCallback(() => {
+				if (dataDialogue.length > 0) {
+					const data = dataDialogue.shift()!;
+					dialogueBox.changeName(data.name);
+					dialogueBox.changeDialogueText(data.text);
+					dialogueBox.changeFace(data.faceKey);
+				}
+				else {
+					dialogueBox.setActive(false).setVisible(false);
+					dialogueBox.disableInteractive().destroy();
+					// Check callback after dialogue on param
+					const callback = params.shift();
+					if (callback && callback instanceof Function) {
+						callback();
+					}
+				}
+			});
+		}, false);
 
 		this._overlay = new DimBackground(this);
 
@@ -92,8 +119,8 @@ export class GameUIScene extends UIScene {
 
 	private createObjectiveLabel (): Phaser.GameObjects.BitmapText {
 		const text = `Get pouch item!\n(${this._completeObjective}/${this._totalObjective})`;
-		const label = this.add.bitmapText(64, 32, 'comfortaa_w', text);
-		label.setFontSize(42).setVisible(false).setActive(false);
+		const label = this.add.bitmapText(48, 32, 'comfortaa_w', text);
+		label.setFontSize(32).setVisible(false).setActive(false);
 		return label;
 	}
 
