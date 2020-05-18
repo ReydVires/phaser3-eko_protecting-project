@@ -505,14 +505,54 @@ export class GameScene extends BaseScene {
 		if (this._onInteraction) {
 			const canInteraction = this._playerInteractWith?.active;
 			if (canInteraction) {
-				console.log('Interact with object:', this._playerInteractWith.name);
-				if (this._playerInteractWith instanceof ObjectiveItem) {
-					console.log(this._playerInteractWith.collect());
-					this.completeObjectiveBound('get_pouch_item');
-				}
-				else if (this._playerInteractWith.name === 'NPC') {
+				const nameTag = this._playerInteractWith.name;
+				console.log('Interact with object:', nameTag);
+				if (nameTag === 'NPC') {
 					this.eventUI.emit('event#register_dialogue');
-					this.eventUI.emit('event#npc_dialogue', 'talk_to_npc');
+					this.eventUI.emit('UI#show_dialogue', this._npcDialogue, () => {
+						console.count('show_dialogue callback');
+						this.eventUI.emit('UI#show_objective');
+
+						if (this.isObjectiveMapComplete('get_pouch_item') && !this.isObjectiveMapComplete('give_pouch_item')) {
+							this.completeObjectiveMap('give_pouch_item');
+							this.eventUI.emit('event#enable_register_dialogue');
+						}
+						else if (this.isObjectiveMapComplete('get_orb') && !this.isObjectiveMapComplete('exit_stage')) {
+							this.completeObjectiveMap('exit_stage');
+							this._natNPC.body.checkCollision.none = true;
+							this.eventUI.emit('event#enable_register_dialogue');
+							console.log('Grant access to exit portal!');
+						}
+
+						if (!this.isObjectiveMapComplete(['get_pouch_item', 'talk_to_nat', 'get_orb'])) {
+							this._natNPC.body.checkCollision.none = true; // disable body
+							this.completeObjectiveMap('talk_to_nat'); // Gain access A
+						}
+					});
+				}
+				else if (nameTag === 'Pouch' && this._playerInteractWith instanceof ObjectiveItem) {
+					if (this.isObjectiveMapComplete('talk_to_nat')) { // Use A
+						console.log(this._playerInteractWith.collect());
+						this._natNPC.body.checkCollision.none = false;
+						this.completeObjective('get_pouch_item');
+						this.completeObjectiveMap('get_pouch_item'); // Gain access C
+						this.eventUI.emit('event#enable_register_dialogue');
+					}
+				}
+				else if (nameTag === 'Orb' && this._playerInteractWith instanceof ObjectiveItem) {
+					if (this.isObjectiveMapComplete(['talk_to_nat', 'get_pouch_item'])) { // Use A & C
+					console.log(this._playerInteractWith.collect());
+						this._natNPC.body.checkCollision.none = false;
+						this.completeObjectiveMap('get_orb'); // Gain access B
+						this.eventUI.emit('event#enable_register_dialogue');
+					}
+				}
+				else if (nameTag === 'Portal') {
+					const objectives = this.isObjectiveMapComplete('exit_stage');
+					if (objectives) { // Use D
+					this.eventUI.emit('event#register_dialogue');
+						this.eventUI.emit('UI#show_dialogue', this._npcDialogue);
+						console.log('Exit portal!');
 				}
 				else if (this._playerInteractWith.name === 'Portal') {
 					this.eventUI.emit('event#register_dialogue');
