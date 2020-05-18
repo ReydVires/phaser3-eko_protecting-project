@@ -24,7 +24,7 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 		this._interactionBlock = scene.add.rectangle(centerX, centerY, SCREEN_WIDTH, SCREEN_HEIGHT);
 		this._interactionBlock.setFillStyle(0xfafafa, 0)
 			.setInteractive({ useHandCursor: true })
-			.on('pointerup', () => {
+			.on('pointerdown', () => {
 				if (typeof this._callback !== "undefined") {
 					this._callback();
 				}
