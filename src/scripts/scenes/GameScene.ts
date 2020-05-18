@@ -13,8 +13,8 @@ type GameObjectTransform = Phaser.GameObjects.GameObject & Phaser.GameObjects.Co
 
 type DialogueData = {
 	text: string,
-	target: GameObjectTransform,
-	facing: number
+	name: string,
+	faceKey: string
 };
 
 enum GameState {
@@ -85,36 +85,100 @@ export class GameScene extends BaseScene {
 		this._dialogueTimeline = new Array<Array<DialogueData>>(
 			[
 				{
-					text: 'Can you help me please?',
-					target: npcObject,
-					facing: 2
+					name: "Eko",
+					text: "Nat! Sudah ketemu belum?",
+					faceKey: "face_holder"
 				},
 				{
-					text: 'I need that Pouch in the top of map.',
-					target: npcObject,
-					facing: 2
+					name: "Nat",
+					text: "Belum!",
+					faceKey: "face_holder"
 				},
 				{
-					text: "Oh sure, I'mma head out!",
-					target: this._player,
-					facing: 2
+					name: "Eko",
+					text: "Aku bantu deh ya!",
+					faceKey: "face_holder"
+				},
+			],
+			[
+				{
+					name: "Nat",
+					text: 'Wahh, Eko! Terimakasih banyak! Akhirnya ketemu juga!',
+					faceKey: 'face_holder'
 				},
 				{
-					text: 'Well. Thank you so much!',
-					target: npcObject,
-					facing: 2
+					name: 'Nat',
+					text: 'Apa kamu mau balik sekarang?',
+					faceKey: 'face_holder'
+				},
+				{
+					name: 'Eko',
+					text: 'Ada yang aneh dengan gua ini, aku mau jelajah lebih jauh lagi dulu',
+					faceKey: 'face_holder'
+				},
+				{
+					name: 'Nat',
+					text: 'Ah, oke. Aku tunggu ya',
+					faceKey: 'face_holder'
 				}
 			],
 			[
 				{
-					text: "Oh sure, I'mma head out!",
-					target: this._player,
-					facing: 2
+					name: 'Nat',
+					text: 'Wah, apa ini?',
+					faceKey: 'face_holder'
 				},
 				{
-					text: 'Well. Thank you so much!',
-					target: this._player,
-					facing: 2
+					text: 'Aku engga tahu, tapi ini cantik sekali',
+					name: 'Eko',
+					faceKey: 'face_holder'
+				},
+				{
+					name: 'Nat',
+					text: 'Iya, kamu benar, mungkin ini bisa membuka sesuatu?',
+					faceKey: 'face_holder'
+				},
+				{
+					text: 'Eh, apasih, seperti di film-film fantasi itu ya?',
+					name: 'Eko',
+					faceKey: 'face_holder'
+				},
+				{
+					name: 'Nat',
+					text: 'Dicoba aja! Pergi ke tempat paling jauh, siapa tahu benda ini akan bereaksi!',
+					faceKey: 'face_holder'
+				},
+				{
+					text: 'Oke',
+					name: 'Eko',
+					faceKey: 'face_holder'
+				},
+			],
+			[
+				{
+					text: 'Ah!',
+					name: 'Eko',
+					faceKey: 'face_holder'
+				},
+				{
+					name: 'Nat',
+					text: 'Eko!',
+					faceKey: 'face_holder'
+				},
+				{
+					text: 'Ada gua terbuka...',
+					name: 'Eko',
+					faceKey: 'face_holder'
+				},
+				{
+					name: 'Nat',
+					text: 'Berbahaya, lebih baik kita keluar dari sini!',
+					faceKey: 'face_holder'
+				},
+				{
+					text: 'Ayo masuk!',
+					name: 'Eko',
+					faceKey: 'face_holder'
 				}
 			]
 		);
