@@ -1,11 +1,9 @@
 import { BaseScene } from '../objects/abstract/BaseScene';
 import { Player } from '../objects/Player';
-import { KeyboardMapping } from '../../../typings/KeyboardMapping';
 import { Tile } from '../objects/Tile';
 import { Coin } from '../objects/collectable/Coin';
 import { ObjectiveItem } from '../objects/collectable/ObjectiveItem';
 import { OnExitOverlap } from '../utils/PhysicsHelper';
-import { BaloonSpeech } from '../objects/BaloonSpeech';
 import { PrintPointerPos, IsInDevelopment } from '../utils/Helper';
 import { LEFT_AREA, RIGHT_AREA, SCREEN_HEIGHT } from '../config';
 
@@ -39,12 +37,10 @@ export class GameScene extends BaseScene {
 
 	private _portalGroup: Phaser.Physics.Arcade.Group;
 
-	private _boundsGroup: Phaser.Physics.Arcade.Group;
-
 	private _dialogueTimeline: Array<Array<DialogueData>>;
 
+	private _natNPC: Phaser.Physics.Arcade.Sprite;
 	private _npcDialogue: Array<DialogueData>;
-	private _baloonSpeech: BaloonSpeech;
 
 	private _onInteraction: boolean;
 	private _onMove: boolean;
@@ -81,9 +77,10 @@ export class GameScene extends BaseScene {
 
 		this.gameParamProcess(sceneData);
 
-		this.createObjectiveBounds();
+		this.createObjective();
 
-		const npcObject = this.createNPC();
+		this._natNPC = this.createNPC();
+		//#region Dialogue data
 		this._dialogueTimeline = new Array<Array<DialogueData>>(
 			[
 				{
@@ -184,7 +181,8 @@ export class GameScene extends BaseScene {
 				}
 			]
 		);
-		this.createDialogueSystem(npcObject);
+		//#endregion
+		this.createDialogueSystem();
 
 		const levelData = this.cache.json.get('tutorial_data_level');
 		const mappingData = levelData!.mappingData;
@@ -242,23 +240,9 @@ export class GameScene extends BaseScene {
 			["give_pouch_item", false],
 			["exit_stage", false]
 		]);
-		}
-
-		this.physics.world.enable(this._boundsGroup);
-		
-		const boundsCollider = this.physics.add.collider(this._player, this._boundsGroup, (player, child) => {
-			if (this._boundsGroup.countActive() === 0) {
-				boundsCollider.destroy();
-			}
-		});
 	}
 
-	private completeObjectiveBound (name: string): void {
-		this._boundsGroup.getChildren().forEach((child) => {
-			if (child.name === name) {
-				child.destroy();
-			}
-		});
+	private completeObjective (name: string): void {
 		if (name === 'next_stage') {
 			this.eventUI.emit('UI#to_scene_tutorial');
 		}
@@ -437,7 +421,6 @@ export class GameScene extends BaseScene {
 	update (time: number, delta: number): void {
 		const onCutsceneState = this._gameState === GameState.Cutscene;
 		if (!onCutsceneState) {
-			// this.keyboardController(delta);
 			this.touchController();
 		}
 		this._player.movementSystem();
@@ -513,7 +496,7 @@ export class GameScene extends BaseScene {
 				}
 				else if (nameTag === 'Orb' && this._playerInteractWith instanceof ObjectiveItem) {
 					if (this.isObjectiveMapComplete(['talk_to_nat', 'get_pouch_item'])) { // Use A & C
-					console.log(this._playerInteractWith.collect());
+						console.log(this._playerInteractWith.collect());
 						this._natNPC.body.checkCollision.none = false;
 						this.completeObjectiveMap('get_orb'); // Gain access B
 						this.eventUI.emit('event#enable_register_dialogue');
@@ -522,10 +505,10 @@ export class GameScene extends BaseScene {
 				else if (nameTag === 'Portal') {
 					const objectives = this.isObjectiveMapComplete('exit_stage');
 					if (objectives) { // Use D
-					this.eventUI.emit('event#register_dialogue');
+						this.eventUI.emit('event#register_dialogue');
 						this.eventUI.emit('UI#show_dialogue', this._npcDialogue);
 						console.log('Exit portal!');
-				}
+					}
 				}
 			}
 			else {
