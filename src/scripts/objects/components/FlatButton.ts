@@ -31,7 +31,7 @@ export class FlatButton extends Phaser.GameObjects.Sprite {
 			props: {
 				scale: {
 					getStart: () => {
-						return largeRation ? 0.93 : 0.77;
+						return largeRation ? 0.93 : 0.85;
 					},
 					getEnd: () => 1
 				}

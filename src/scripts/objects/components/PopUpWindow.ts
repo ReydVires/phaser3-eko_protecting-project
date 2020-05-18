@@ -45,4 +45,12 @@ export class PopUpWindow extends Phaser.GameObjects.Container {
 		return this;
 	}
 
+	/**
+	 * @override
+	 */
+	public destroy (): void {
+		this._windowTexture.destroy();
+		super.destroy();
+	}
+
 }
