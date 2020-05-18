@@ -25,14 +25,22 @@ export class FlatButton extends Phaser.GameObjects.Sprite {
 	}
 
 	private onClick (): void {
-		this.setScale(0.9);
-		this.scene.time.addEvent({
-			delay: 40,
-			callback: () => {
-				this.setScale(1);
+		const largeRation = (this.displayWidth > 64) && (this.displayHeight > 64);
+		this.scene.tweens.add({
+			targets: this,
+			props: {
+				scale: {
+					getStart: () => {
+						return largeRation ? 0.93 : 0.77;
+					},
+					getEnd: () => 1
+				}
+			},
+			duration: 40,
+			ease: Phaser.Math.Easing.Bounce.In,
+			onComplete: () => {
 				if (this._callback) {
-					this.scene.time.delayedCall(15, () =>
-						this._callback(this._argument));
+					this._callback(this._argument);
 				}
 				else {
 					console.log('Callback is not set');
