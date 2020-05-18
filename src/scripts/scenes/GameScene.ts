@@ -49,6 +49,8 @@ export class GameScene extends BaseScene {
 	private _onInteraction: boolean;
 	private _onMove: boolean;
 
+	private _objectives: Map<string, boolean>;
+
 	constructor () {
 		super('GameScene');
 	}
@@ -232,18 +234,14 @@ export class GameScene extends BaseScene {
 		}
 	}
 
-	private createObjectiveBounds (): void {
-		this._boundsGroup = this.physics.add.group({
-			allowGravity: false,
-			immovable: true
-		});
-
-		const boundsData = [
-			this.add.zone(935, 330, 16, 256).setName('talk_to_npc'),
-			this.add.zone(1470, 210, 16, 128).setName('get_pouch_item'),
-		];
-		for (let i = 0; i < boundsData.length; i++) {
-			this._boundsGroup.add(boundsData[i]);
+	private createObjective (): void {
+		this._objectives = new Map<string, boolean>([
+			["talk_to_nat", false],
+			["get_pouch_item", false],
+			["get_orb", false],
+			["give_pouch_item", false],
+			["exit_stage", false]
+		]);
 		}
 
 		this.physics.world.enable(this._boundsGroup);
@@ -477,6 +475,12 @@ export class GameScene extends BaseScene {
 		OnExitOverlap((this._playerInteractWith?.body as Phaser.Physics.Arcade.Body), () => {
 			this._playerInteractWith.setActive(false);
 		});
+
+		// FIXME: Debug
+		const space = this.input.keyboard.addKey('SPACE');
+		if (Phaser.Input.Keyboard.JustDown(space)) {
+			console.log("Map", this._objectives);
+		}
 	}
 
 	private touchController (): void {
@@ -519,6 +523,30 @@ export class GameScene extends BaseScene {
 				this._player.doJump();
 			}
 			this._onInteraction = false;
+		}
+	}
+
+	private completeObjectiveMap (key: string): void {
+		const availableKey = this._objectives.has(key);
+		if (availableKey) {
+			this._objectives.set(key, true);
+		}
+		console.assert(availableKey, `Objective key: ${key} is not available`);
+	}
+
+	private isObjectiveMapComplete (key: string | string[]): boolean {
+		if (Array.isArray(key)) {
+			let trueCounter = 0;
+			const len = key.length;
+			for (let i = 0; i < len; i++) {
+				if (this._objectives.get(key[i])) {
+					trueCounter++;
+				}
+			}
+			return trueCounter === len;
+		}
+		else {
+			return this._objectives.has(key) && this._objectives.get(key)!;
 		}
 	}
 
