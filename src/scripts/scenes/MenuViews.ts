@@ -53,23 +53,28 @@ export class MenuViews extends BaseScene {
 			}
 		});
 
+		this.add.image(0, 0, 'menu_bg').setOrigin(0);
+
 		this._gameTitleLabels = new Array<Phaser.GameObjects.Text>(
 			this.add.text(centerX, centerY, "EKO",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
 				fontStyle: 'bold',
-				fontSize: '72px'
+				fontSize: '72px',
+				color: 'black'
 			}).setOrigin(0.5, 1),
 			this.add.text(centerX, centerY, "PROTECTING THE ENVIRONTMENT",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
-				fontSize: '48px'
+				fontSize: '48px',
+				color: 'black'
 			}).setOrigin(0.5, 0),
 			this.add.text(centerX, centerY + 256, "TAP TO START",
 			<Phaser.Types.GameObjects.Text.TextStyle> {
 				fontFamily: 'Comfortaa',
 				fontStyle: 'bold',
-				fontSize: '22px'
+				fontSize: '22px',
+				color: 'black'
 			}).setOrigin(0.5, 1)
 		);
 
@@ -119,11 +124,10 @@ export class MenuViews extends BaseScene {
 
 	createGameTitle (): void {
 		this._gameTitleLabels.forEach(label => label.setVisible(false));
-		const portraitImage = this.add.image(centerX - centerX * 0.55, centerY + 32, 'phaser-logo');
 		const randomTipsIndex = Phaser.Math.Between(0, this._baloonTips.length - 1);
 		this._baloonSpeech = new BaloonSpeech(
 			this,
-			395, 228 - 64,
+			600, 30,
 			300, 150,
 			this._baloonTips[randomTipsIndex]
 		);
