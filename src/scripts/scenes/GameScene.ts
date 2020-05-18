@@ -271,7 +271,7 @@ export class GameScene extends BaseScene {
 		}
 	}
 
-	private createNPC (): Phaser.GameObjects.Sprite {
+	private createNPC (): Phaser.Physics.Arcade.Sprite {
 		const npc = this.physics.add.sprite(950, 574, 'lady_npc');
 		npc.setOrigin(0.5, 1).setName('NPC');
 		(npc.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
@@ -283,41 +283,7 @@ export class GameScene extends BaseScene {
 		return npc;
 	}
 
-	private createDialogueSystem (npcObject: GameObjectTransform): void {
-		this.registerEvent('npc_dialogue', (data: any) => {
-			let objective: string = '';
-			if (Array.isArray(data)) {
-				objective = data.pop();
-			}
-			const dialogue = this._npcDialogue.shift();
-			if (dialogue) {
-				this._gameState = GameState.Dialogue;
-				if (this._baloonSpeech?.active) {
-					this._baloonSpeech.destroy();
-				}
-				const quote = dialogue!.text;
-				const gameObject = dialogue!.target;
-				const facing = dialogue!.facing;
-				this._baloonSpeech = new BaloonSpeech(
-					this, 0, 0, 250, 120, quote, facing
-				);
-				this._baloonSpeech.setPosition(
-					gameObject.x - this._baloonSpeech.width,
-					gameObject.y - this._baloonSpeech.height * 2.5
-				);
-				this._baloonSpeech.setDepth(1);
-			}
-			else if (this._baloonSpeech?.active) {
-				this._baloonSpeech.destroy();
-				const npcBody = (npcObject.body as Phaser.Physics.Arcade.Body);
-				npcBody.checkCollision.none = true;
-				if (objective) {
-					this.completeObjectiveBound(objective);
-				}
-				this._gameState = GameState.Playable;
-			}
-		});
-
+	private createDialogueSystem (): void {
 		this.registerEvent('enable_register_dialogue', () => {
 			this.registerEvent('register_dialogue', () => {
 				this._npcDialogue = this._dialogueTimeline.shift()!;
