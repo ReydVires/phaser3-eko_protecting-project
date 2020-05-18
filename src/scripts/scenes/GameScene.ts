@@ -364,6 +364,12 @@ export class GameScene extends BaseScene {
 						item.setName('Pouch');
 						item.setOrigin(0);
 						break;
+					case 'y':
+						const orbItem = new ObjectiveItem(this, j * 64, i * 64, 'item_random', '0001');
+						itemsGroup.add(orbItem);
+						orbItem.setName('Orb');
+						orbItem.setOrigin(0);
+						break;
 					default:
 						const key = mapData[i][j];
 						if (key !== ' ' && key !== 'x') {
@@ -554,9 +560,6 @@ export class GameScene extends BaseScene {
 						this.eventUI.emit('UI#show_dialogue', this._npcDialogue);
 						console.log('Exit portal!');
 				}
-				else if (this._playerInteractWith.name === 'Portal') {
-					this.eventUI.emit('event#register_dialogue');
-					this.eventUI.emit('event#npc_dialogue', 'next_stage');
 				}
 			}
 			else {
