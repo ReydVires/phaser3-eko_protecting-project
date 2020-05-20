@@ -19,6 +19,7 @@ export class Player extends PhysicSprite implements IMoveable {
 		this.setOrigin(0.5, 1);
 		this.setGravity(0, 50);
 		this._moveState = new IdleState(this);
+		this.setSize(this.width * 0.7, this.height);
 	}
 
 	private isOnGround (): boolean {
