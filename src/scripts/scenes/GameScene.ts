@@ -86,98 +86,98 @@ export class GameScene extends BaseScene {
 				{
 					name: "Eko",
 					text: "Nat! Sudah ketemu belum?",
-					faceKey: "face_holder"
+					faceKey: "face_eko_bingung"
 				},
 				{
 					name: "Nat",
 					text: "Belum!",
-					faceKey: "face_holder"
+					faceKey: "face_nat_diam"
 				},
 				{
 					name: "Eko",
 					text: "Aku bantu deh ya!",
-					faceKey: "face_holder"
+					faceKey: "face_eko_diam"
 				},
 			],
 			[
 				{
 					name: "Nat",
 					text: 'Wahh, Eko! Terimakasih banyak! Akhirnya ketemu juga!',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_senang'
 				},
 				{
 					name: 'Nat',
 					text: 'Apa kamu mau balik sekarang?',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_diam'
 				},
 				{
 					name: 'Eko',
 					text: 'Ada yang aneh dengan gua ini, aku mau jelajah lebih jauh lagi dulu',
-					faceKey: 'face_holder'
+					faceKey: 'face_eko_diam'
 				},
 				{
 					name: 'Nat',
 					text: 'Ah, oke. Aku tunggu ya',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_diam'
 				}
 			],
 			[
 				{
 					name: 'Nat',
 					text: 'Wah, apa ini?',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_kaget'
 				},
 				{
-					text: 'Aku engga tahu, tapi ini cantik sekali',
 					name: 'Eko',
-					faceKey: 'face_holder'
+					text: 'Aku engga tahu, tapi ini cantik sekali',
+					faceKey: 'face_eko_diam'
 				},
 				{
 					name: 'Nat',
 					text: 'Iya, kamu benar, mungkin ini bisa membuka sesuatu?',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_diam'
 				},
 				{
-					text: 'Eh, apasih, seperti di film-film fantasi itu ya?',
 					name: 'Eko',
-					faceKey: 'face_holder'
+					text: 'Eh, apasih, seperti di film-film fantasi itu ya?',
+					faceKey: 'face_eko_tertawa'
 				},
 				{
 					name: 'Nat',
 					text: 'Dicoba aja! Pergi ke tempat paling jauh, siapa tahu benda ini akan bereaksi!',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_diam'
 				},
 				{
-					text: 'Oke',
 					name: 'Eko',
-					faceKey: 'face_holder'
+					text: 'Oke',
+					faceKey: 'face_eko_diam'
 				},
 			],
 			[
 				{
-					text: 'Ah!',
 					name: 'Eko',
-					faceKey: 'face_holder'
+					text: 'Ah!',
+					faceKey: 'face_eko_penasaran'
 				},
 				{
 					name: 'Nat',
 					text: 'Eko!',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_kaget'
 				},
 				{
-					text: 'Ada gua terbuka...',
 					name: 'Eko',
-					faceKey: 'face_holder'
+					text: 'Ada gua terbuka...',
+					faceKey: 'face_eko_penasaran'
 				},
 				{
 					name: 'Nat',
 					text: 'Berbahaya, lebih baik kita keluar dari sini!',
-					faceKey: 'face_holder'
+					faceKey: 'face_nat_diam'
 				},
 				{
-					text: 'Ayo masuk!',
 					name: 'Eko',
-					faceKey: 'face_holder'
+					text: 'Ayo masuk!',
+					faceKey: 'face_eko_tertawa'
 				}
 			]
 		);
@@ -256,8 +256,9 @@ export class GameScene extends BaseScene {
 	}
 
 	private createNPC (): Phaser.Physics.Arcade.Sprite {
-		const npc = this.physics.add.sprite(950, 574, 'lady_npc');
+		const npc = this.physics.add.sprite(950, 574, 'nat_idle');
 		npc.setOrigin(0.5, 1).setName('NPC');
+		npc.play('anim_nat_idle');
 		(npc.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
 		// Register collider
@@ -309,16 +310,20 @@ export class GameScene extends BaseScene {
 						(zone.body as Phaser.Physics.Arcade.Body).setEnable();
 						break;
 					case 'i':
-						const item = new ObjectiveItem(this, j * 64, i * 64, 'item_random', '0001');
-						itemsGroup.add(item);
-						item.setName('Pouch');
-						item.setOrigin(0);
+						const pouchItem = new ObjectiveItem(this, j * 64, i * 64, 'item_pouch', '0001');
+						itemsGroup.add(pouchItem);
+						pouchItem.x -= pouchItem.displayWidth * 0.15;
+						pouchItem.y -= pouchItem.displayHeight * 0.35;
+						pouchItem.setName('Pouch');
+						pouchItem.setOrigin(0).setDepth(this._player.depth + 1);
 						break;
 					case 'y':
-						const orbItem = new ObjectiveItem(this, j * 64, i * 64, 'item_random', '0001');
+						const orbItem = new ObjectiveItem(this, j * 64, i * 64, 'item_orb', '0001');
 						itemsGroup.add(orbItem);
+						orbItem.x -= orbItem.displayWidth * 0.15;
+						orbItem.y -= orbItem.displayHeight * 0.35;
 						orbItem.setName('Orb');
-						orbItem.setOrigin(0);
+						orbItem.setOrigin(0).setDepth(this._player.depth + 1);
 						break;
 					default:
 						const key = mapData[i][j];
@@ -463,6 +468,9 @@ export class GameScene extends BaseScene {
 				const nameTag = this._playerInteractWith.name;
 				console.log('Interact with object:', nameTag);
 				if (nameTag === 'NPC') {
+					if (this._playerInteractWith instanceof Phaser.Physics.Arcade.Sprite) {
+						this._playerInteractWith.flipX = this._player.x < this._playerInteractWith.x ? true: false;
+					}
 					this.eventUI.emit('event#register_dialogue');
 					this.eventUI.emit('UI#show_dialogue', this._npcDialogue, () => {
 						console.count('show_dialogue callback');
@@ -481,30 +489,32 @@ export class GameScene extends BaseScene {
 
 						if (!this.isObjectiveMapComplete(['get_pouch_item', 'talk_to_nat', 'get_orb'])) {
 							this._natNPC.body.checkCollision.none = true; // disable body
-							this.completeObjectiveMap('talk_to_nat'); // Gain access A
+							this.completeObjectiveMap('talk_to_nat');
 						}
 					});
 				}
 				else if (nameTag === 'Pouch' && this._playerInteractWith instanceof ObjectiveItem) {
-					if (this.isObjectiveMapComplete('talk_to_nat')) { // Use A
+					if (this.isObjectiveMapComplete('talk_to_nat')) {
 						console.log(this._playerInteractWith.collect());
 						this._natNPC.body.checkCollision.none = false;
 						this.completeObjective('get_pouch_item');
-						this.completeObjectiveMap('get_pouch_item'); // Gain access C
+						this.completeObjectiveMap('get_pouch_item');
 						this.eventUI.emit('event#enable_register_dialogue');
 					}
 				}
 				else if (nameTag === 'Orb' && this._playerInteractWith instanceof ObjectiveItem) {
-					if (this.isObjectiveMapComplete(['talk_to_nat', 'get_pouch_item'])) { // Use A & C
+					if (this.isObjectiveMapComplete(['talk_to_nat', 'get_pouch_item'])) {
 						console.log(this._playerInteractWith.collect());
 						this._natNPC.body.checkCollision.none = false;
-						this.completeObjectiveMap('get_orb'); // Gain access B
+						this.completeObjectiveMap('get_orb');
 						this.eventUI.emit('event#enable_register_dialogue');
 					}
 				}
 				else if (nameTag === 'Portal') {
 					const objectives = this.isObjectiveMapComplete('exit_stage');
-					if (objectives) { // Use D
+					if (objectives) {
+						this.time.delayedCall(180, () => this._camera.shake(300, 0.018));
+						this._natNPC.setFlipX(false);
 						this.eventUI.emit('event#register_dialogue');
 						this.eventUI.emit('UI#show_dialogue', this._npcDialogue);
 						console.log('Exit portal!');
