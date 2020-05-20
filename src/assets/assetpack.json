@@ -33,8 +33,88 @@
                 "url": "backgrounds/img_menu_bg.jpg"
             },
             {
+                "key": "face_eko_bingung",
+                "url": "faceset/face_eko_bingung.jpg"
+            },
+            {
+                "key": "face_eko_cemberut",
+                "url": "faceset/face_eko_cemberut.jpg"
+            },
+            {
+                "key": "face_eko_diam",
+                "url": "faceset/face_eko_diam.jpg"
+            },
+            {
+                "key": "face_eko_jahil",
+                "url": "faceset/face_eko_jahil.jpg"
+            },
+            {
+                "key": "face_eko_jengkel",
+                "url": "faceset/face_eko_jengkel.jpg"
+            },
+            {
+                "key": "face_eko_makan",
+                "url": "faceset/face_eko_makan.jpg"
+            },
+            {
+                "key": "face_eko_marah",
+                "url": "faceset/face_eko_marah.jpg"
+            },
+            {
+                "key": "face_eko_nangis",
+                "url": "faceset/face_eko_nangis.jpg"
+            },
+            {
+                "key": "face_eko_penasaran",
+                "url": "faceset/face_eko_penasaran.jpg"
+            },
+            {
+                "key": "face_eko_takut",
+                "url": "faceset/face_eko_takut.jpg"
+            },
+            {
+                "key": "face_eko_tertawa",
+                "url": "faceset/face_eko_tertawa.jpg"
+            },
+            {
+                "key": "face_nat_diam",
+                "url": "faceset/face_nat_diam.jpg"
+            },
+            {
+                "key": "face_nat_jengkel",
+                "url": "faceset/face_nat_jengkel.jpg"
+            },
+            {
+                "key": "face_nat_kaget",
+                "url": "faceset/face_nat_kaget.jpg"
+            },
+            {
+                "key": "face_nat_kecewa",
+                "url": "faceset/face_nat_kecewa.jpg"
+            },
+            {
+                "key": "face_nat_kesal",
+                "url": "faceset/face_nat_kesal.jpg"
+            },
+            {
+                "key": "face_nat_sedih",
+                "url": "faceset/face_nat_sedih.jpg"
+            },
+            {
+                "key": "face_nat_senang",
+                "url": "faceset/face_nat_senang.jpg"
+            },
+            {
                 "key": "item_random",
                 "url": "img_item_random.png"
+            },
+            {
+                "key": "item_pouch",
+                "url": "img_item_pouch.png"
+            },
+            {
+                "key": "item_orb",
+                "url": "img_item_orb.png"
             },
             {
                 "key": "enemy_lum",
@@ -349,9 +429,19 @@
 				"frameConfig": { "frameWidth": 128, "frameHeight": 188 }
             },
             {
-                "key": "lady_npc",
-                "url": "spr_lady_npc.png",
-                "frameConfig": { "frameWidth": 64, "frameHeight": 188 }
+                "key": "nat_idle",
+                "url": "spr_nat_idle.png",
+                "frameConfig": { "frameWidth": 128, "frameHeight": 188 }
+            },
+            {
+                "key": "nat_run",
+                "url": "spr_nat_run.png",
+                "frameConfig": { "frameWidth": 128, "frameHeight": 188 }
+            },
+            {
+                "key": "nat_walk",
+                "url": "spr_nat_walk.png",
+                "frameConfig": { "frameWidth": 128, "frameHeight": 188 }
             }
         ]
 	},
