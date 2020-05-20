@@ -1,0 +1,77 @@
+[
+	{
+		"key": "anim_nat_idle",
+		"frameRate": 5,
+		"repeat": -1,
+		"defaultTextureKey": "nat_idle",
+		"frames": [
+			{
+				"frame": 0
+			},
+			{
+				"frame": 1
+			},
+			{
+				"frame": 2
+			},
+			{
+				"frame": 3
+			},
+			{
+				"frame": 4
+			}
+		]
+	},
+	{
+		"key": "anim_nat_run",
+		"frameRate": 8,
+		"repeat": -1,
+		"defaultTextureKey": "nat_run",
+		"frames": [
+			{
+				"frame": 0
+			},
+			{
+				"frame": 1
+			},
+			{
+				"frame": 2
+			},
+			{
+				"frame": 3
+			},
+			{
+				"frame": 4
+			},
+			{
+				"frame": 5
+			}
+		]
+	},
+	{
+		"key": "anim_nat_walk",
+		"frameRate": 8,
+		"repeat": -1,
+		"defaultTextureKey": "nat_walk",
+		"frames": [
+			{
+				"frame": 0
+			},
+			{
+				"frame": 1
+			},
+			{
+				"frame": 2
+			},
+			{
+				"frame": 3
+			},
+			{
+				"frame": 4
+			},
+			{
+				"frame": 5
+			}
+		]
+	}
+]
