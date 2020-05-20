@@ -25,13 +25,13 @@ export class FlatButton extends Phaser.GameObjects.Sprite {
 	}
 
 	private onClick (): void {
-		const largeRation = (this.displayWidth > 64) && (this.displayHeight > 64);
+		const onSizeRatio = (this.displayWidth > 64) && (this.displayHeight > 64);
 		this.scene.tweens.add({
 			targets: this,
 			props: {
 				scale: {
 					getStart: () => {
-						return largeRation ? 0.93 : 0.85;
+						return onSizeRatio ? 0.93 : 0.85;
 					},
 					getEnd: () => 1
 				}
