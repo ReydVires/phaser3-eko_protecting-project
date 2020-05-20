@@ -25,6 +25,7 @@ export class PreloadScene extends Phaser.Scene {
 
 		this.load.json('player_anim', 'assets/animations/player_anim.json');
 		this.load.json('gameObject_anim', 'assets/animations/gameObject_anim.json');
+		this.load.json('nat_anim', 'assets/animations/nat_anim.json');
 
 		this.load.json('tutorial_data_level', 'assets/levels/tutorialLevel.json');
 	}
@@ -33,7 +34,8 @@ export class PreloadScene extends Phaser.Scene {
 		const cache = this.cache.json;
 		const animateJSON = [
 			RetrieveOnceJSON(cache, 'player_anim'),
-			RetrieveOnceJSON(cache, 'gameObject_anim')
+			RetrieveOnceJSON(cache, 'nat_anim'),
+			RetrieveOnceJSON(cache, 'gameObject_anim'),
 		];
 		this.registerAnimate(animateJSON);
 		/**
@@ -80,8 +82,8 @@ export class PreloadScene extends Phaser.Scene {
 		this.load.on('progress', this.updateProgressbar.bind(this));
 		this.load.once('complete', () => {
 			this.load.off('progress', this.updateProgressbar.bind(this));
-			this._progressBar.destroy();
 			this.scene.start('MenuViews');
+			this._progressBar.destroy();
 		});
 	}
 
