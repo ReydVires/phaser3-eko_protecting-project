@@ -211,7 +211,25 @@ export class GameScene extends BaseScene {
 		this.add.image(0, 0, 'tutorial_stage_platform_p1').setOrigin(0).setScrollFactor(0.9);
 		this.add.image(0, 0, 'tutorial_stage_platform').setOrigin(0);
 		this.add.image(0, 0, 'tutorial_stage_foreground').setOrigin(0).setScrollFactor(0.95);
-		this.add.image(1725, 625, 'cave_entrance').setOrigin(0, 1);
+
+		const cave = this.add.image(1725, 625, 'cave_entrance').setOrigin(0, 1);
+		const door = this.add.image((101 + cave.x), (-51 + cave.y), 'cave_door').setOrigin(0, 1);
+		const doorMask = this.add.image(door.x, door.y, 'cave_door').setOrigin(0, 1).setVisible(false);
+		door.setMask(new Phaser.Display.Masks.BitmapMask(this, doorMask));
+		door.setData('originY', door.y);
+
+		this.registerEvent('activate_cave', () => {
+			this.tweens.add({
+				targets: door,
+				props: {
+					y: {
+						getStart: () => door.getData('originY')!,
+						getEnd: () => door.y + 100
+					}
+				},
+				duration: 315,
+			});
+		}, true);
 		return bg;
 	}
 
