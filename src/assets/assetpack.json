@@ -345,6 +345,10 @@
                 "url": "backgrounds/img_cave_entrance.png"
             },
             {
+                "key": "cave_door",
+                "url": "backgrounds/img_cave_door.png"
+            },
+            {
                 "key": "world_map",
                 "url": "backgrounds/img_world_map.png"
             },
