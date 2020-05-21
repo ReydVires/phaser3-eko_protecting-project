@@ -15,12 +15,6 @@ type DialogueData = {
 	faceKey: string
 };
 
-enum GameState {
-	Playable,
-	Cutscene,
-	Dialogue
-}
-
 export type SceneData = {
 	isTryAgain: boolean,
 	isGameStarted: boolean
@@ -33,7 +27,6 @@ export class GameScene extends BaseScene {
 
 	private _camera: Phaser.Cameras.Scene2D.Camera;
 	private _deadAreaY: number;
-	private _gameState: GameState;
 
 	private _portalGroup: Phaser.Physics.Arcade.Group;
 
@@ -55,7 +48,6 @@ export class GameScene extends BaseScene {
 		super.init(data);
 		console.log("GameScene");
 		this.input.enabled = false;
-		this._gameState = GameState.Playable;
 		this._portalGroup = this.physics.add.group({ allowGravity: false });
 		this._onInteraction = false;
 		this._onMove = false;
@@ -442,10 +434,7 @@ export class GameScene extends BaseScene {
 	}
 
 	update (time: number, delta: number): void {
-		const onCutsceneState = this._gameState === GameState.Cutscene;
-		if (!onCutsceneState) {
-			this.touchController();
-		}
+		this.touchController();
 		this._player.movementSystem();
 
 		this.playerFallCondition();
@@ -467,12 +456,11 @@ export class GameScene extends BaseScene {
 		if (this._onMove) {
 			const onLeftArea = pointer.x <= LEFT_AREA;
 			const onRightArea = !onLeftArea && pointer.x <= RIGHT_AREA;
-			const onDialogueState = this._gameState === GameState.Dialogue;
 
-			if (onLeftArea && !onDialogueState) {
+			if (onLeftArea) {
 				this._player.doLeft();
 			}
-			else if (onRightArea && !onDialogueState) {
+			else if (onRightArea) {
 				this._player.doRight();
 			}
 		}
@@ -483,66 +471,92 @@ export class GameScene extends BaseScene {
 		if (this._onInteraction) {
 			const canInteraction = this._playerInteractWith?.active;
 			if (canInteraction) {
-				const nameTag = this._playerInteractWith.name;
-				console.log('Interact with object:', nameTag);
-				if (nameTag === 'NPC') {
-					if (this._playerInteractWith instanceof Phaser.Physics.Arcade.Sprite) {
-						this._playerInteractWith.flipX = this._player.x < this._playerInteractWith.x ? true: false;
-					}
-					this.eventUI.emit('event#register_dialogue');
-					this.eventUI.emit('UI#show_dialogue', this._npcDialogue, () => {
-						console.count('show_dialogue callback');
-						this.eventUI.emit('UI#show_objective');
-
-						if (this.isObjectiveMapComplete('get_pouch_item') && !this.isObjectiveMapComplete('give_pouch_item')) {
-							this.completeObjectiveMap('give_pouch_item');
-							this.eventUI.emit('event#enable_register_dialogue');
-						}
-						else if (this.isObjectiveMapComplete('get_orb') && !this.isObjectiveMapComplete('exit_stage')) {
-							this.completeObjectiveMap('exit_stage');
-							this._natNPC.body.checkCollision.none = true;
-							this.eventUI.emit('event#enable_register_dialogue');
-							console.log('Grant access to exit portal!');
-						}
-
-						if (!this.isObjectiveMapComplete(['get_pouch_item', 'talk_to_nat', 'get_orb'])) {
-							this._natNPC.body.checkCollision.none = true; // disable body
-							this.completeObjectiveMap('talk_to_nat');
-						}
-					});
-				}
-				else if (nameTag === 'Pouch' && this._playerInteractWith instanceof ObjectiveItem) {
-					if (this.isObjectiveMapComplete('talk_to_nat')) {
-						console.log(this._playerInteractWith.collect());
-						this._natNPC.body.checkCollision.none = false;
-						this.completeObjective('get_pouch_item');
-						this.completeObjectiveMap('get_pouch_item');
-						this.eventUI.emit('event#enable_register_dialogue');
-					}
-				}
-				else if (nameTag === 'Orb' && this._playerInteractWith instanceof ObjectiveItem) {
-					if (this.isObjectiveMapComplete(['talk_to_nat', 'get_pouch_item'])) {
-						console.log(this._playerInteractWith.collect());
-						this._natNPC.body.checkCollision.none = false;
-						this.completeObjectiveMap('get_orb');
-						this.eventUI.emit('event#enable_register_dialogue');
-					}
-				}
-				else if (nameTag === 'Portal') {
-					const objectives = this.isObjectiveMapComplete('exit_stage');
-					if (objectives) {
-						this.time.delayedCall(180, () => this._camera.shake(300, 0.018));
-						this._natNPC.setFlipX(false);
-						this.eventUI.emit('event#register_dialogue');
-						this.eventUI.emit('UI#show_dialogue', this._npcDialogue);
-						console.log('Exit portal!');
-					}
-				}
+				this.responseInteraction();
 			}
 			else {
 				this._player.doJump();
 			}
 			this._onInteraction = false;
+		}
+	}
+
+	private responseInteraction (): void {
+		const nameTag = this._playerInteractWith.name;
+		console.log('Interact with object:', nameTag);
+		if (nameTag === 'NPC') {
+			if (this._playerInteractWith instanceof Phaser.Physics.Arcade.Sprite) {
+				this._playerInteractWith.flipX = this._player.x < this._playerInteractWith.x ? true: false;
+			}
+			this.eventUI.emit('event#register_dialogue');
+			this.eventUI.emit('UI#show_dialogue', this._npcDialogue, () => {
+				this.eventUI.emit('UI#show_objective');
+
+				if (this.isObjectiveMapComplete('get_pouch_item') && !this.isObjectiveMapComplete('give_pouch_item')) {
+					this.completeObjectiveMap('give_pouch_item');
+					this.eventUI.emit('event#enable_register_dialogue');
+				}
+				else if (this.isObjectiveMapComplete('get_orb') && !this.isObjectiveMapComplete('exit_stage')) {
+					this.completeObjectiveMap('exit_stage');
+					this._natNPC.body.checkCollision.none = true;
+					this.eventUI.emit('event#enable_register_dialogue');
+				}
+
+				if (!this.isObjectiveMapComplete(['get_pouch_item', 'talk_to_nat', 'get_orb'])) {
+					this._natNPC.body.checkCollision.none = true; // disable body
+					this.completeObjectiveMap('talk_to_nat');
+				}
+			});
+		}
+		else if (nameTag === 'Pouch' && this._playerInteractWith instanceof ObjectiveItem) {
+			if (this.isObjectiveMapComplete('talk_to_nat')) {
+				console.log(this._playerInteractWith.collect());
+				this._natNPC.body.checkCollision.none = false;
+				this.completeObjective('get_pouch_item');
+				this.completeObjectiveMap('get_pouch_item');
+				this.eventUI.emit('event#enable_register_dialogue');
+			}
+		}
+		else if (nameTag === 'Orb' && this._playerInteractWith instanceof ObjectiveItem) {
+			if (this.isObjectiveMapComplete(['talk_to_nat', 'get_pouch_item'])) {
+				console.log(this._playerInteractWith.collect());
+				this._natNPC.body.checkCollision.none = false;
+				this.completeObjectiveMap('get_orb');
+				this.eventUI.emit('event#enable_register_dialogue');
+			}
+		}
+		else if (nameTag === 'Portal') {
+			const objectives = this.isObjectiveMapComplete('exit_stage');
+			if (objectives) {
+				this.time.delayedCall(150, () => {
+					this.eventUI.emit('event#activate_cave');
+					this._camera.shake(350, 0.005);
+				});
+				this._natNPC.setFlipX(false);
+				this.eventUI.emit('event#register_dialogue');
+				this.eventUI.emit('UI#show_dialogue', this._npcDialogue, () => {
+					this.input.enabled = false;
+
+					this.tweens.add({
+						delay: 120,
+						targets: this._player,
+						alpha: 0,
+						duration: 300,
+					});
+					this.tweens.add({
+						targets: this._player,
+						x: 1850,
+						duration: 600,
+						ease: Phaser.Math.Easing.Sine.Out,
+						onComplete: () => {
+							this._camera.on('camerafadeoutcomplete', () => {
+								this.eventUI.emit('UI#to_scene_tutorial');
+							});
+							this._camera.fadeOut(450);
+						}
+					});
+					console.log('Callback after last dialogue exit portal!');
+				});
+			}
 		}
 	}
 
