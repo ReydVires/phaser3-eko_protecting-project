@@ -44,7 +44,7 @@ export class TutorialGameUIScene extends UIScene {
 
 		this._dimBackground = new DimBackground(this);
 
-		this.add.bitmapText(centerX * 0.25, centerY * 0.72, 'comfortaa_w', "TAP!").setFontSize(32);
+		this.add.bitmapText(centerX * 0.25, centerY * 0.4, 'simply_roundw', "TAP!").setFontSize(32);
 		const leftArrow = this.add.sprite(LEFT_AREA * 0.5, SCREEN_HEIGHT - 64, 'left_arrow')
 			.setOrigin(0, 1);
 		const rightArrow = this.add.sprite(RIGHT_AREA * 0.5, leftArrow.y, 'right_arrow')
