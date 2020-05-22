@@ -48,10 +48,12 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	}
 
 	create (): void {
-		this._player = this.add.sprite(centerX * 0.3, centerY * 1.3, 'phaser-logo');
-		this._enemy = this.add.sprite(centerX * 1.3, centerY * 0.9, 'enemy_lum');
+		// TODO: implement 'img_cutscene_dolphin'
+		this.add.image(centerX, centerY, 'stage_dolphin');
+		this._player = this.add.sprite(centerX * 0.3, centerY * 1.3, 'eko_battle');
+		this._enemy = this.add.sprite(centerX * 1.2, centerY * 1.15, 'enemy_lum');
 
-		const cautionMark = this.add.image(this._enemy.x - 165, this._enemy.y, 'caution_mini');
+		const cautionMark = this.add.image(this._enemy.x * 0.8, this._enemy.y * 0.55, 'caution_mini');
 		this.tweens.add({
 			targets: cautionMark,
 			alpha: 0.3,
