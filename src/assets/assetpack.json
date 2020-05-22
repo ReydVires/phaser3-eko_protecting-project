@@ -121,6 +121,10 @@
                 "url": "img_enemy_lum.png"
             },
             {
+                "key": "eko_battle",
+                "url": "img_eko_battle.png"
+            },
+            {
                 "key": "trivia_btn",
                 "url": "UI/img_trivia_btn.png"
             },
@@ -305,10 +309,6 @@
                 "url": "UI/spr_dialogue_box.png"
             },
             {
-                "key": "face_holder",
-                "url": "UI/faces/spr_face_holder.png"
-            },
-            {
                 "key": "warung_display_box",
                 "url": "UI/spr_warung_display_box.png"
             },
@@ -351,6 +351,14 @@
             {
                 "key": "world_map",
                 "url": "backgrounds/img_world_map.png"
+            },
+            {
+                "key": "cutscene_dolphin",
+                "url": "backgrounds/img_cutscene_dolphin.jpg"
+            },
+            {
+                "key": "stage_dolphin",
+                "url": "backgrounds/img_stage_dolphin.jpg"
             },
             {
                 "key": "boardname_pemukiman",
