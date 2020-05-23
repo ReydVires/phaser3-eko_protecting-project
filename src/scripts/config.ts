@@ -10,6 +10,7 @@ import { TutorialGameUIScene } from './scenes/MiniGames/TutorialGameUIScene';
 import { LeaderboardViews } from './scenes/LeaderboardViews';
 import { StoreViews } from './scenes/StoreViews';
 import { WorldmapViews } from './scenes/WorldmapViews';
+import { LumCutsceneViews } from './scenes/MiniGames/LumCutsceneViews';
 
 //#endregion
 export const SCREEN_WIDTH: number = 1280;
@@ -27,6 +28,7 @@ const scenes: Array<Function> = [
 	LeaderboardViews,
 	StoreViews,
 	WorldmapViews,
+	LumCutsceneViews,
 	TutorialGameScene,
 	TutorialGameUIScene,
 	GameScene,
