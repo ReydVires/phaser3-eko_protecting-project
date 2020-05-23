@@ -452,10 +452,13 @@ export class GameScene extends BaseScene {
 							this._camera.on('camerafadeoutcomplete', () => {
 								this.eventUI.emit('UI#to_scene_tutorial');
 							});
-							this._camera.fadeOut(450);
+							this.eventUI.emit('event#enable_register_dialogue');
+							this.eventUI.emit('event#register_dialogue');
+							this.eventUI.emit('UI#show_dialogue', this._npcDialogue, () => {
+								this._camera.fadeOut(450);
+							});
 						}
 					});
-					console.log('Callback after last dialogue exit portal!');
 				});
 			}
 		}
