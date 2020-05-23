@@ -1,0 +1,39 @@
+[
+	[
+		{
+			"name": "Eko",
+			"text": "Ah.. ada lumba-lumba..??",
+			"faceKey": "face_eko_bingung"
+		},
+		{
+			"name": "Lum",
+			"text": "Ah.. manusia..",
+			"faceKey": "face_lum_kesal"
+		},
+		{
+			"name": "Eko",
+			"text": "EEeehhhhh?!!",
+			"faceKey": "face_eko_bingung"
+		},
+		{
+			"name": "Lum",
+			"text": "Sudah lama kutunggu manusia yang membuka gua ini..",
+			"faceKey": "face_lum_kesal"
+		},
+		{
+			"name": "Lum",
+			"text": "Kalian telah mengotori lingkungan hidupku! Aku tak akan memaafkan kalian semua!",
+			"faceKey": "face_lum_kesal"
+		},
+		{
+			"name": "Eko",
+			"text": "Ah.. tu..tunggu dulu!",
+			"faceKey": "face_eko_takut"
+		},
+		{
+			"name": "Lum",
+			"text": "Aku tak akan memaafkan apa yang kalian perbuat, tidak akan pernah.. TIDAK AKAN PERNAH!!",
+			"faceKey": "face_lum_kesal"
+		}
+	]
+]

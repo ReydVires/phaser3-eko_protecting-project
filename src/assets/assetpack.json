@@ -105,6 +105,10 @@
                 "url": "faceset/face_nat_senang.jpg"
             },
             {
+                "key": "face_lum_kesal",
+                "url": "faceset/face_lum_kesal.png"
+            },
+            {
                 "key": "item_pouch",
                 "url": "img_item_pouch.png"
             },
