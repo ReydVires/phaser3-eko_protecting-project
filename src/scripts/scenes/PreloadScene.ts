@@ -28,7 +28,7 @@ export class PreloadScene extends Phaser.Scene {
 		this.load.json('nat_anim', 'assets/animations/nat_anim.json');
 
 		this.load.json('tutorial_data_level', 'assets/levels/tutorialLevel.json');
-		this.load.json('dialogue_cutscene_cave', 'assets/dialogues/cutscene01.json');
+		this.load.json('dialogue_cutscene_cave', 'assets/dialogues/cutscene02.json');
 	}
 
 	create (): void {
