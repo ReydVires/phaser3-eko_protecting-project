@@ -16,6 +16,7 @@ export class MinigameViews extends BaseScene {
 	}
 
 	init (): void {
+		super.init();
 		console.log('MinigameViews');
 		this._goToMenuScene = false;
 	}
