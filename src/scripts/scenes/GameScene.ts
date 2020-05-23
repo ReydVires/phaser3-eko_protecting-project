@@ -9,7 +9,7 @@ import { LEFT_AREA, RIGHT_AREA, SCREEN_HEIGHT } from '../config';
 
 type GameObjectTransform = Phaser.GameObjects.GameObject & Phaser.GameObjects.Components.Transform;
 
-type DialogueData = {
+export type DialogueData = {
 	text: string,
 	name: string,
 	faceKey: string
