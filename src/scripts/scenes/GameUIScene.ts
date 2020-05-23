@@ -107,7 +107,7 @@ export class GameUIScene extends UIScene {
 			this.doCameraFadeOut(this.startToScene.bind(this, 'WorldmapViews'), 300);
 		});
 		this.registerEvent('to_scene_tutorial', () => {
-			this.doCameraFadeOut(this.startToScene.bind(this, 'TutorialGameScene'));
+			this.doCameraFadeOut(this.startToScene.bind(this, 'LumCutsceneViews'));
 		});
 
 		AndroidBackHelper.Instance.setCallbackBackButton(() => {
