@@ -48,7 +48,6 @@ export class TutorialGameScene extends BaseScene implements ITouchControl {
 	}
 
 	create (): void {
-		// TODO: implement 'img_cutscene_dolphin'
 		this.add.image(centerX, centerY, 'stage_dolphin');
 		this._player = this.add.sprite(centerX * 0.3, centerY * 1.3, 'eko_battle');
 		this._enemy = this.add.sprite(centerX * 1.2, centerY * 1.15, 'enemy_lum');

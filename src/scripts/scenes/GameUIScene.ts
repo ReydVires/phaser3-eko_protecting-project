@@ -118,6 +118,10 @@ export class GameUIScene extends UIScene {
 	}
 
 	private createObjectiveLabel (): Phaser.GameObjects.BitmapText {
+		// TODO: Polish a bit the objective UI
+		// const t = `OBJECTIVE!
+		// Get Pouch item (0/1)
+		// Get Orb item (0/1)`;
 		const text = `Get pouch item!\n(${this._completeObjective}/${this._totalObjective})`;
 		const label = this.add.bitmapText(48, 32, 'comfortaa_w', text);
 		label.setFontSize(32).setVisible(false).setActive(false);
