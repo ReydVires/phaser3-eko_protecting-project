@@ -309,6 +309,10 @@
                 "url": "UI/spr_dialogue_box.png"
             },
             {
+                "key": "notify_message",
+                "url": "UI/img_notify_message.png"
+            },
+            {
                 "key": "warung_display_box",
                 "url": "UI/spr_warung_display_box.png"
             },
@@ -485,7 +489,12 @@
 				"key": "comfortaa_w",
                 "textureURL": "font_comfortaa_w.png",
                 "fontDataURL": "bitmap_comfortaa_w.fnt"
-			}
+            },
+            {
+				"key": "comfortaa_w_bold",
+                "textureURL": "font_comfortaa_w_bold.png",
+                "fontDataURL": "bitmap_comfortaa_w_bold.fnt"
+            }
 		]
 	}
 }
