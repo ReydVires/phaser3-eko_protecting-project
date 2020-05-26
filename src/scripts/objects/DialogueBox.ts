@@ -12,14 +12,14 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 	private _interactionBlock: Phaser.GameObjects.Rectangle;
 	private _callback: Function;
 
-	constructor (scene: Phaser.Scene, x: number, y: number, faceTexture: string, name: string, text?: string) {
+	constructor (scene: Phaser.Scene, x: number, y: number, faceTexture: string, name: string, text?: string, isWhite?: boolean) {
 		super(scene, x, y, DIALOG_TEXTURE);
 		scene.add.existing(this);
 		this.setScrollFactor(0);
 		this._faceHolder = this.createFaceHolder(faceTexture);
 		this._textWidth = this.displayWidth - (this._faceHolder.displayWidth + this._padding * 2.5);
-		this._nameLabel = this.createNameLabel(name);
-		this._dialogueText = this.createDialogueText(text);
+		this._nameLabel = this.createNameLabel(name, isWhite);
+		this._dialogueText = this.createDialogueText(text, isWhite);
 
 		this._interactionBlock = scene.add.rectangle(centerX, centerY, SCREEN_WIDTH, SCREEN_HEIGHT);
 		this._interactionBlock.setFillStyle(0xfafafa, 0)
@@ -37,20 +37,25 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 			.setOrigin(1, 0.5)
 			.setScrollFactor(0);
 		face.setX(this.x + (this.displayWidth * 0.5) - this._padding);
+		if (!texture) {
+			face.setVisible(false);
+		}
 		return face;
 	}
 
-	private createNameLabel (name: string): Phaser.GameObjects.BitmapText {
-		const label = this.scene.add.bitmapText(0, 0, 'comfortaa_b_bold', name)
+	private createNameLabel (name: string, white?: boolean): Phaser.GameObjects.BitmapText {
+		const fontKey = white ? "comfortaa_w_bold" : "comfortaa_b_bold";
+		const label = this.scene.add.bitmapText(0, 0, fontKey, name)
 			.setFontSize(28);
 		label.setX(this.x - this.displayWidth * 0.5 + this._padding * 2);
 		label.setY(this.y - this.displayHeight * 0.5 + this._padding);
 		return label;
 	}
 
-	private createDialogueText (text?: string): Phaser.GameObjects.BitmapText {
+	private createDialogueText (text?: string, white?: boolean): Phaser.GameObjects.BitmapText {
 		text = (typeof text !== "undefined") ? text : '';
-		const dialogue = this.scene.add.bitmapText(0, 0, 'comfortaa_b', text)
+		const fontKey = white ? "comfortaa_w" : "comfortaa_b";
+		const dialogue = this.scene.add.bitmapText(0, 0, fontKey, text)
 			.setMaxWidth(this._textWidth)
 			.setFontSize(21);
 		dialogue.setX(this._nameLabel.x);
