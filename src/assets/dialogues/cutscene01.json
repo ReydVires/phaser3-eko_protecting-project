@@ -1,0 +1,125 @@
+[
+	[
+		{
+			"name": "Eko",
+			"text": "Akhirnya selesai juga belajarnya!",
+			"faceKey": "face_eko_senang"
+		},
+		{
+			"name": "Eko",
+			"text": "Ahh, laper banget nih, jajan dulu ah! Kepengen cilok",
+			"faceKey": "face_eko_diam"
+		}
+	],
+	[
+		{
+			"name": "Eko",
+			"text": "Pak, cilok ya sebungkus!",
+			"faceKey": "face_eko_diam"
+		},
+		{
+			"name": "Pedagang Cilok",
+			"text": "Nih ko, 5 koin yak",
+			"faceKey": ""
+		}
+	],
+	[
+		{
+			"name": "Game System Announcement",
+			"text": "-5 koin\nGet cilok!",
+			"faceKey": ""
+		}
+	],
+	[
+		{
+			"name": "Eko",
+			"text": "Hehe, akhirnya bisa jajan juga!",
+			"faceKey": "face_eko_makan"
+		}
+	],
+	[
+		{
+			"name": "Eko",
+			"text": "Kenyang juga, hehe, pulang ah!",
+			"faceKey": "face_eko_diam"
+		}
+	],
+	[
+		{
+			"name": "Nat",
+			"text": "Eko!",
+			"faceKey": "face_nat_diam"
+		},
+		{
+			"name": "Eko",
+			"text": "Oh, Nat! Mau pulang juga?",
+			"faceKey": "face_eko_diam"
+		},
+		{
+			"name": "Nat",
+			"text": "Sebelum itu, ambil dulu sampahmu, tidak baik buang sampah sembarangan tahu!",
+			"faceKey": "face_nat_kesal"
+		},
+		{
+			"name": "Eko",
+			"text": "Ehh... Yakan udah habis...",
+			"faceKey": "face_eko_diam"
+		},
+		{
+			"name": "Nat",
+			"text": "Mengotori lingkungan, Eko!",
+			"faceKey": "face_nat_kesal"
+		},
+		{
+			"name": "Eko",
+			"text": "Ahhh, iya iya, Nat bawel ih",
+			"faceKey": "face_eko_diam"
+		}
+	],
+	[
+		{
+			"name": "Nat",
+			"text": "Sekarang buang ke tong sampah disana",
+			"faceKey": "face_nat_diam"
+		},
+		{
+			"name": "Eko",
+			"text": "Iya iya",
+			"faceKey": "face_eko_diam"
+		}
+	],
+	[
+		{
+			"name": "Eko",
+			"text": "Udah senang belum, Nat?",
+			"faceKey": "face_eko_diam"
+		},
+		{
+			"name": "Nat",
+			"text": "Hehe, gitu dong, Eko!",
+			"faceKey": "face_nat_senang"
+		},
+		{
+			"name": "Nat",
+			"text": "Hehe, gitu dong, Eko!",
+			"faceKey": "face_nat_senang"
+		},
+		{
+			"name": "Nat",
+			"text": "Oh, iya, kemarin kan kita main bareng ke gua dekat pantai, ternyata pouchku ketinggalan... kamu mau antar aku kesana kah Eko?",
+			"faceKey": "face_nat_diam"
+		}
+	],
+	[
+		{
+			"name": "Nat",
+			"text": "Oh, ayolah, sebentar saja!",
+			"faceKey": "face_nat_sedih"
+		},
+		{
+			"name": "Nat",
+			"text": "Oh, ayolah, sebentar saja!",
+			"faceKey": "face_nat_sedih"
+		}
+	]
+]
