@@ -27,7 +27,9 @@ export class PreloadScene extends Phaser.Scene {
 		this.load.json('gameObject_anim', 'assets/animations/gameObject_anim.json');
 		this.load.json('nat_anim', 'assets/animations/nat_anim.json');
 
+		this.load.json('menu_tips', 'assets/dialogues/menutips.json');
 		this.load.json('tutorial_data_level', 'assets/levels/tutorialLevel.json');
+		this.load.json('dialogue_cutscene_intro', 'assets/dialogues/cutscene01.json');
 		this.load.json('dialogue_cutscene_cave', 'assets/dialogues/cutscene02.json');
 		this.load.json('dialogue_cutscene_lum_encounter', 'assets/dialogues/cutscene03.json');
 	}
