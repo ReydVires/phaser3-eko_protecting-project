@@ -36,13 +36,7 @@ export class MenuViews extends BaseScene {
 		super.init(data);
 		console.log(`MenuViews`);
 		this._isGameStart = data?.isGameStarted;
-		this._baloonTips = new Array<string>(
-			"Tahukah kamu, bahwa plastik sangat membahayakan bagi tubuh?",
-			"The greatest glory in living lies not in never falling, but in rising every time we fall.",
-			"If life were predictable it would cease to be life, and be without flavor.",
-			"Transform your bad code to good code with our newest bundle!",
-			"Get ebooks like Becoming a Better Programmer, Head First Agile."
-		);
+		this._baloonTips = this.cache.json.get('menu_tips');
 	}
 
 	create (): void {
@@ -128,7 +122,7 @@ export class MenuViews extends BaseScene {
 		this._baloonSpeech = new BaloonSpeech(
 			this,
 			600, 30,
-			300, 150,
+			320, 180,
 			this._baloonTips[randomTipsIndex]
 		);
 		this.createMenuButton();
@@ -139,6 +133,9 @@ export class MenuViews extends BaseScene {
 			.setCallback(() => {
 				this.input.enabled = false;
 				NextSceneFadeOut(this, 'WorldmapViews');
+				// FIXME: Place it before worldmap
+				const dialogueTimeline = this.cache.json.get('dialogue_cutscene_intro');
+				console.table(dialogueTimeline);
 			});
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
