@@ -33,6 +33,10 @@
                 "url": "backgrounds/img_menu_bg.jpg"
             },
             {
+                "key": "screen_title",
+                "url": "backgrounds/img_screen_title.png"
+            },
+            {
                 "key": "face_eko_bingung",
                 "url": "faceset/face_eko_bingung.jpg"
             },
@@ -107,6 +111,10 @@
             {
                 "key": "face_lum_kesal",
                 "url": "faceset/face_lum_kesal.png"
+            },
+            {
+                "key": "exclamation_baloon",
+                "url": "img_exclamation_baloon.png"
             },
             {
                 "key": "item_pouch",
@@ -329,6 +337,10 @@
                 "url": "UI/popup_confirm_buy_win.png"
             },
             {
+                "key": "pemukiman_scene",
+                "url": "backgrounds/img_pemukiman_scene.png"
+			},
+            {
                 "key": "tutorial_stage_platform",
                 "url": "backgrounds/img_tutorial_stage_platform.png"
 			},
@@ -363,6 +375,10 @@
             {
                 "key": "stage_dolphin",
                 "url": "backgrounds/img_stage_dolphin.jpg"
+            },
+            {
+                "key": "gerobak_cilok",
+                "url": "img_gerobak_cilok.png"
             },
             {
                 "key": "boardname_pemukiman",
