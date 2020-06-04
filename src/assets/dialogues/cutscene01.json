@@ -3,7 +3,7 @@
 		{
 			"name": "Eko",
 			"text": "Akhirnya selesai juga belajarnya!",
-			"faceKey": "face_eko_senang"
+			"faceKey": "face_eko_tertawa"
 		},
 		{
 			"name": "Eko",
@@ -26,8 +26,7 @@
 	[
 		{
 			"name": "Game System Announcement",
-			"text": "-5 koin\nGet cilok!",
-			"faceKey": ""
+			"text": "-5 koin\nGet cilok!"
 		}
 	],
 	[
@@ -53,7 +52,7 @@
 		{
 			"name": "Eko",
 			"text": "Oh, Nat! Mau pulang juga?",
-			"faceKey": "face_eko_diam"
+			"faceKey": "face_eko_tertawa"
 		},
 		{
 			"name": "Nat",
@@ -63,7 +62,7 @@
 		{
 			"name": "Eko",
 			"text": "Ehh... Yakan udah habis...",
-			"faceKey": "face_eko_diam"
+			"faceKey": "face_eko_jengkel"
 		},
 		{
 			"name": "Nat",
@@ -73,7 +72,7 @@
 		{
 			"name": "Eko",
 			"text": "Ahhh, iya iya, Nat bawel ih",
-			"faceKey": "face_eko_diam"
+			"faceKey": "face_eko_marah"
 		}
 	],
 	[
@@ -85,14 +84,14 @@
 		{
 			"name": "Eko",
 			"text": "Iya iya",
-			"faceKey": "face_eko_diam"
+			"faceKey": "face_eko_jengkel"
 		}
 	],
 	[
 		{
 			"name": "Eko",
 			"text": "Udah senang belum, Nat?",
-			"faceKey": "face_eko_diam"
+			"faceKey": "face_eko_jahil"
 		},
 		{
 			"name": "Nat",
@@ -101,25 +100,20 @@
 		},
 		{
 			"name": "Nat",
-			"text": "Hehe, gitu dong, Eko!",
-			"faceKey": "face_nat_senang"
-		},
-		{
-			"name": "Nat",
-			"text": "Oh, iya, kemarin kan kita main bareng ke gua dekat pantai, ternyata pouchku ketinggalan... kamu mau antar aku kesana kah Eko?",
-			"faceKey": "face_nat_diam"
+			"text": "Oh, iya, kemarin kan kita main bareng ke gua dekat pantai, ternyata pouchku ketinggalan... Kamu mau antar aku kesana kah Eko?",
+			"faceKey": "face_nat_sedih"
 		}
 	],
 	[
 		{
 			"name": "Nat",
 			"text": "Oh, ayolah, sebentar saja!",
-			"faceKey": "face_nat_sedih"
+			"faceKey": "face_nat_kecewa"
 		},
 		{
 			"name": "Nat",
-			"text": "Oh, ayolah, sebentar saja!",
-			"faceKey": "face_nat_sedih"
+			"text": "Hore, Eko baik deh!",
+			"faceKey": "face_nat_senang"
 		}
 	]
 ]
