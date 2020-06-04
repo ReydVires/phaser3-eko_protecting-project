@@ -98,7 +98,7 @@ export class PreloadScene extends Phaser.Scene {
 			y: y - (height + offsetY),
 			text: text,
 			style: {
-				fill: 'white',
+				fill: 'black',
 				fontSize: '32px',
 				fontStyle: 'bold'
 			}
