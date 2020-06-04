@@ -22,7 +22,7 @@ export class WorldmapViews extends BaseScene {
 		const villageLevelBtn = new FlatButton(this, 876, 405, 'world_map_pemukiman');
 		villageLevelBtn.setCallback(() => {
 			this.input.enabled = false;
-			NextSceneFadeOut(this, 'GameScene');
+			NextSceneFadeOut(this, 'IntroScene');
 		});
 		this.add.image(villageLevelBtn.x, villageLevelBtn.y + villageLevelBtn.height * 0.5, 'boardname_pemukiman');
 
