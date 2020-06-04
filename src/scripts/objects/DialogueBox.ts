@@ -65,6 +65,9 @@ export class DialogueBox extends Phaser.GameObjects.Image {
 
 	public changeFace (texture: string, frame?: string | number): this {
 		this._faceHolder.setTexture(texture);
+		if (this._faceHolder.displayWidth < 126) {
+			this._faceHolder.setDisplaySize(126, 120).setVisible(false);
+		}
 		if (frame) {
 			this._faceHolder.setFrame(frame);
 		}
