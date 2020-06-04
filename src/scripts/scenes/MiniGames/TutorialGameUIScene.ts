@@ -77,17 +77,34 @@ export class TutorialGameUIScene extends UIScene {
 			this.eventHandler.emit('event#enemy_attack', false);
 		});
 
+		let frameSlide = this.add.image(0, 0, 'slide_first');
+		let stateSlide = 'ON_LEFT';
+		const textSlide = this.add.bitmapText(0, 208, 'comfortaa_b', "Pehatikan area tap! Bagian kiri untuk left tap, " +
+		"tengah untuk right tap dan kanan untuk up tap.");
 		this._tutorialWindow = new PopUpWindow(this, centerX, centerY, 'how_toPlaym_win', [
-			new FlatButton(this, -256, 32, 'prev_btn'),
-			new FlatButton(this, 256, 32, 'next_btn'),
-			this.add.image(0, 0, 'phaser-logo'), // TODO: Content here!
-			this.add.bitmapText(0, 208, 'comfortaa_w', "Lorem Ipsum Dolor\n" +
-			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! " +
-			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! " +
-			"TextBox Here! TextBox Here! TextBox Here! TextBox Here! ")
+			new FlatButton(this, -256, 32, 'prev_btn')
+				.setCallback(() => {
+					if (stateSlide !== 'ON_LEFT') {
+						stateSlide = 'ON_LEFT';
+						frameSlide.setTexture('slide_first');
+						textSlide.setText("Pehatikan area tap! Bagian kiri untuk left tap, " +
+						"tengah untuk right tap dan kanan untuk up tap.");
+					}
+				}),
+			new FlatButton(this, 256, 32, 'next_btn')
+				.setCallback(() => {
+					if (stateSlide !== 'ON_RIGHT') {
+						stateSlide = 'ON_RIGHT';
+						frameSlide.setTexture('slide_second');
+						textSlide.setText("Ikuti arahan pola diatas sebelum waktu habis " +
+						"untuk menghindari serangan dari lumba-lumba!");
+					}
+				}),
+			frameSlide,
+			textSlide
 				.setCenterAlign()
 				.setOrigin(0.5)
-				.setFontSize(16)
+				.setFontSize(20)
 				.setMaxWidth(475),
 			new FlatButton(this, 728 * 0.455, -245, 'exit_btn')
 				.setCallback(() => {
