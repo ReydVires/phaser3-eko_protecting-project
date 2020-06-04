@@ -133,6 +133,14 @@
                 "url": "img_eko_battle.png"
             },
             {
+                "key": "slide_first",
+                "url": "UI/img_slide_first.jpg"
+            },
+            {
+                "key": "slide_second",
+                "url": "UI/img_slide_second.jpg"
+            },
+            {
                 "key": "trivia_btn",
                 "url": "UI/img_trivia_btn.png"
             },
@@ -379,6 +387,10 @@
             {
                 "key": "gerobak_cilok",
                 "url": "img_gerobak_cilok.png"
+            },
+            {
+                "key": "abang_cilok",
+                "url": "img_abang_cilok.png"
             },
             {
                 "key": "boardname_pemukiman",
