@@ -59,6 +59,7 @@ export class GameScene extends BaseScene {
 		PrintPointerPos(this, true);
 		
 		this._camera = this.cameras.main;
+		this._camera.fadeIn(350);
 		// Set bound camera, based on background level
 		this._camera.setBounds(0, 0, background.displayWidth - 32, 0);
 
