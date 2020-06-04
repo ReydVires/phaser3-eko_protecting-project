@@ -22,7 +22,7 @@ export class MenuViews extends BaseScene {
 	private _baloonTips: Array<string>;
 
 	private _isGameStart: boolean;
-	private _gameTitleLabels: Array<Phaser.GameObjects.Text>;
+	private _titleScreen: Phaser.GameObjects.Image;
 	
 	private _windowExit: PopUpWindow;
 	private _windowSetting: PopUpWindow;
@@ -48,29 +48,7 @@ export class MenuViews extends BaseScene {
 		});
 
 		this.add.image(0, 0, 'menu_bg').setOrigin(0);
-
-		this._gameTitleLabels = new Array<Phaser.GameObjects.Text>(
-			this.add.text(centerX, centerY, "EKO",
-			<Phaser.Types.GameObjects.Text.TextStyle> {
-				fontFamily: 'Comfortaa',
-				fontStyle: 'bold',
-				fontSize: '72px',
-				color: 'black'
-			}).setOrigin(0.5, 1),
-			this.add.text(centerX, centerY, "PROTECTING THE ENVIRONTMENT",
-			<Phaser.Types.GameObjects.Text.TextStyle> {
-				fontFamily: 'Comfortaa',
-				fontSize: '48px',
-				color: 'black'
-			}).setOrigin(0.5, 0),
-			this.add.text(centerX, centerY + 256, "TAP TO START",
-			<Phaser.Types.GameObjects.Text.TextStyle> {
-				fontFamily: 'Comfortaa',
-				fontStyle: 'bold',
-				fontSize: '22px',
-				color: 'black'
-			}).setOrigin(0.5, 1)
-		);
+		this._titleScreen = this.add.image(0, 0, 'screen_title').setOrigin(0);
 
 		if (this._isGameStart) {
 			this.createGameTitle();
@@ -117,13 +95,14 @@ export class MenuViews extends BaseScene {
 	}
 
 	createGameTitle (): void {
-		this._gameTitleLabels.forEach(label => label.setVisible(false));
+		this._titleScreen.setVisible(false);
 		const randomTipsIndex = Phaser.Math.Between(0, this._baloonTips.length - 1);
+		const tip = this._baloonTips[randomTipsIndex];
 		this._baloonSpeech = new BaloonSpeech(
 			this,
-			600, 30,
-			320, 180,
-			this._baloonTips[randomTipsIndex]
+			600, (tip.length < 94 ? 30 : 45),
+			320, (tip.length < 94 ? 180 : 208),
+			tip
 		);
 		this.createMenuButton();
 	}
@@ -133,9 +112,6 @@ export class MenuViews extends BaseScene {
 			.setCallback(() => {
 				this.input.enabled = false;
 				NextSceneFadeOut(this, 'WorldmapViews');
-				// FIXME: Place it before worldmap
-				const dialogueTimeline = this.cache.json.get('dialogue_cutscene_intro');
-				console.table(dialogueTimeline);
 			});
 
 		this._miniGameBtn = new Button(this, 1048, 464, 'MiniGameButton')
